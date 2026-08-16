@@ -23,6 +23,7 @@ exports.handler = async function (event) {
         body: new URLSearchParams({
           grant_type: "authorization_code",
           client_id: process.env.KAKAO_REST_API_KEY,
+          client_secret: process.env.KAKAO_CLIENT_SECRET,
           redirect_uri: redirectUri,
           code: code
         })
