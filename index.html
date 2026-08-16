@@ -426,45 +426,6 @@ function movePracticeMonth(amount){
 }
   return `<div class="calendar">${s}</div>`;
 }
-  
-function movePracticeMonth(amount){
-  const base = state.practiceDate
-    ? new Date(state.practiceDate + "T00:00:00")
-    : new Date();
-
-  base.setMonth(base.getMonth() + amount);
-
-  state.practiceDate =
-    `${base.getFullYear()}-`+
-    `${String(base.getMonth()+1).padStart(2,"0")}-`+
-    `${String(base.getDate()).padStart(2,"0")}`;
-
-  save();
-  render();
-}
-
-function movePracticeMonth(amount){
-  if(!state.practiceDate){
-    state.practiceDate=state.schedules.length
-      ? state.schedules[0].date
-      : new Date().toISOString().slice(0,10);
-  }
-
-  const [y,m,d]=state.practiceDate.split("-").map(Number);
-
-  const date=new Date(y,m-1,d);
-  date.setMonth(date.getMonth()+amount);
-
-  state.practiceDate=
-    `${date.getFullYear()}-`+
-    `${String(date.getMonth()+1).padStart(2,"0")}-`+
-    `${String(date.getDate()).padStart(2,"0")}`;
-
-  save();
-  render();
-}
-  return `<div class="calendar">${s}</div>`;
-}
 function addPractice(){
   let date=prompt("날짜 (YYYY-MM-DD)","2026-10-25");if(!date)return;
   let time=prompt("시간","19:00–22:00");if(!time)return;
