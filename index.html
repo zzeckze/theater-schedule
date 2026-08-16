@@ -287,12 +287,11 @@ function me(){
 
       <div class="field">
         <label>배역</label>
-        <select id="profileRole">
-          <option value="">배역을 선택해주세요</option>
-          <option ${profile.role==="흥부"?"selected":""}>흥부</option>
-          <option ${profile.role==="놀부"?"selected":""}>놀부</option>
-          <option ${profile.role==="제비"?"selected":""}>제비</option>
-        </select>
+        <input
+  id="profileRole"
+  value="${profile.role}"
+  placeholder="배역을 입력해주세요"
+>
       </div>
 
       <div class="field">
