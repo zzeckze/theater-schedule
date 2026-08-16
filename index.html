@@ -200,20 +200,26 @@ function home(){
     </div>`;
 }
 function movePracticeDate(days){
+  alert("날짜 이동 함수가 실행됐어");
+
   if(!state.practiceDate){
     state.practiceDate="2026-10-20";
   }
 
-  const [y,m,d]=state.practiceDate.split("-").map(Number);
-  const date=new Date(y,m-1,d);
+  const parts=state.practiceDate.split("-");
+  const date=new Date(
+    Number(parts[0]),
+    Number(parts[1])-1,
+    Number(parts[2])
+  );
 
   date.setDate(date.getDate()+days);
 
-  const yy=date.getFullYear();
-  const mm=String(date.getMonth()+1).padStart(2,"0");
-  const dd=String(date.getDate()).padStart(2,"0");
+  state.practiceDate=
+    date.getFullYear()+"-"+
+    String(date.getMonth()+1).padStart(2,"0")+"-"+
+    String(date.getDate()).padStart(2,"0");
 
-  state.practiceDate=`${yy}-${mm}-${dd}`;
   save();
   render();
 }
