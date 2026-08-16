@@ -33,7 +33,7 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 const KAKAO_JS_KEY="bb565227796ab8561a41061708f47a44";
 
 const state={
-  logged:false, admin:true, tab:"home", view:"week",
+  logged:false, registered:false, admin:true, tab:"home", view:"week",
   showName:"THEATER-CLOWN", venue:"문학씨어터", showDate:"2026-10-24", showTime:"19:00",
   members:[
     {name:"김○○",role:"흥부",pos:"배우",phone:"010-0000-0000",joined:true},
@@ -80,6 +80,7 @@ function kakaoLogin(){
 }
 function app(){
  if(!state.logged) return login();
+ if(!state.registered) return register();
  document.getElementById("app").innerHTML=`
  <header>
   <div class="brand"><div><b>🎭 ${state.showName}</b><br><small>${state.venue}</small></div><span class="pill">${state.admin?"관리자":"일반회원"}</span></div>
@@ -109,6 +110,87 @@ function login(){
  </div></section>`;
 }
 function demoLogin(){state.logged=true;save();app()}
+function register(){
+ document.getElementById("app").innerHTML=`
+ <section class="login">
+  <div class="loginbox">
+   <div class="logo">THEATER<br>CLOWN</div>
+   <p>공연팀 가입 정보를 입력해주세요.</p>
+
+   <div class="card" style="color:#171b2d;text-align:left">
+    <div class="field">
+     <label>이름</label>
+     <input id="regName" placeholder="이름을 입력해주세요">
+    </div>
+
+    <div class="field">
+     <label>배역</label>
+     <input id="regRole" placeholder="예: 흥부">
+    </div>
+
+    <div class="field">
+     <label>포지션</label>
+     <select id="regPos">
+      <option value="">선택해주세요</option>
+      <option>배우</option>
+      <option>연출</option>
+      <option>조연출</option>
+      <option>음향</option>
+      <option>조명</option>
+      <option>무대</option>
+      <option>기획</option>
+      <option>기타</option>
+     </select>
+    </div>
+
+    <div class="field">
+     <label>전화번호</label>
+     <input id="regPhone" type="tel" placeholder="010-0000-0000">
+    </div>
+
+    <button class="btn primary" style="width:100%;margin-top:8px"
+      onclick="completeRegister()">
+      가입 완료
+    </button>
+   </div>
+  </div>
+ </section>`;
+}
+
+function completeRegister(){
+ const name=document.getElementById("regName").value.trim();
+ const role=document.getElementById("regRole").value.trim();
+ const pos=document.getElementById("regPos").value;
+ const phone=document.getElementById("regPhone").value.trim();
+
+ if(!name||!role||!pos||!phone){
+   alert("모든 가입 정보를 입력해주세요.");
+   return;
+ }
+
+ state.profile={
+   name:name,
+   role:role,
+   pos:pos,
+   phone:phone
+ };
+
+ state.members=[
+   {
+     name:name,
+     role:role,
+     pos:pos,
+     phone:phone,
+     joined:true
+   }
+ ];
+
+ state.registered=true;
+ state.admin=false;
+
+ save();
+ app();
+}
 function go(tab){state.tab=tab;app()}
 function render(){
  const m=document.getElementById("main");
