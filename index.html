@@ -222,8 +222,10 @@ function movePracticeDate(days){
 function practice(){
   const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
 
- if(!state.practiceDate || !schedules.some(x=>x.date===state.practiceDate)){
-  state.practiceDate=schedules.length?schedules[0].date:new Date().toISOString().slice(0,10);
+if(!state.practiceDate){
+  state.practiceDate=schedules.length
+    ? schedules[0].date
+    : new Date().toISOString().slice(0,10);
 }
 
   function dateObj(str){
