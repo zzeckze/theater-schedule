@@ -843,26 +843,7 @@ function applySameTimePicker(){
   );
 }
 
-function applySameTime(dates){
-  if(!selectedTimeSlots.length){
-    alert("가능한 시간을 하나 이상 선택해주세요.");
-    return;
-  }
 
-  selectedTimeSlots.sort();
-
-  dates.forEach(d=>{
-    state.availability[d]={
-      memo:"",
-      time:selectedTimeSlots.join(", ")
-    };
-  });
-
-  save();
-  closeTimePicker();
-
-  alert(`${dates.length}개 날짜에 같은 시간이 적용되었습니다.`);
-}
 function saveAvailability(){
   const d=document.getElementById("sd").value;
 
