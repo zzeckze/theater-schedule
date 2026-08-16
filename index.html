@@ -462,8 +462,60 @@ function schedule(){
   ${state.admin?`<div class="card"><h3>🧮 관리자 추천</h3><div class="notice"><b>추천: 10/20 19:00–22:00</b><br>현재 등록된 팀원 기준 추천 시간</div><button class="btn primary" style="margin-top:10px" onclick="confirmPractice()">연습 확정</button></div>`:""}`;
 }
 function toggleChip(el){el.classList.toggle("on")}
-function setSlots(){alert("30분 단위 선택 기능은 다음 단계에서 확장할 수 있습니다.")}
-function sameTime(){alert("여러 날짜에 같은 시간을 적용하는 기능입니다.")}
+function setSlots(){
+  const d=document.getElementById("sd").value;
+
+  if(!d){
+    alert("먼저 날짜를 선택해주세요.");
+    return;
+  }
+
+  const current=state.availability[d]?.time || "";
+
+  const time=prompt(
+    "가능한 시간을 입력하세요.\n예: 19:00–22:00\n30분 단위로 입력해주세요.",
+    current
+  );
+
+  if(time===null)return;
+
+  state.availability[d]={
+    memo:document.getElementById("memo").value,
+    time:time
+  };
+
+  save();
+
+  alert("가능 시간이 입력되었습니다.");
+}
+function sameTime(){
+  const time=prompt(
+    "여러 날짜에 적용할 시간을 입력하세요.\n예: 19:00–22:00\n30분 단위로 입력해주세요."
+  );
+
+  if(time===null || !time)return;
+
+  const dates=prompt(
+    "적용할 날짜를 쉼표로 입력하세요.\n예: 2026-10-20,2026-10-22,2026-10-24"
+  );
+
+  if(dates===null || !dates.trim())return;
+
+  dates
+    .split(",")
+    .map(x=>x.trim())
+    .filter(Boolean)
+    .forEach(d=>{
+      state.availability[d]={
+        memo:"",
+        time:time
+      };
+    });
+
+  save();
+
+  alert("여러 날짜에 같은 시간이 적용되었습니다.");
+}
 function saveAvailability(){
   const d=document.getElementById("sd").value;
   if(!d){alert("날짜를 선택해주세요.");return;}
