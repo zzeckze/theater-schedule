@@ -698,28 +698,104 @@ function sameTime(){
 
   document.body.appendChild(box);
 }
-  let sameTimeDates=[];
+function sameTime(){
+  window.sameTimeDates=[];
+
+  const box=document.createElement("div");
+  box.id="sameTimePicker";
+
+  let html="";
+
+  for(let h=0;h<24;h++){
+    for(let m=0;m<60;m+=30){
+      const time=
+        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+
+      html+=`
+        <button
+          type="button"
+          class="time-slot"
+          data-time="${time}"
+          onclick="this.classList.toggle('on')">
+          ${time}
+        </button>
+      `;
+    }
+  }
+
+  box.innerHTML=`
+    <div class="modal-bg">
+      <div class="modal-card">
+        <h3>📅 여러 날짜에 같은 시간</h3>
+
+        <div class="field">
+          <label>날짜 선택</label>
+          <input id="sameTimeDate" type="date">
+        </div>
+
+        <button
+          type="button"
+          class="btn"
+          onclick="addSameTimeDate()">
+          + 날짜 추가
+        </button>
+
+        <div
+          id="sameTimeDates"
+          class="people"
+          style="margin-top:10px">
+          선택한 날짜가 없습니다.
+        </div>
+
+        <h4 style="margin-top:18px">시간 선택</h4>
+
+        <div class="time-grid">
+          ${html}
+        </div>
+
+        <div class="actions" style="margin-top:15px">
+          <button
+            type="button"
+            class="btn"
+            onclick="closeSameTimePicker()">
+            취소
+          </button>
+
+          <button
+            type="button"
+            class="btn primary"
+            onclick="applySameTimePicker()">
+            적용
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(box);
+}
 
 function addSameTimeDate(){
   const input=document.getElementById("sameTimeDate");
 
-  if(!input.value){
+  if(!input || !input.value){
     alert("날짜를 선택해주세요.");
     return;
   }
 
-  if(sameTimeDates.includes(input.value)){
+  if(window.sameTimeDates.includes(input.value)){
     alert("이미 선택한 날짜입니다.");
     return;
   }
 
-  sameTimeDates.push(input.value);
-  input.value="";
+  window.sameTimeDates.push(input.value);
 
   document.getElementById("sameTimeDates").innerHTML=
-    sameTimeDates
+    window.sameTimeDates
       .map(d=>`<span class="pill">${d}</span>`)
       .join(" ");
+
+  input.value="";
 }
 
 function closeSameTimePicker(){
@@ -729,17 +805,19 @@ function closeSameTimePicker(){
     box.remove();
   }
 
-  sameTimeDates=[];
+  window.sameTimeDates=[];
 }
 
 function applySameTimePicker(){
-  if(!sameTimeDates.length){
+  if(!window.sameTimeDates.length){
     alert("날짜를 하나 이상 선택해주세요.");
     return;
   }
 
-  const slots=[...
-    document.querySelectorAll("#sameTimePicker .time-slot.on")
+  const slots=[
+    ...document.querySelectorAll(
+      "#sameTimePicker .time-slot.on"
+    )
   ].map(x=>x.dataset.time);
 
   if(!slots.length){
@@ -749,7 +827,7 @@ function applySameTimePicker(){
 
   slots.sort();
 
-  sameTimeDates.forEach(d=>{
+  window.sameTimeDates.forEach(d=>{
     state.availability[d]={
       memo:"",
       time:slots.join(", ")
@@ -760,7 +838,9 @@ function applySameTimePicker(){
 
   closeSameTimePicker();
 
-  alert(`${sameTimeDates.length}개 날짜에 같은 시간이 적용되었습니다.`);
+  alert(
+    `${window.sameTimeDates.length}개 날짜에 같은 시간이 적용되었습니다.`
+  );
 }
 
 function applySameTime(dates){
