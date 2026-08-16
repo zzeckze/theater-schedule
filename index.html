@@ -250,20 +250,17 @@ function practice(){
   }
 
   if(state.view==="week"){
-  const weekStart=new Date(selected);
-  weekStart.setDate(selected.getDate()-selected.getDay());
+    const weekStart=new Date(selected);
+    weekStart.setDate(selected.getDate()-selected.getDay());
 
-  const weekEnd=new Date(weekStart);
-  weekEnd.setDate(weekStart.getDate()+6);
+    const weekEnd=new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate()+6);
 
-  list=schedules.filter(x=>{
-    const d=dateObj(x.date);
-    return d>=weekStart&&d<=weekEnd;
-  });
-
-  state.weekStart=formatDate(weekStart);
-  state.weekEnd=formatDate(weekEnd);
-}
+    list=schedules.filter(x=>{
+      const d=dateObj(x.date);
+      return d>=weekStart&&d<=weekEnd;
+    });
+  }
 
   const dateLabel=`${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
 
@@ -283,7 +280,7 @@ function practice(){
     <div class="card" style="margin-bottom:12px">
       <div class="row">
         <button class="btn" onclick="movePracticeDate(-1)">◀</button>
-        <b>${state.view==="day"?dateLabel:`${state.weekStart} ~ ${state.weekEnd}`}</b>
+        <b>${state.view==="day"?dateLabel:"주간 일정"}</b>
         <button class="btn" onclick="movePracticeDate(1)">▶</button>
       </div>
     </div>
