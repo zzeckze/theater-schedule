@@ -61,6 +61,12 @@ function save(){localStorage.setItem("theaterClown",JSON.stringify(state))}
 function load(){try{Object.assign(state,JSON.parse(localStorage.getItem("theaterClown")||"{}"))}catch(e){}}
 load();
 
+if (new URLSearchParams(location.search).get("kakao_login") === "success") {
+  state.logged = true;
+  save();
+  history.replaceState({}, "", "/");
+}
+
 function kakaoLogin(){
   if(KAKAO_JS_KEY.includes("여기에_")){
     alert("먼저 index.html의 KAKAO_JS_KEY에 카카오 JavaScript 키를 입력해주세요.");
