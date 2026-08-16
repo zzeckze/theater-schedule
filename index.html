@@ -70,6 +70,44 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
   color:#fff;
   border-color:#171b2d;
 }
+  .availability-calendar-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.availability-calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.availability-day{
+  min-height:50px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:6px;
+  font-size:13px;
+  text-align:center;
+}
+
+.availability-day.selected{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+
+.availability-day.empty{
+  background:transparent;
+  border:0;
+}
+
+.time-slot.range-start{
+  outline:2px solid var(--accent);
+  outline-offset:1px;
+}
 </style>
 </head>
 <body>
@@ -500,9 +538,7 @@ function schedule(){
       <label>날짜 선택</label>
     </div>
 
-    <div class="availability-calendar-wrap">
-      ${availabilityCalendar()}
-    </div>
+    ${availabilityCalendar()}
 
     <div
       id="availabilitySelectedDates"
@@ -659,6 +695,7 @@ function moveAvailabilityMonth(amount){
   );
 
   render();
+  renderAvailabilitySelection();
 }
 
 
@@ -677,7 +714,7 @@ function toggleAvailabilityDate(date){
 
   selectedAvailabilityDates.sort();
 
-  render();
+  renderAvailabilitySelection();
 }
 
 
@@ -735,10 +772,13 @@ function renderAvailabilityTimes(){
       const selected=
         selectedAvailabilityTimes.includes(time);
 
+      const rangeStart=
+        availabilityRangeStart===time;
+
       html+=`
         <button
           type="button"
-          class="time-slot ${selected?"on":""}"
+          class="time-slot ${selected?"on":""} ${rangeStart?"range-start":""}"
           onclick="toggleAvailabilityTime('${time}')">
           ${time}
         </button>
@@ -763,8 +803,9 @@ function renderAvailabilityTimes(){
       </div>
 
       <p class="muted small">
-        시간의 시작과 끝을 차례로 선택하면 그 사이 시간이 자동으로 선택됩니다.
-        여러 구간도 선택할 수 있습니다.
+        시작 시간과 끝 시간을 차례로 선택해주세요.
+        선택한 시간 사이가 자동으로 선택됩니다.
+        다른 구간도 이어서 선택할 수 있습니다.
       </p>
 
       <div class="time-grid">
@@ -801,10 +842,6 @@ function toggleAvailabilityHalfHour(){
 
 function toggleAvailabilityTime(time){
 
-  /*
-   * 첫 번째 클릭:
-   * 범위 시작
-   */
   if(availabilityRangeStart===null){
 
     availabilityRangeStart=time;
@@ -814,11 +851,6 @@ function toggleAvailabilityTime(time){
     return;
   }
 
-
-  /*
-   * 두 번째 클릭:
-   * 시작~끝 전체 선택
-   */
   const startMinutes=
     availabilityTimeToMinutes(
       availabilityRangeStart
@@ -845,23 +877,18 @@ function toggleAvailabilityTime(time){
     );
   }
 
-
-  /*
-   * 이미 선택된 시간은 유지하고
-   * 새 범위를 추가한다.
-   */
   selectedAvailabilityTimes=
     [...new Set([
       ...selectedAvailabilityTimes,
       ...range
     ])];
 
-  selectedAvailabilityTimes.sort();
+  selectedAvailabilityTimes.sort(
+    (a,b)=>
+      availabilityTimeToMinutes(a)-
+      availabilityTimeToMinutes(b)
+  );
 
-  /*
-   * 범위 선택 완료 후
-   * 다음 클릭은 새로운 구간의 시작
-   */
   availabilityRangeStart=null;
 
   renderAvailabilityTimes();
@@ -927,7 +954,11 @@ function saveAvailability(){
   const time=
     selectedAvailabilityTimes
       .slice()
-      .sort()
+      .sort(
+        (a,b)=>
+          availabilityTimeToMinutes(a)-
+          availabilityTimeToMinutes(b)
+      )
       .join(", ");
 
   selectedAvailabilityDates.forEach(date=>{
@@ -981,12 +1012,7 @@ function filterPeople(){
       `
       : "팀원을 먼저 선택해주세요.";
 }
-
-
-/* =========================
-   연습 확정
-   ========================= */
-
+  
 function confirmPractice(){
 
   let date=
@@ -1114,17 +1140,31 @@ function saveShowInfo(){
   save();alert("공연 정보가 저장되었습니다.");app();
 }
 function addMember(){
-  const name=prompt("팀원 이름");if(!name)return;
-  const pos=prompt("포지션","배우");if(!pos)return;
-  state.members.push({name:name.trim(),pos:pos.trim(),phone:phone.trim(),joined:true});
-  save();render();
+  const name=prompt("팀원 이름");
+  if(!name)return;
+
+  const pos=prompt("포지션","배우");
+  if(!pos)return;
+
+  state.members.push({
+    name:name.trim(),
+    pos:pos.trim(),
+    joined:true
+  });
+
+  save();
+  render();
 }
 function editMember(i){
   const m=state.members[i];
+
   m.name=prompt("이름",m.name)||m.name;
   m.pos=prompt("포지션",m.pos)||m.pos;
-  m.phone=prompt("전화번호",m.phone)||m.phone;
-  save();render();
+
+  delete m.phone;
+
+  save();
+  render();
 }
 function deleteMember(i){
   if(confirm(`${state.members[i].name} 팀원을 삭제할까요?`)){
