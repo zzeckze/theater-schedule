@@ -297,24 +297,20 @@ function me(){
       </button>
     </div>
 
-    ${registered ? `
-      <div class="card">
-        <h3>🔐 관리자 권한</h3>
-        <p class="muted">관리자 코드를 입력하면 관리자 권한으로 변경할 수 있습니다.</p>
-        <div class="field">
-          <input id="adminCode" type="password" placeholder="관리자 코드">
-        </div>
-        <button class="btn" onclick="state.admin=true;save();alert('관리자 권한이 적용되었습니다.');app()">
-          관리자 승급
-        </button>
-      </div>
+${registered ? `
+  <div class="card">
+    <h3>🔐 관리자 권한</h3>
+    <p class="muted">관리자 코드를 입력하면 관리자 권한으로 변경할 수 있습니다.</p>
 
-      <div class="card">
-<button class="btn" onclick="verifyAdminCode()">
-  관리자 승급
-</button>
-      </div>
-    ` : ""}
+    <div class="field">
+      <input id="adminCode" type="password" placeholder="관리자 코드">
+    </div>
+
+    <button class="btn" onclick="verifyAdminCode()">
+      관리자 승급
+    </button>
+  </div>
+` : ""}
   `;
 }
 
