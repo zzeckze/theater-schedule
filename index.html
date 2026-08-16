@@ -29,6 +29,47 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 .listline{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.listline:last-child{border-bottom:0}
 .empty{padding:24px 8px;text-align:center;color:var(--muted)}
 .small{font-size:12px}
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:20px;
+}
+
+.modal-card{
+  width:min(500px,100%);
+  max-height:85vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.time-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:15px;
+}
+
+.time-slot{
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:8px;
+  padding:10px 4px;
+  cursor:pointer;
+}
+
+.time-slot.on{
+  background:#171b2d;
+  color:#fff;
+  border-color:#171b2d;
+}
 </style>
 </head>
 <body>
@@ -462,6 +503,8 @@ function schedule(){
   ${state.admin?`<div class="card"><h3>🧮 관리자 추천</h3><div class="notice"><b>추천: 10/20 19:00–22:00</b><br>현재 등록된 팀원 기준 추천 시간</div><button class="btn primary" style="margin-top:10px" onclick="confirmPractice()">연습 확정</button></div>`:""}`;
 }
 function toggleChip(el){el.classList.toggle("on")}
+let selectedTimeSlots = [];
+
 function setSlots(){
   const d=document.getElementById("sd").value;
 
@@ -471,56 +514,210 @@ function setSlots(){
   }
 
   const current=state.availability[d]?.time || "";
+  const currentSlots=current
+    ? current.split(",").map(x=>x.trim())
+    : [];
 
-  const time=prompt(
-    "가능한 시간을 입력하세요.\n예: 19:00–22:00\n30분 단위로 입력해주세요.",
-    current
-  );
+  selectedTimeSlots=[...currentSlots];
 
-  if(time===null)return;
+  let html="";
+
+  for(let h=0;h<24;h++){
+    for(let m=0;m<60;m+=30){
+      const time=
+        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+
+      const checked=selectedTimeSlots.includes(time);
+
+      html+=`
+        <button
+          type="button"
+          class="time-slot ${checked?"on":""}"
+          data-time="${time}"
+          onclick="toggleTimeSlot(this)">
+          ${time}
+        </button>
+      `;
+    }
+  }
+
+  const box=document.createElement("div");
+
+  box.id="timePicker";
+  box.innerHTML=`
+    <div class="modal-bg" onclick="closeTimePicker(event)">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <h3>🕐 가능 시간 선택</h3>
+        <p class="muted">${d}</p>
+
+        <div class="time-grid">
+          ${html}
+        </div>
+
+        <div class="actions" style="margin-top:15px">
+          <button class="btn" onclick="closeTimePicker()">취소</button>
+          <button class="btn primary" onclick="applyTimeSlots()">선택 완료</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(box);
+}
+
+function toggleTimeSlot(el){
+  const time=el.dataset.time;
+
+  if(selectedTimeSlots.includes(time)){
+    selectedTimeSlots=
+      selectedTimeSlots.filter(x=>x!==time);
+
+    el.classList.remove("on");
+  }else{
+    selectedTimeSlots.push(time);
+    el.classList.add("on");
+  }
+}
+
+function applyTimeSlots(){
+  const d=document.getElementById("sd").value;
+
+  if(!selectedTimeSlots.length){
+    alert("가능한 시간을 하나 이상 선택해주세요.");
+    return;
+  }
+
+  selectedTimeSlots.sort();
 
   state.availability[d]={
     memo:document.getElementById("memo").value,
-    time:time
+    time:selectedTimeSlots.join(", ")
   };
 
   save();
 
-  alert("가능 시간이 입력되었습니다.");
+  closeTimePicker();
+
+  alert("가능 시간이 선택되었습니다.");
 }
+
+function closeTimePicker(){
+  const box=document.getElementById("timePicker");
+
+  if(box){
+    box.remove();
+  }
+}
+
 function sameTime(){
-  const time=prompt(
-    "여러 날짜에 적용할 시간을 입력하세요.\n예: 19:00–22:00\n30분 단위로 입력해주세요."
+  let dates="";
+
+  const datesInput=prompt(
+    "같은 시간을 적용할 날짜를 입력하세요.\n예: 2026-10-20,2026-10-22,2026-10-24"
   );
 
-  if(time===null || !time)return;
+  if(datesInput===null || !datesInput.trim()){
+    return;
+  }
 
-  const dates=prompt(
-    "적용할 날짜를 쉼표로 입력하세요.\n예: 2026-10-20,2026-10-22,2026-10-24"
-  );
-
-  if(dates===null || !dates.trim())return;
-
-  dates
+  dates=datesInput
     .split(",")
     .map(x=>x.trim())
-    .filter(Boolean)
-    .forEach(d=>{
-      state.availability[d]={
-        memo:"",
-        time:time
-      };
-    });
+    .filter(Boolean);
+
+  selectedTimeSlots=[];
+
+  let html="";
+
+  for(let h=0;h<24;h++){
+    for(let m=0;m<60;m+=30){
+      const time=
+        `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+
+      html+=`
+        <button
+          type="button"
+          class="time-slot"
+          data-time="${time}"
+          onclick="toggleTimeSlot(this)">
+          ${time}
+        </button>
+      `;
+    }
+  }
+
+  const box=document.createElement("div");
+
+  box.id="timePicker";
+
+  box.innerHTML=`
+    <div class="modal-bg" onclick="closeTimePicker(event)">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <h3>📅 여러 날짜에 같은 시간</h3>
+
+        <p class="muted">
+          ${dates.join(" · ")}
+        </p>
+
+        <div class="time-grid">
+          ${html}
+        </div>
+
+        <div class="actions" style="margin-top:15px">
+          <button class="btn" onclick="closeTimePicker()">취소</button>
+          <button
+            class="btn primary"
+            onclick="applySameTime(${JSON.stringify(dates)})">
+            적용
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(box);
+}
+
+function applySameTime(dates){
+  if(!selectedTimeSlots.length){
+    alert("가능한 시간을 하나 이상 선택해주세요.");
+    return;
+  }
+
+  selectedTimeSlots.sort();
+
+  dates.forEach(d=>{
+    state.availability[d]={
+      memo:"",
+      time:selectedTimeSlots.join(", ")
+    };
+  });
 
   save();
 
-  alert("여러 날짜에 같은 시간이 적용되었습니다.");
+  closeTimePicker();
+
+  alert(`${dates.length}개 날짜에 같은 시간이 적용되었습니다.`);
 }
 function saveAvailability(){
   const d=document.getElementById("sd").value;
-  if(!d){alert("날짜를 선택해주세요.");return;}
-  state.availability[d]={memo:document.getElementById("memo").value,time:"19:00–22:00"};
-  save();alert("가능 시간이 저장되었습니다.");
+
+  if(!d){
+    alert("날짜를 선택해주세요.");
+    return;
+  }
+
+  if(!state.availability[d]){
+    alert("먼저 30분 단위로 가능한 시간을 선택해주세요.");
+    return;
+  }
+
+  state.availability[d].memo=
+    document.getElementById("memo").value;
+
+  save();
+
+  alert("가능 시간이 저장되었습니다.");
 }
 function filterPeople(){
   let selected=[...document.querySelectorAll(".chip.on")].map(x=>x.dataset.name);
