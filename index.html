@@ -310,9 +310,9 @@ function me(){
       </div>
 
       <div class="card">
-        <button class="btn danger" onclick="state.logged=false;save();app()">
-          로그아웃
-        </button>
+<button class="btn" onclick="verifyAdminCode()">
+  관리자 승급
+</button>
       </div>
     ` : ""}
   `;
@@ -339,6 +339,24 @@ function saveProfile(){
 
   alert("가입이 완료되었습니다.");
   go("home");
+}
+  function verifyAdminCode(){
+  const code = document.getElementById("adminCode").value.trim();
+
+  if(!code){
+    alert("관리자 코드를 입력해주세요.");
+    return;
+  }
+
+  if(code !== "THEATER2026"){
+    alert("관리자 코드가 올바르지 않습니다.");
+    return;
+  }
+
+  state.admin = true;
+  save();
+  alert("관리자 권한이 적용되었습니다.");
+  app();
 }
 function admin(){
  return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div>
