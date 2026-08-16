@@ -36,9 +36,9 @@ const state={
   logged:false, registered:false, admin:true, tab:"home", view:"week",
   showName:"THEATER-CLOWN", venue:"문학씨어터", showDate:"2026-10-24", showTime:"19:00",
   members:[
-    {name:"김○○",role:"흥부",pos:"배우",phone:"010-0000-0000",joined:true},
-    {name:"이○○",role:"놀부",pos:"배우",phone:"010-1111-1111",joined:true},
-    {name:"박○○",role:"제비",pos:"배우",phone:"010-2222-2222",joined:false}
+    {name:"김○○",pos:"배우",phone:"010-0000-0000",joined:true},
+    {name:"이○○",pos:"배우",phone:"010-1111-1111",joined:true},
+    {name:"박○○",pos:"배우",phone:"010-2222-2222",joined:false}
   ],
   schedules:[
     {date:"2026-10-20",time:"19:00–22:00",title:"장면연습",people:["김○○","이○○"]},
@@ -124,11 +124,6 @@ function register(){
     </div>
 
     <div class="field">
-     <label>배역</label>
-     <input id="regRole" placeholder="예: 흥부">
-    </div>
-
-    <div class="field">
      <label>포지션</label>
      <select id="regPos">
       <option value="">선택해주세요</option>
@@ -159,18 +154,16 @@ function register(){
 
 function completeRegister(){
  const name=document.getElementById("regName").value.trim();
- const role=document.getElementById("regRole").value.trim();
  const pos=document.getElementById("regPos").value;
  const phone=document.getElementById("regPhone").value.trim();
 
- if(!name||!role||!pos||!phone){
+ if(!name||!pos||!phone){
    alert("모든 가입 정보를 입력해주세요.");
    return;
  }
 
  state.profile={
    name:name,
-   role:role,
    pos:pos,
    phone:phone
  };
@@ -178,7 +171,6 @@ function completeRegister(){
  state.members=[
    {
      name:name,
-     role:role,
      pos:pos,
      phone:phone,
      joined:true
@@ -260,7 +252,6 @@ function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.specia
 function me(){
   const profile = state.profile || {
     name:"",
-    role:"",
     pos:"",
     phone:""
   };
