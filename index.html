@@ -366,53 +366,68 @@ if(state.view==="week"){
 }
 function setView(v){state.view=v;save();render()}
 function miniMonth(){
-  if(!state.practiceDate){
-    state.practiceDate=state.schedules.length
-      ? state.schedules[0].date
-      : new Date().toISOString().slice(0,10);
-  }
+  const base = state.practiceDate
+    ? new Date(state.practiceDate + "T00:00:00")
+    : new Date();
 
-  const [y,m]=state.practiceDate.split("-").map(Number);
+  const year = base.getFullYear();
+  const month = base.getMonth();
 
-  const year=y;
-  const month=m-1;
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
 
-  const firstDay=new Date(year,month,1);
-  const lastDay=new Date(year,month+1,0);
+  const days = ["일","월","화","수","목","금","토"];
 
-  const days=["일","월","화","수","목","금","토"];
-
-  let s=`
-    <div class="month-head">
+  let s = `
+    <div class="row" style="margin-bottom:12px">
       <button class="btn" onclick="movePracticeMonth(-1)">◀</button>
-      <b>${year}년 ${month+1}월</b>
+      <b>${year}년 ${month + 1}월</b>
       <button class="btn" onclick="movePracticeMonth(1)">▶</button>
     </div>
   `;
 
-  s+=days
-    .map(d=>`<div class="calhead">${d}</div>`)
-    .join("");
+  s += days.map(d =>
+    `<div class="calhead">${d}</div>`
+  ).join("");
 
-  for(let i=0;i<firstDay.getDay();i++){
-    s+=`<div class="day"></div>`;
+  for(let i = 0; i < firstDay.getDay(); i++){
+    s += `<div class="day"></div>`;
   }
 
-  for(let day=1;day<=lastDay.getDate();day++){
-    const date=
-      `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+  for(let day = 1; day <= lastDay.getDate(); day++){
 
-    const hit=state.schedules.some(x=>x.date===date);
+    const date =
+      `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
-    s+=`
+    const schedules = state.schedules.filter(x => x.date === date);
+
+    s += `
       <div class="day">
         <b>${day}</b>
-        ${hit?`<span class="dot">● 연습</span>`:""}
+        ${schedules.length
+          ? `<span class="dot">● 연습</span>`
+          : ""}
       </div>
     `;
   }
 
   return `<div class="calendar">${s}</div>`;
+}
+  
+function movePracticeMonth(amount){
+  const base = state.practiceDate
+    ? new Date(state.practiceDate + "T00:00:00")
+    : new Date();
+
+  base.setMonth(base.getMonth() + amount);
+
+  state.practiceDate =
+    `${base.getFullYear()}-`+
+    `${String(base.getMonth()+1).padStart(2,"0")}-`+
+    `${String(base.getDate()).padStart(2,"0")}`;
+
+  save();
+  render();
 }
 
 function movePracticeMonth(amount){
