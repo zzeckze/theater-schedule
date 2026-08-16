@@ -201,13 +201,77 @@ function home(){
 }
 
 function practice(){
-  return `<div class="section-title"><h2>연습일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
+  const today = new Date();
+  const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  function dateObj(str){
+    const [y,m,d] = str.split("-").map(Number);
+    return new Date(y,m-1,d);
+  }
+
+  function formatDate(d){
+    return d.toISOString().slice(0,10);
+  }
+
+  let list = [...state.schedules];
+
+  if(state.view === "day"){
+    const target = formatDate(baseDate);
+    list = list.filter(x => x.date === target);
+  }
+
+  if(state.view === "week"){
+    const weekStart = new Date(baseDate);
+    weekStart.setDate(baseDate.getDate() - baseDate.getDay());
+
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+
+    list = list.filter(x => {
+      const d = dateObj(x.date);
+      return d >= weekStart && d <= weekEnd;
+    });
+  }
+
+  list.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+
+  return `<div class="section-title">
+    <h2>연습일정</h2>
+    ${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}
+  </div>
+
   <div class="seg">
     <button class="${state.view==='day'?'active':''}" onclick="setView('day')">일간</button>
     <button class="${state.view==='week'?'active':''}" onclick="setView('week')">주간</button>
     <button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button>
   </div>
-  ${state.view==='month'?miniMonth():state.schedules.length?state.schedules.map((x,i)=>`<div class="card"><div class="row"><div><span class="pill">${x.date}</span><div class="time">${x.time}</div><b>${x.title}</b></div><span class="pill">👥 ${x.people.length}명</span></div><div class="people">${x.people.join(" · ")}</div>${state.admin?`<div class="actions" style="margin-top:10px"><button class="btn ghost" onclick="editPractice(${i})">수정</button><button class="btn danger" onclick="cancelPractice(${i})">취소</button></div>`:''}</div>`).join(""):`<div class="card empty">등록된 연습 일정이 없습니다.</div>`}`;
+
+  ${state.view==='month'
+    ? miniMonth()
+    : list.length
+      ? list.map((x,i)=>`
+        <div class="card">
+          <div class="row">
+            <div>
+              <span class="pill">${x.date}</span>
+              <div class="time">${x.time}</div>
+              <b>${x.title}</b>
+            </div>
+            <span class="pill">👥 ${x.people.length}명</span>
+          </div>
+
+          <div class="people">${x.people.join(" · ")}</div>
+
+          ${state.admin
+            ? `<div class="actions" style="margin-top:10px">
+                <button class="btn ghost" onclick="editPractice(${i})">수정</button>
+                <button class="btn danger" onclick="cancelPractice(${i})">취소</button>
+              </div>`
+            : ''}
+        </div>
+      `).join("")
+      : `<div class="card empty">해당 기간에 등록된 연습 일정이 없습니다.</div>`
+  }`;
 }
 function setView(v){state.view=v;save();render()}
 function miniMonth(){
