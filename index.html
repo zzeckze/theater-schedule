@@ -396,7 +396,8 @@ function miniMonth(){
     const date =
       `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
-    const hit = state.schedules.some(x => x.date === date);
+    const hit = Array.isArray(state.schedules)
+       && state.schedules.some(x => x.date === date);
 
     s += `
       <div class="day">
