@@ -378,12 +378,14 @@ function miniMonth(){
 
   const days = ["일","월","화","수","목","금","토"];
 
-  let s = `
-  <div style="grid-column:1 / -1; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+let s = `
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
     <button class="btn" onclick="movePracticeMonth(-1)">◀</button>
-    <b>${year}년 ${month + 1}월</b>
+    <b style="font-size:18px;">${year}년 ${month + 1}월</b>
     <button class="btn" onclick="movePracticeMonth(1)">▶</button>
   </div>
+
+  <div class="calendar">
 `;
   s += days.map(d => `<div class="calhead">${d}</div>`).join("");
 
@@ -406,7 +408,7 @@ function miniMonth(){
     `;
   }
 
-  return `<div class="calendar">${s}</div>`;
+return `${s}</div>`;
 }
 
 function movePracticeMonth(amount){
