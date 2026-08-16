@@ -505,21 +505,6 @@ function schedule(){
 function toggleChip(el){el.classList.toggle("on")}
 let selectedTimeSlots = [];
 
-function setSlots(){
-  const d=document.getElementById("sd").value;
-
-  if(!d){
-    alert("먼저 날짜를 선택해주세요.");
-    return;
-  }
-
-  const current=state.availability[d]?.time || "";
-  const currentSlots=current
-    ? current.split(",").map(x=>x.trim())
-    : [];
-
-  selectedTimeSlots=[...currentSlots];
-
 let selectedTimeSlots = [];
 
 function setSlots(){
@@ -609,7 +594,6 @@ function applyTimeSlots(){
   };
 
   save();
-
   closeTimePicker();
 
   alert("가능 시간이 선택되었습니다.");
@@ -622,7 +606,6 @@ function closeTimePicker(){
     box.remove();
   }
 }
-
 function sameTime(){
   const box=document.createElement("div");
   box.id="sameTimePicker";
