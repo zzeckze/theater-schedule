@@ -286,15 +286,6 @@ function me(){
       </div>
 
       <div class="field">
-        <label>배역</label>
-        <input
-  id="profileRole"
-  value="${profile.role}"
-  placeholder="배역을 입력해주세요"
->
-      </div>
-
-      <div class="field">
         <label>포지션</label>
         <select id="profilePos">
           <option value="">포지션을 선택해주세요</option>
@@ -338,18 +329,16 @@ function me(){
 
 function saveProfile(){
   const name=document.getElementById("profileName").value.trim();
-  const role=document.getElementById("profileRole").value;
   const pos=document.getElementById("profilePos").value;
   const phone=document.getElementById("profilePhone").value.trim();
 
-  if(!name || !role || !pos || !phone){
-    alert("이름, 배역, 포지션, 전화번호를 모두 입력해주세요.");
+  if(!name || !pos || !phone){
+    alert("이름, 포지션, 전화번호를 모두 입력해주세요.");
     return;
   }
 
   state.profile={
     name:name,
-    role:role,
     pos:pos,
     phone:phone
   };
