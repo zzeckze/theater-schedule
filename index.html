@@ -49,9 +49,9 @@ const state={
   entryCode:DEFAULT_ENTRY_CODE,
   adminCode:DEFAULT_ADMIN_CODE,
   members:[
-    {name:"김○○",pos:"배우",phone:"010-0000-0000",joined:true},
-    {name:"이○○",pos:"배우",phone:"010-1111-1111",joined:true},
-    {name:"박○○",pos:"연출",phone:"010-2222-2222",joined:true}
+    {name:"김○○",pos:"배우",joined:true},
+    {name:"이○○",pos:"배우",joined:true},
+    {name:"박○○",pos:"연출",joined:true}
   ],
   schedules:[
     {date:"2026-10-20",time:"19:00–22:00",title:"장면연습",people:["김○○","이○○"]},
@@ -374,7 +374,6 @@ function saveShowInfo(){
 function addMember(){
   const name=prompt("팀원 이름");if(!name)return;
   const pos=prompt("포지션","배우");if(!pos)return;
-  const phone=prompt("전화번호","010-");if(phone===null)return;
   state.members.push({name:name.trim(),pos:pos.trim(),phone:phone.trim(),joined:true});
   save();render();
 }
