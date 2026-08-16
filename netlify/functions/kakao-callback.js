@@ -33,11 +33,17 @@ exports.handler = async function (event) {
     const tokenData = await tokenResponse.json();
 
     if (!tokenResponse.ok || !tokenData.access_token) {
-      return {
-        statusCode: 500,
-        body: "카카오 로그인 인증에 실패했습니다."
-      };
-    }
+  return {
+    statusCode: 500,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify({
+      message: "카카오 토큰 발급 실패",
+      kakao: tokenData
+    })
+  };
+}
 
     const userResponse = await fetch(
       "https://kapi.kakao.com/v2/user/me",
