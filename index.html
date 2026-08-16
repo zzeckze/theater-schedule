@@ -199,7 +199,10 @@ function home(){
       ${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}${x.phone?` · ${x.phone}`:""}</span></div></div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
     </div>`;
 }
-
+function movePracticeDate(days){
+  if(!state.practiceDate){
+    state.practiceDate="2026-10-20";
+  }
 
   const [y,m,d]=state.practiceDate.split("-").map(Number);
   const date=new Date(y,m-1,d);
@@ -214,6 +217,7 @@ function home(){
   save();
   render();
 }
+
 function practice(){
   const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
 
