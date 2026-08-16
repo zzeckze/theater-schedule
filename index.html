@@ -79,18 +79,64 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 
 .availability-calendar{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:repeat(7,minmax(0,1fr));
   gap:5px;
+  width:100%;
+}
+
+.availability-calendar .calhead{
+  min-width:0;
+  text-align:center;
+  padding:7px 0;
+  font-size:12px;
+  color:var(--muted);
+}
+  .availability-calendar-wrap{
+  width:100%;
+  background:#f8f8fc;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+}
+
+.availability-calendar-header .btn{
+  min-width:40px;
+  padding:8px 10px;
+}
+
+.availability-calendar-header b{
+  font-size:16px;
 }
 
 .availability-day{
-  min-height:50px;
+  width:100%;
+  min-height:54px;
   background:#fff;
   border:1px solid var(--line);
-  border-radius:10px;
-  padding:6px;
+  border-radius:12px;
+  padding:8px 4px;
   font-size:13px;
   text-align:center;
+  color:var(--ink);
+  transition:.15s;
+}
+
+.availability-day:active{
+  transform:scale(.96);
+}
+
+.availability-day.selected{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+  font-weight:800;
+  box-shadow:0 3px 8px rgba(102,87,232,.25);
+}
+
+.availability-day.empty{
+  background:transparent;
+  border:0;
+  pointer-events:none;
 }
 
 .availability-day.selected{
@@ -247,12 +293,17 @@ function go(tab){
 }
 function render(){
   const m=document.getElementById("main");
+
   if(state.tab==="home")m.innerHTML=home();
   if(state.tab==="practice")m.innerHTML=practice();
   if(state.tab==="schedule")m.innerHTML=schedule();
   if(state.tab==="calendar")m.innerHTML=calendar();
   if(state.tab==="notice")m.innerHTML=notice();
   if(state.tab==="admin")m.innerHTML=admin();
+
+  if(state.tab==="schedule"){
+    renderAvailabilitySelection();
+  }
 }
 
 function home(){
@@ -713,6 +764,8 @@ function toggleAvailabilityDate(date){
   }
 
   selectedAvailabilityDates.sort();
+
+  render();
 
   renderAvailabilitySelection();
 }
