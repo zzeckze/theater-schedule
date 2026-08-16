@@ -309,6 +309,11 @@ ${registered ? `
     <button class="btn" onclick="verifyAdminCode()">
       관리자 승급
     </button>
+    ${state.admin ? `
+  <button class="btn danger" onclick="removeAdmin()">
+    관리자 권한 해제
+  </button>
+` : ""}
   </div>
 ` : ""}
   `;
@@ -352,6 +357,14 @@ function saveProfile(){
   state.admin = true;
   save();
   alert("관리자 권한이 적용되었습니다.");
+  app();
+}
+  function removeAdmin(){
+  if(!confirm("관리자 권한을 해제할까요?")) return;
+
+  state.admin=false;
+  save();
+  alert("관리자 권한이 해제되었습니다.");
   app();
 }
 function admin(){
