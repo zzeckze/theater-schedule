@@ -199,10 +199,7 @@ function home(){
       ${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}${x.phone?` · ${x.phone}`:""}</span></div></div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
     </div>`;
 }
-function movePracticeDate(days){
-  if(!state.practiceDate){
-    state.practiceDate=new Date().toISOString().slice(0,10);
-  }
+
 
   const [y,m,d]=state.practiceDate.split("-").map(Number);
   const date=new Date(y,m-1,d);
@@ -220,9 +217,9 @@ function movePracticeDate(days){
 function practice(){
   const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
 
-  if(!state.practiceDate){
-    state.practiceDate=schedules.length?schedules[0].date:new Date().toISOString().slice(0,10);
-  }
+ if(!state.practiceDate || !schedules.some(x=>x.date===state.practiceDate)){
+  state.practiceDate=schedules.length?schedules[0].date:new Date().toISOString().slice(0,10);
+}
 
   function dateObj(str){
     const [y,m,d]=str.split("-").map(Number);
