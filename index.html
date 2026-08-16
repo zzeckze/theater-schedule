@@ -386,31 +386,44 @@ function miniMonth(){
     </div>
   `;
 
-  s += days.map(d =>
-    `<div class="calhead">${d}</div>`
-  ).join("");
+  s += days.map(d => `<div class="calhead">${d}</div>`).join("");
 
-  for(let i = 0; i < firstDay.getDay(); i++){
+  for(let i=0; i<firstDay.getDay(); i++){
     s += `<div class="day"></div>`;
   }
 
-  for(let day = 1; day <= lastDay.getDate(); day++){
-
+  for(let day=1; day<=lastDay.getDate(); day++){
     const date =
-      `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+      `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
-    const schedules = state.schedules.filter(x => x.date === date);
+    const hit = state.schedules.some(x => x.date === date);
 
     s += `
       <div class="day">
         <b>${day}</b>
-        ${schedules.length
-          ? `<span class="dot">● 연습</span>`
-          : ""}
+        ${hit ? `<span class="dot">● 연습</span>` : ""}
       </div>
     `;
   }
 
+  return `<div class="calendar">${s}</div>`;
+}
+
+function movePracticeMonth(amount){
+  const base = state.practiceDate
+    ? new Date(state.practiceDate + "T00:00:00")
+    : new Date();
+
+  base.setMonth(base.getMonth() + amount);
+
+  state.practiceDate =
+    `${base.getFullYear()}-`+
+    `${String(base.getMonth()+1).padStart(2,"0")}-`+
+    `${String(base.getDate()).padStart(2,"0")}`;
+
+  save();
+  render();
+}
   return `<div class="calendar">${s}</div>`;
 }
   
