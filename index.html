@@ -199,7 +199,7 @@ function home(){
       ${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}${x.phone?` · ${x.phone}`:""}</span></div></div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
     </div>`;
 }
-function movePracticeDate(days){
+window.movePracticeDate = function(days){
   alert("날짜 이동 함수가 실행됐어");
 
   if(!state.practiceDate){
