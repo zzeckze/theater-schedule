@@ -209,14 +209,16 @@ function movePracticeDate(days){
   const [y,m,d]=state.practiceDate.split("-").map(Number);
   const date=new Date(y,m-1,d);
 
-  const amount=state.view==="week" ? days*7 : days;
-
-  date.setDate(date.getDate()+amount);
+  if(state.view==="week"){
+    date.setDate(date.getDate() + (days * 7));
+  }else{
+    date.setDate(date.getDate() + days);
+  }
 
   state.practiceDate=
-    date.getFullYear()+"-"+
-    String(date.getMonth()+1).padStart(2,"0")+"-"+
-    String(date.getDate()).padStart(2,"0");
+    `${date.getFullYear()}-`+
+    `${String(date.getMonth()+1).padStart(2,"0")}-`+
+    `${String(date.getDate()).padStart(2,"0")}`;
 
   save();
   render();
@@ -269,20 +271,22 @@ function practice(){
   const dateLabel=
     `${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
 
-  let weekLabel="";
+let weekLabel="";
 
-  if(state.view==="week"){
-    const weekStart=new Date(selected);
-    weekStart.setDate(selected.getDate()-selected.getDay());
+if(state.view==="week"){
+  const weekStart=new Date(selected);
+  weekStart.setDate(selected.getDate()-selected.getDay());
 
-    const weekEnd=new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate()+6);
+  const weekEnd=new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate()+6);
 
-    weekLabel=
-      `${weekStart.getMonth()+1}월 ${weekStart.getDate()}일`
-      +` ~ `
-      +`${weekEnd.getMonth()+1}월 ${weekEnd.getDate()}일`;
-  }
+  weekLabel=
+    `${weekStart.getFullYear()}년 `
+    +`${weekStart.getMonth()+1}월 ${weekStart.getDate()}일`
+    +` ~ `
+    +`${weekEnd.getFullYear()}년 `
+    +`${weekEnd.getMonth()+1}월 ${weekEnd.getDate()}일`;
+}
 
   return `
   <div class="section-title">
@@ -362,14 +366,75 @@ function practice(){
 }
 function setView(v){state.view=v;save();render()}
 function miniMonth(){
-  const days=["일","월","화","수","목","금","토"];
-  let s=days.map(d=>`<div class="calhead">${d}</div>`).join("");
-  for(let i=0;i<35;i++){
-    let n=i-3;
-    let day=n>0&&n<=31?n:"";
-    let hit=state.schedules.some(x=>Number(x.date.slice(-2))===n);
-    s+=`<div class="day">${day?`<b>${day}</b>${hit?'<span class="dot">● 연습</span>':''}`:""}</div>`;
+  if(!state.practiceDate){
+    state.practiceDate=state.schedules.length
+      ? state.schedules[0].date
+      : new Date().toISOString().slice(0,10);
   }
+
+  const [y,m]=state.practiceDate.split("-").map(Number);
+
+  const year=y;
+  const month=m-1;
+
+  const firstDay=new Date(year,month,1);
+  const lastDay=new Date(year,month+1,0);
+
+  const days=["일","월","화","수","목","금","토"];
+
+  let s=`
+    <div class="month-head">
+      <button class="btn" onclick="movePracticeMonth(-1)">◀</button>
+      <b>${year}년 ${month+1}월</b>
+      <button class="btn" onclick="movePracticeMonth(1)">▶</button>
+    </div>
+  `;
+
+  s+=days
+    .map(d=>`<div class="calhead">${d}</div>`)
+    .join("");
+
+  for(let i=0;i<firstDay.getDay();i++){
+    s+=`<div class="day"></div>`;
+  }
+
+  for(let day=1;day<=lastDay.getDate();day++){
+    const date=
+      `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+    const hit=state.schedules.some(x=>x.date===date);
+
+    s+=`
+      <div class="day">
+        <b>${day}</b>
+        ${hit?`<span class="dot">● 연습</span>`:""}
+      </div>
+    `;
+  }
+
+  return `<div class="calendar">${s}</div>`;
+}
+
+function movePracticeMonth(amount){
+  if(!state.practiceDate){
+    state.practiceDate=state.schedules.length
+      ? state.schedules[0].date
+      : new Date().toISOString().slice(0,10);
+  }
+
+  const [y,m,d]=state.practiceDate.split("-").map(Number);
+
+  const date=new Date(y,m-1,d);
+  date.setMonth(date.getMonth()+amount);
+
+  state.practiceDate=
+    `${date.getFullYear()}-`+
+    `${String(date.getMonth()+1).padStart(2,"0")}-`+
+    `${String(date.getDate()).padStart(2,"0")}`;
+
+  save();
+  render();
+}
   return `<div class="calendar">${s}</div>`;
 }
 function addPractice(){
