@@ -520,6 +520,22 @@ function setSlots(){
 
   selectedTimeSlots=[...currentSlots];
 
+let selectedTimeSlots = [];
+
+function setSlots(){
+  const d=document.getElementById("sd").value;
+
+  if(!d){
+    alert("먼저 날짜를 선택해주세요.");
+    return;
+  }
+
+  const current=state.availability[d]?.time || "";
+
+  selectedTimeSlots=current
+    ? current.split(",").map(x=>x.trim())
+    : [];
+
   let html="";
 
   for(let h=0;h<24;h++){
@@ -527,12 +543,10 @@ function setSlots(){
       const time=
         `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
 
-      const checked=selectedTimeSlots.includes(time);
-
       html+=`
         <button
           type="button"
-          class="time-slot ${checked?"on":""}"
+          class="time-slot ${selectedTimeSlots.includes(time)?"on":""}"
           data-time="${time}"
           onclick="toggleTimeSlot(this)">
           ${time}
@@ -542,8 +556,8 @@ function setSlots(){
   }
 
   const box=document.createElement("div");
-
   box.id="timePicker";
+
   box.innerHTML=`
     <div class="modal-bg" onclick="closeTimePicker(event)">
       <div class="modal-card" onclick="event.stopPropagation()">
@@ -610,17 +624,15 @@ function closeTimePicker(){
 }
 
 function sameTime(){
-  let dates="";
-
   const datesInput=prompt(
-    "같은 시간을 적용할 날짜를 입력하세요.\n예: 2026-10-20,2026-10-22,2026-10-24"
+    "적용할 날짜를 입력하세요.\n예: 2026-10-20,2026-10-22,2026-10-24"
   );
 
   if(datesInput===null || !datesInput.trim()){
     return;
   }
 
-  dates=datesInput
+  const dates=datesInput
     .split(",")
     .map(x=>x.trim())
     .filter(Boolean);
@@ -647,17 +659,13 @@ function sameTime(){
   }
 
   const box=document.createElement("div");
-
   box.id="timePicker";
 
   box.innerHTML=`
     <div class="modal-bg" onclick="closeTimePicker(event)">
       <div class="modal-card" onclick="event.stopPropagation()">
         <h3>📅 여러 날짜에 같은 시간</h3>
-
-        <p class="muted">
-          ${dates.join(" · ")}
-        </p>
+        <p class="muted">${dates.join(" · ")}</p>
 
         <div class="time-grid">
           ${html}
@@ -665,9 +673,8 @@ function sameTime(){
 
         <div class="actions" style="margin-top:15px">
           <button class="btn" onclick="closeTimePicker()">취소</button>
-          <button
-            class="btn primary"
-            onclick="applySameTime(${JSON.stringify(dates)})">
+          <button class="btn primary"
+            onclick='applySameTime(${JSON.stringify(dates)})'>
             적용
           </button>
         </div>
@@ -694,7 +701,6 @@ function applySameTime(dates){
   });
 
   save();
-
   closeTimePicker();
 
   alert(`${dates.length}개 날짜에 같은 시간이 적용되었습니다.`);
