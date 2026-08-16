@@ -258,9 +258,108 @@ function notice(){
 function addNotice(){let type=prompt("항목: 일반공지 / 공연음악 / 연습영상 / 연습이미지","일반공지");if(!type)return;let title=prompt("제목","새 공지");let text=prompt("내용","내용을 입력하세요");if(title)state.notices.unshift({type,title,text:text||"",author:"김○○",special:false}),save(),render()}
 function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);save();render()}
 function me(){
- return `<div class="section-title"><h2>내 정보</h2></div><div class="card"><div class="field"><label>이름</label><input value="김○○"></div><div class="field"><label>배역</label><select><option>흥부</option><option>놀부</option><option>제비</option></select></div><div class="field"><label>포지션</label><select><option>배우</option><option>연출</option><option>조연출</option><option>음향</option></select></div><div class="field"><label>전화번호</label><input value="010-0000-0000"></div><button class="btn primary" onclick="alert('정보가 저장되었습니다.')">저장</button></div>
- <div class="card"><h3>🔐 관리자 권한</h3><p class="muted">관리자 코드를 입력하면 관리자 권한으로 변경할 수 있습니다.</p><div class="field"><input type="password" placeholder="관리자 코드"></div><button class="btn" onclick="state.admin=true;save();alert('관리자 권한이 적용되었습니다.');app()">관리자 승급</button></div>
- <div class="card"><button class="btn danger" onclick="state.logged=false;save();app()">로그아웃</button></div>`;
+  const profile = state.profile || {
+    name:"",
+    role:"",
+    pos:"",
+    phone:""
+  };
+
+  const registered = localStorage.getItem("theaterClownRegistered") === "true";
+
+  return `
+    <div class="section-title">
+      <h2>${registered ? "내 정보" : "공연팀 가입"}</h2>
+    </div>
+
+    <div class="card">
+      ${!registered ? `
+        <div class="notice" style="margin-bottom:14px">
+          <b>🎭 공연팀 가입 정보를 입력해주세요.</b><br>
+          <span class="muted">카카오 로그인 인증이 완료되었습니다.</span>
+        </div>
+      ` : ""}
+
+      <div class="field">
+        <label>이름</label>
+        <input id="profileName" value="${profile.name}" placeholder="이름을 입력해주세요">
+      </div>
+
+      <div class="field">
+        <label>배역</label>
+        <select id="profileRole">
+          <option value="">배역을 선택해주세요</option>
+          <option ${profile.role==="흥부"?"selected":""}>흥부</option>
+          <option ${profile.role==="놀부"?"selected":""}>놀부</option>
+          <option ${profile.role==="제비"?"selected":""}>제비</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>포지션</label>
+        <select id="profilePos">
+          <option value="">포지션을 선택해주세요</option>
+          <option ${profile.pos==="배우"?"selected":""}>배우</option>
+          <option ${profile.pos==="연출"?"selected":""}>연출</option>
+          <option ${profile.pos==="조연출"?"selected":""}>조연출</option>
+          <option ${profile.pos==="음향"?"selected":""}>음향</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>전화번호</label>
+        <input id="profilePhone" type="tel" value="${profile.phone}" placeholder="010-0000-0000">
+      </div>
+
+      <button class="btn primary" onclick="saveProfile()">
+        ${registered ? "정보 저장" : "가입 완료"}
+      </button>
+    </div>
+
+    ${registered ? `
+      <div class="card">
+        <h3>🔐 관리자 권한</h3>
+        <p class="muted">관리자 코드를 입력하면 관리자 권한으로 변경할 수 있습니다.</p>
+        <div class="field">
+          <input id="adminCode" type="password" placeholder="관리자 코드">
+        </div>
+        <button class="btn" onclick="state.admin=true;save();alert('관리자 권한이 적용되었습니다.');app()">
+          관리자 승급
+        </button>
+      </div>
+
+      <div class="card">
+        <button class="btn danger" onclick="state.logged=false;save();app()">
+          로그아웃
+        </button>
+      </div>
+    ` : ""}
+  `;
+}
+
+function saveProfile(){
+  const name=document.getElementById("profileName").value.trim();
+  const role=document.getElementById("profileRole").value;
+  const pos=document.getElementById("profilePos").value;
+  const phone=document.getElementById("profilePhone").value.trim();
+
+  if(!name || !role || !pos || !phone){
+    alert("이름, 배역, 포지션, 전화번호를 모두 입력해주세요.");
+    return;
+  }
+
+  state.profile={
+    name:name,
+    role:role,
+    pos:pos,
+    phone:phone
+  };
+
+  localStorage.setItem("theaterClownRegistered","true");
+  save();
+
+  alert("가입이 완료되었습니다.");
+  go("home");
 }
 function admin(){
  return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div>
