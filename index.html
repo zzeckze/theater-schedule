@@ -199,43 +199,76 @@ function home(){
       ${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}${x.phone?` · ${x.phone}`:""}</span></div></div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
     </div>`;
 }
+function movePracticeDate(days){
+  if(!state.practiceDate){
+    state.practiceDate=new Date().toISOString().slice(0,10);
+  }
 
+  const [y,m,d]=state.practiceDate.split("-").map(Number);
+  const date=new Date(y,m-1,d);
+
+  date.setDate(date.getDate()+days);
+
+  const yy=date.getFullYear();
+  const mm=String(date.getMonth()+1).padStart(2,"0");
+  const dd=String(date.getDate()).padStart(2,"0");
+
+  state.practiceDate=`${yy}-${mm}-${dd}`;
+  save();
+  render();
+}
 function practice(){
-  const today = new Date();
-  const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+
+  if(!state.practiceDate){
+    state.practiceDate=schedules.length?schedules[0].date:new Date().toISOString().slice(0,10);
+  }
 
   function dateObj(str){
-    const [y,m,d] = str.split("-").map(Number);
+    const [y,m,d]=str.split("-").map(Number);
     return new Date(y,m-1,d);
   }
 
   function formatDate(d){
-    return d.toISOString().slice(0,10);
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const day=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
   }
 
-  let list = [...state.schedules];
+  const selected=dateObj(state.practiceDate);
 
-  if(state.view === "day"){
-    const target = formatDate(baseDate);
-    list = list.filter(x => x.date === target);
+  function moveDate(days){
+    const d=new Date(selected);
+    d.setDate(d.getDate()+days);
+    state.practiceDate=formatDate(d);
+    save();
+    render();
   }
 
-  if(state.view === "week"){
-    const weekStart = new Date(baseDate);
-    weekStart.setDate(baseDate.getDate() - baseDate.getDay());
+  let list=[];
 
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+  if(state.view==="day"){
+    list=schedules.filter(x=>x.date===state.practiceDate);
+  }
 
-    list = list.filter(x => {
-      const d = dateObj(x.date);
-      return d >= weekStart && d <= weekEnd;
+  if(state.view==="week"){
+    const weekStart=new Date(selected);
+    weekStart.setDate(selected.getDate()-selected.getDay());
+
+    const weekEnd=new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate()+6);
+
+    list=schedules.filter(x=>{
+      const d=dateObj(x.date);
+      return d>=weekStart&&d<=weekEnd;
     });
   }
 
-  list.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  const dateLabel=`${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
 
-  return `<div class="section-title">
+  return `
+  <div class="section-title">
     <h2>연습일정</h2>
     ${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}
   </div>
@@ -246,30 +279,43 @@ function practice(){
     <button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button>
   </div>
 
-  ${state.view==='month'
+  ${state.view!=="month" ? `
+    <div class="card" style="margin-bottom:12px">
+      <div class="row">
+        <button class="btn" onclick="movePracticeDate(-1)">◀</button>
+        <b>${state.view==="day"?dateLabel:"주간 일정"}</b>
+        <button class="btn" onclick="movePracticeDate(1)">▶</button>
+      </div>
+    </div>
+  `:""}
+
+  ${state.view==="month"
     ? miniMonth()
     : list.length
-      ? list.map((x,i)=>`
-        <div class="card">
-          <div class="row">
-            <div>
-              <span class="pill">${x.date}</span>
-              <div class="time">${x.time}</div>
-              <b>${x.title}</b>
+      ? list.map((x)=>{
+          const originalIndex=state.schedules.indexOf(x);
+          return `
+          <div class="card">
+            <div class="row">
+              <div>
+                <span class="pill">${x.date}</span>
+                <div class="time">${x.time}</div>
+                <b>${x.title}</b>
+              </div>
+              <span class="pill">👥 ${x.people.length}명</span>
             </div>
-            <span class="pill">👥 ${x.people.length}명</span>
+
+            <div class="people">${x.people.join(" · ")}</div>
+
+            ${state.admin?`
+              <div class="actions" style="margin-top:10px">
+                <button class="btn ghost" onclick="editPractice(${originalIndex})">수정</button>
+                <button class="btn danger" onclick="cancelPractice(${originalIndex})">취소</button>
+              </div>
+            `:""}
           </div>
-
-          <div class="people">${x.people.join(" · ")}</div>
-
-          ${state.admin
-            ? `<div class="actions" style="margin-top:10px">
-                <button class="btn ghost" onclick="editPractice(${i})">수정</button>
-                <button class="btn danger" onclick="cancelPractice(${i})">취소</button>
-              </div>`
-            : ''}
-        </div>
-      `).join("")
+        `;
+        }).join("")
       : `<div class="card empty">해당 기간에 등록된 연습 일정이 없습니다.</div>`
   }`;
 }
