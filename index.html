@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171b2d">
+<title>THEATER-CLOWN · 공연팀 관리</title>
+<style>
+:root{--bg:#f5f6fa;--card:#fff;--ink:#171b2d;--muted:#73798c;--primary:#6657e8;--accent:#ff6b8a;--line:#e7e8ef;--danger:#e84b5f;--ok:#20a36a}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
+button,input,textarea,select{font:inherit}button{border:0;cursor:pointer}.hidden{display:none!important}
+#app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg)}
+header{position:sticky;top:0;z-index:20;background:rgba(245,246,250,.95);backdrop-filter:blur(12px);padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;justify-content:space-between}.brand b{font-size:18px}.brand small{color:var(--muted)}
+.toplinks{display:flex;gap:7px;overflow:auto;padding-top:12px}.toplinks button{white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:#444b60}
+main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#6657e8);color:#fff;border-radius:24px;padding:22px;margin-bottom:12px}.hero .dday{font-size:42px;font-weight:800;line-height:1}.hero p{margin:8px 0 0;opacity:.85}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:10px 0}.card h3{margin:0 0 12px;font-size:16px}.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.muted{color:var(--muted)}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f0efff;color:var(--primary);font-size:12px;font-weight:700}.notice{padding:13px;border-radius:15px;background:#fff3f6;border:1px solid #ffd5df}.schedule-item{padding:13px 0;border-bottom:1px solid var(--line)}.schedule-item:last-child{border-bottom:0}.time{font-size:17px;font-weight:800}.people{font-size:13px;color:var(--muted);margin-top:5px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:30}.bottom button{background:none;color:#74798a;font-size:11px;padding:5px 0}.bottom button.active{color:var(--primary);font-weight:800}.bottom span{display:block;font-size:20px;margin-bottom:2px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:8px 0}.section-title h2{font-size:20px;margin:0}.seg{display:flex;background:#ececf3;padding:3px;border-radius:12px;margin:10px 0}.seg button{flex:1;background:transparent;border-radius:9px;padding:8px;color:#666}.seg button.active{background:#fff;color:var(--ink);box-shadow:0 1px 5px #00000012}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calhead{text-align:center;font-size:11px;color:var(--muted);padding:4px}.day{min-height:70px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;font-size:12px}.day b{display:block}.dot{display:block;margin-top:5px;font-size:10px;color:var(--primary);font-weight:700}.dot.stage{color:#d77b1d}.dot.show{color:#e84b5f}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{padding:10px 13px;border-radius:12px;background:#f0efff;color:var(--primary);font-weight:700}.btn.primary{background:var(--primary);color:#fff}.btn.ghost{background:#fff;border:1px solid var(--line);color:#555}.btn.danger{background:#fff0f2;color:var(--danger)}
+.field{margin:10px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;outline:none}.field textarea{min-height:90px;resize:vertical}
+.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px}.chip.on{background:#eeecff;border-color:#c9c3ff;color:var(--primary);font-weight:700}
+.notice-list .card{margin-bottom:8px}.media{height:120px;border-radius:14px;background:#eef0f7;display:grid;place-items:center;color:#858b9b;margin-bottom:10px}
+.login{min-height:100vh;display:grid;place-items:center;padding:28px 22px;background:linear-gradient(160deg,#171b2d 0%,#6657e8 70%,#ff6b8a 140%);color:#fff}.loginbox{width:100%;max-width:390px}.logo{font-size:34px;font-weight:900;letter-spacing:1px}.loginbox p{opacity:.75}.loginbtn{width:100%;padding:14px;border-radius:14px;margin:7px 0;font-weight:800}.kakao{background:#fee500;color:#191919}.naver{background:#03c75a;color:#fff}.demo{background:#fff2;color:#fff;border:1px solid #ffffff55}.fine{font-size:11px;opacity:.65;line-height:1.5;margin-top:14px}
+.adminbar{background:#fff4d8;border:1px solid #ffe2a1;border-radius:15px;padding:11px 12px;margin:10px 0;color:#725314;font-size:13px}
+.listline{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.listline:last-child{border-bottom:0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+<script>
+const KAKAO_JS_KEY="bb565227796ab8561a41061708f47a44";
+
+const state={
+  logged:false, admin:true, tab:"home", view:"week",
+  showName:"THEATER-CLOWN", venue:"문학씨어터", showDate:"2026-10-24", showTime:"19:00",
+  members:[
+    {name:"김○○",role:"흥부",pos:"배우",phone:"010-0000-0000",joined:true},
+    {name:"이○○",role:"놀부",pos:"배우",phone:"010-1111-1111",joined:true},
+    {name:"박○○",role:"제비",pos:"배우",phone:"010-2222-2222",joined:false}
+  ],
+  schedules:[
+    {date:"2026-10-20",time:"19:00–22:00",title:"장면연습",people:["김○○","이○○"]},
+    {date:"2026-10-22",time:"18:00–21:00",title:"전체연습",people:["김○○","이○○","박○○"]},
+    {date:"2026-10-23",time:"19:00–21:00",title:"리허설",people:["김○○","이○○","박○○"]}
+  ],
+  stage:[
+    {date:"2026-10-23",time:"13:00–21:00",title:"극장 입성 · 셋업 · 리허설"},
+    {date:"2026-10-24",time:"19:00",title:"공연"}
+  ],
+  notices:[
+    {type:"일반공지",title:"10/20 연습실 변경 안내",text:"20일 연습은 B연습실에서 진행합니다.",author:"김○○",special:true},
+    {type:"공연음악",title:"공연음악 01",text:"최종 음원 업로드",author:"이○○",special:false},
+    {type:"연습영상",title:"10/22 장면 영상",text:"연습 참고용 영상입니다.",author:"박○○",special:false},
+    {type:"연습이미지",title:"무대 동선 사진",text:"최근 연습 이미지",author:"김○○",special:false}
+  ],
+  availability:{}
+};
+function save(){localStorage.setItem("theaterClown",JSON.stringify(state))}
+function load(){try{Object.assign(state,JSON.parse(localStorage.getItem("theaterClown")||"{}"))}catch(e){}}
+load();
+
+function kakaoLogin(){
+  if(KAKAO_JS_KEY.includes("여기에_")){
+    alert("먼저 index.html의 KAKAO_JS_KEY에 카카오 JavaScript 키를 입력해주세요.");
+    return;
+  }
+  if(!window.Kakao){alert("카카오 SDK를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.");return;}
+  if(!Kakao.isInitialized()) Kakao.init(KAKAO_JS_KEY);
+  Kakao.Auth.authorize({
+    redirectUri: location.origin + "/.netlify/functions/kakao-callback"
+  });
+}
+function app(){
+ if(!state.logged) return login();
+ document.getElementById("app").innerHTML=`
+ <header>
+  <div class="brand"><div><b>🎭 ${state.showName}</b><br><small>${state.venue}</small></div><span class="pill">${state.admin?"관리자":"일반회원"}</span></div>
+  <div class="toplinks">
+   <button onclick="go('calendar')">📅 주요 일정</button><button onclick="go('notice')">🚨 특수공지</button>
+   <button onclick="go('schedule')">🗓️ 스케줄 조율</button><button onclick="go('me')">👤 내 정보</button>
+${state.admin?'<button onclick="go(\'admin\')">👑 관리자</button>':''}
+  </div>
+ </header>
+ <main id="main"></main>
+ <nav class="bottom">
+  <button onclick="go('home')" class="${state.tab==='home'?'active':''}"><span>⌂</span>홈</button>
+  <button onclick="go('practice')" class="${state.tab==='practice'?'active':''}"><span>📅</span>연습일정</button>
+  <button onclick="go('schedule')" class="${state.tab==='schedule'?'active':''}"><span>✓</span>조율</button>
+  <button onclick="go('notice')" class="${state.tab==='notice'?'active':''}"><span>▤</span>공지</button>
+  <button onclick="go('me')" class="${state.tab==='me'?'active':''}"><span>☻</span>마이</button>
+ </nav>`;
+ render();
+}
+function login(){
+ document.getElementById("app").innerHTML=`<section class="login"><div class="loginbox">
+ <div class="logo">THEATER<br>CLOWN</div><p>공연팀 일정 · 공지 · 자료 관리</p>
+ <button class="loginbtn kakao" onclick="kakaoLogin()">카카오로 로그인</button>
+ <button class="loginbtn naver" onclick="demoLogin()">네이버로 로그인</button>
+ <button class="loginbtn demo" onclick="demoLogin()">▶ 데모로 시작하기</button>
+ <div class="fine">카카오 로그인은 카카오 계정 인증 후 공연팀으로 돌아옵니다.</div>
+ <div style="margin-top:24px;text-align:center"><button class="demo" style="padding:9px 12px;border-radius:10px" onclick="alert('최초 관리자 가입: 카카오/네이버 로그인 → 이름/배역/포지션/전화번호 → 최초 관리자 인증 → 관리자 설정')">최초 관리자 가입</button></div>
+ </div></section>`;
+}
+function demoLogin(){state.logged=true;save();app()}
+function go(tab){state.tab=tab;app()}
+function render(){
+ const m=document.getElementById("main");
+ if(state.tab==="home")m.innerHTML=home();
+ if(state.tab==="practice")m.innerHTML=practice();
+ if(state.tab==="schedule")m.innerHTML=schedule();
+ if(state.tab==="calendar")m.innerHTML=calendar();
+ if(state.tab==="notice")m.innerHTML=notice();
+ if(state.tab==="me")m.innerHTML=me();
+ if(state.tab==="admin")m.innerHTML=admin();
+}
+function home(){
+ const d=Math.ceil((new Date(state.showDate)-new Date())/86400000);
+ const special=state.notices.find(n=>n.special);
+ return `<section class="hero"><div class="dday">D-${Math.max(d,0)}</div><p>공연까지 · ${state.showDate.slice(5).replace('-','/')} ${state.showTime}</p><p>${state.venue}</p></section>
+ ${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3><span class="pill">고정 1개</span></div><div class="notice"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:""}
+ <div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('calendar')">전체보기</button></div>
+ ${state.stage.map(x=>`<div class="schedule-item"><span class="pill">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${x.time}</div><div class="people">${x.title}</div></div>`).join("")}</div>
+ <div class="card"><div class="section-title"><h3>📅 다음 연습</h3><button class="btn" onclick="go('practice')">일정 보기</button></div>
+ ${state.schedules.slice(0,3).map(x=>`<div class="schedule-item"><div class="row"><div><b>${x.date.slice(5).replace('-','/')}</b><div class="time">${x.time}</div></div><span class="pill">${x.people.length}명</span></div><div class="people">${x.title}</div></div>`).join("")}</div>
+ <div class="card"><h3>👥 팀원</h3>${state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.role} · ${x.pos}</span></div><span class="pill">${x.joined?"가입완료":"가입대기"}</span></div>`).join("")}</div>`;
+}
+function practice(){
+ return `<div class="section-title"><h2>연습일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
+ <div class="seg"><button class="${state.view==='day'?'active':''}" onclick="setView('day')">일간</button><button class="${state.view==='week'?'active':''}" onclick="setView('week')">주간</button><button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button></div>
+ ${state.view==='month'?miniMonth():state.schedules.map((x,i)=>`<div class="card"><div class="row"><div><span class="pill">${x.date}</span><div class="time">${x.time}</div><b>${x.title}</b></div><span class="pill">👥 ${x.people.length}명</span></div><div class="people">${x.people.join(" · ")}</div><div class="actions" style="margin-top:10px"><button class="btn" onclick="alert('특이사항\n'+x.people.map(p=>p+': 참여 가능 시간/메모가 동기화되어 표시됩니다.').join('\n'))">특이사항 보기</button>${state.admin?`<button class="btn ghost" onclick="editPractice(${i})">수정</button><button class="btn danger" onclick="cancelPractice(${i})">취소</button>`:''}</div></div>`).join("")}`;
+}
+function setView(v){state.view=v;save();render()}
+function miniMonth(){
+ const days=["일","월","화","수","목","금","토"];let s=days.map(d=>`<div class="calhead">${d}</div>`).join("");
+ for(let i=0;i<35;i++){let n=i-3;let day=n>0&&n<=31?n:"";let hit=state.schedules.some(x=>Number(x.date.slice(-2))===n);s+=`<div class="day">${day?`<b>${day}</b>${hit?'<span class="dot">● 연습</span>':''}`:""}</div>`}return `<div class="calendar">${s}</div>`;
+}
+function addPractice(){let date=prompt("날짜 (YYYY-MM-DD)","2026-10-25");if(!date)return;let time=prompt("시간","19:00–22:00");let title=prompt("연습 내용","장면연습");if(date&&time)state.schedules.push({date,time,title,people:state.members.filter(x=>x.joined).map(x=>x.name)}),save(),render()}
+function editPractice(i){let x=state.schedules[i];x.time=prompt("시간",x.time)||x.time;x.title=prompt("내용",x.title)||x.title;save();render()}
+function cancelPractice(i){if(confirm("연습일정을 취소할까요?")){state.schedules.splice(i,1);save();render()}}
+function schedule(){
+ const names=state.members.map(x=>x.name);
+ return `<div class="section-title"><h2>스케줄 조율</h2><span class="pill">모두 조회 가능</span></div>
+ <div class="card"><h3>가능 시간 등록</h3><div class="field"><label>날짜</label><input id="sd" type="date" value="2026-10-20"></div>
+ <div class="actions"><button class="btn primary" onclick="setSlots()">30분 단위로 입력</button><button class="btn" onclick="sameTime()">여러 날짜에 같은 시간</button></div>
+ <div class="field"><label>특이사항 / 메모</label><textarea id="memo" placeholder="예: 20시 이후 참여 가능"></textarea></div><button class="btn primary" onclick="saveAvailability()">가능시간 저장</button></div>
+ <div class="card"><h3>👥 원하는 팀원 조합</h3><div class="chips">${names.map(n=>`<button class="chip" onclick="toggleChip(this)" data-name="${n}">${n}</button>`).join("")}</div><button class="btn" style="margin-top:10px" onclick="filterPeople()">선택한 인원 모두 가능한 시간 보기</button><div id="match" class="people" style="margin-top:10px"></div></div>
+ ${state.admin?`<div class="card"><h3>🧮 관리자 추천</h3><div class="notice"><b>추천: 10/20 19:00–22:00</b><br>가장 많은 인원이 겹치는 시간 · 11명 기준</div><button class="btn primary" style="margin-top:10px" onclick="confirmPractice()">연습 확정</button></div>`:""}`;
+}
+function toggleChip(el){el.classList.toggle("on")}
+function setSlots(){alert("30분 단위 선택 UI: 18:00 / 18:30 / 19:00 … 22:00. 프로토타입에서는 입력 예시를 안내합니다.")}
+function sameTime(){alert("여러 날짜를 선택한 뒤 동일한 시작·종료 시간을 한 번에 적용하는 기능입니다.")}
+function saveAvailability(){const d=document.getElementById("sd").value;state.availability[d]={memo:document.getElementById("memo").value,time:"19:00–22:00"};save();alert("가능 시간이 저장되었습니다.");}
+function filterPeople(){let selected=[...document.querySelectorAll(".chip.on")].map(x=>x.dataset.name);document.getElementById("match").innerHTML=selected.length?`선택: ${selected.join(", ")}<br><br>공통 가능 시간 예시<br><b>10/20 · 19:00–22:00</b><br><b>10/22 · 18:30–21:00</b>`:"팀원을 먼저 선택해주세요."}
+function confirmPractice(){let date=prompt("확정 날짜","2026-10-20");if(!date)return;let time=prompt("확정 시간","19:00–22:00");if(!time)return;state.schedules.push({date,time,title:"확정 연습",people:state.members.filter(x=>x.joined).map(x=>x.name)});save();alert("연습일정 페이지에 자동 연동되었습니다.");go("practice")}
+function calendar(){
+ return `<div class="section-title"><h2>주요 일정</h2>${state.admin?'<button class="btn primary" onclick="addStage()">+ 일정 추가</button>':''}</div>
+ <div class="seg"><button class="active">월간</button><button onclick="alert('주간 보기로 전환됩니다.')">주간</button><button onclick="alert('일간 보기로 전환됩니다.')">일간</button></div>
+ <div class="calendar">${["일","월","화","수","목","금","토"].map(d=>`<div class="calhead">${d}</div>`).join("")}${[...Array(31)].map((_,i)=>{let n=i+1;let ss=state.stage.filter(x=>Number(x.date.slice(-2))===n);let pr=state.schedules.filter(x=>Number(x.date.slice(-2))===n);return `<div class="day"><b>${n}</b>${ss.map(x=>`<span class="dot ${x.title.includes("공연")?"show":"stage"}">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span>`).join("")}${pr.length?`<span class="dot">● 연습 ${pr.length}</span>`:""}</div>`}).join("")}</div>
+ <div class="card"><h3>📌 고정 주요 일정</h3>${state.stage.map((x,i)=>`<div class="schedule-item"><span class="pill">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span><div class="time">${x.date} · ${x.time}</div><div class="people">${x.title}</div>${state.admin?`<div class="actions" style="margin-top:8px"><button class="btn" onclick="editStage(${i})">수정</button><button class="btn danger" onclick="deleteStage(${i})">삭제</button></div>`:""}</div>`).join("")}</div>`;
+}
+function addStage(){let date=prompt("날짜","2026-10-25");let time=prompt("시간","13:00–21:00");let title=prompt("일정명","극장 입성 · 셋업 · 리허설");if(date&&time&&title)state.stage.push({date,time,title}),save(),render()}
+function editStage(i){let x=state.stage[i];x.time=prompt("시간",x.time)||x.time;x.title=prompt("일정명",x.title)||x.title;save();render()}
+function deleteStage(i){if(confirm("주요 일정을 삭제할까요?")){state.stage.splice(i,1);save();render()}}
+function notice(){
+ return `<div class="section-title"><h2>공지 & 자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div>
+ <div class="seg"><button class="active">전체</button><button>공연음악</button><button>연습영상</button><button>연습이미지</button></div>
+ <div class="notice-list">${state.notices.map((n,i)=>`<div class="card">${n.type==="연습이미지"?'<div class="media">🖼️ 연습 이미지</div>':n.type==="연습영상"?'<div class="media">▶ 연습 영상</div>':n.type==="공연음악"?'<div class="media">♫ 공연 음악</div>':""}<div class="row"><span class="pill">${n.type}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':""}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted">${n.text}</div><div class="people">작성자 · ${n.author}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="toggleSpecial(${i})">${n.special?"특수공지 해제":"특수공지 지정"}</button></div></div>`).join("")}</div>`;
+}
+function addNotice(){let type=prompt("항목: 일반공지 / 공연음악 / 연습영상 / 연습이미지","일반공지");if(!type)return;let title=prompt("제목","새 공지");let text=prompt("내용","내용을 입력하세요");if(title)state.notices.unshift({type,title,text:text||"",author:"김○○",special:false}),save(),render()}
+function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);save();render()}
+function me(){
+ return `<div class="section-title"><h2>내 정보</h2></div><div class="card"><div class="field"><label>이름</label><input value="김○○"></div><div class="field"><label>배역</label><select><option>흥부</option><option>놀부</option><option>제비</option></select></div><div class="field"><label>포지션</label><select><option>배우</option><option>연출</option><option>조연출</option><option>음향</option></select></div><div class="field"><label>전화번호</label><input value="010-0000-0000"></div><button class="btn primary" onclick="alert('정보가 저장되었습니다.')">저장</button></div>
+ <div class="card"><h3>🔐 관리자 권한</h3><p class="muted">관리자 코드를 입력하면 관리자 권한으로 변경할 수 있습니다.</p><div class="field"><input type="password" placeholder="관리자 코드"></div><button class="btn" onclick="state.admin=true;save();alert('관리자 권한이 적용되었습니다.');app()">관리자 승급</button></div>
+ <div class="card"><button class="btn danger" onclick="state.logged=false;save();app()">로그아웃</button></div>`;
+}
+function admin(){
+ return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div>
+ <div class="adminbar">공연마다 새로 시작할 수 있도록 공연 데이터 초기화 기능을 제공합니다.</div>
+ ${["공연 정보","팀원 관리","배역 / 포지션","관리자 코드 관리","디자인 설정"].map(x=>`<div class="card"><div class="row"><b>${x}</b><button class="btn" onclick="alert('${x} 설정 화면을 엽니다.')">열기</button></div></div>`).join("")}
+ <div class="card"><h3>⚠️ 새 공연 시작 / 초기화</h3><p class="muted">연습일정, 스케줄 조율, 공지/자료, 공연/극장 일정을 초기화합니다. 회원 계정과 관리자 권한은 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div>`;
+}
+function resetShow(){if(confirm("정말 초기화할까요?")){state.schedules=[];state.stage=[];state.notices=[];state.availability={};save();render();alert("공연 데이터가 초기화되었습니다.")}}
+app();
+</script>
+</body>
+</html>
