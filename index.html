@@ -818,10 +818,17 @@ function selectAvailabilityMember(member){
       `memberSchedule-${member}`
     );
 
-  if(!area)return;
+if(!area)return;
 
-  /* 다른 팀원의 영역 닫기 */
-  document
+/* 같은 팀원을 다시 누르면 닫기 */
+if(area.style.display === "block"){
+  area.style.display = "none";
+  area.innerHTML = "";
+  return;
+}
+
+/* 다른 팀원의 영역 닫기 */
+document
     .querySelectorAll('[id^="memberSchedule-"]')
     .forEach(el=>{
       if(el!==area){
