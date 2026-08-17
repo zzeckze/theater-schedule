@@ -305,20 +305,6 @@ function render(){
 
   renderAvailabilitySelection();
 
-  document
-    .querySelectorAll("[data-member]")
-    .forEach(button=>{
-
-      button.addEventListener(
-        "click",
-        ()=>selectAvailabilityMember(
-          button.dataset.member
-        )
-      );
-
-    });
-
-}
 }
 
 function home(){
@@ -949,27 +935,6 @@ function schedule(){
 
   `;
 
-
-  /*
-   * 선택 화면 초기화
-   */
-
-  renderAvailabilitySelection();
-
-  document
-  .querySelectorAll(
-    "[data-availability-date]"
-  )
-  .forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>toggleAvailabilityDate(
-        button.dataset.availabilityDate
-      )
-    );
-
-  });
 
 }
 /* =========================================================
