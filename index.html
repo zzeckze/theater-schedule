@@ -781,74 +781,42 @@ function schedule(){
 
 }
 
- function selectAvailabilityMember(member){
+function selectAvailabilityMember(member){
 
   const area=
     document.getElementById(
       `memberSchedule-${member}`
     );
 
-
   if(!area)return;
 
+  /* 다른 팀원의 영역 닫기 */
+  document
+    .querySelectorAll('[id^="memberSchedule-"]')
+    .forEach(el=>{
+      if(el!==area){
+        el.style.display="none";
+        el.innerHTML="";
+      }
+    });
 
-  /*
-   * 이미 열려 있는 같은 팀원이면 닫기
-   */
-
-  if(
-    area.style.display === "block"
-  ){
-
-    area.style.display="none";
-
-    area.innerHTML="";
-
-    return;
-
-  }
-
-
-  /*
-   * 다른 팀원의 캘린더는 모두 닫기
-   */
-
-
-
-  /*
-   * 현재 선택한 팀원 저장
-   */
-
+  /* 현재 선택한 팀원 */
   const select=
     document.getElementById(
       "availabilityMember"
     );
 
-
   if(select){
-
     select.value=member;
-
   }
 
-
-  /*
-   * 날짜 / 시간 선택 초기화
-   */
-
+  /* 선택 상태 초기화 */
   selectedAvailabilityDates=[];
-
   selectedAvailabilityTimes=[];
-
   availabilityRangeStart=null;
 
-
-  /*
-   * 현재 팀원 캘린더 열기
-   */
-
+  /* 현재 팀원 영역 열기 */
   area.style.display="block";
-
 
   area.innerHTML=`
 
@@ -870,7 +838,6 @@ function schedule(){
 
       </div>
 
-
       <div
         class="field"
         style="margin-top:12px">
@@ -879,13 +846,11 @@ function schedule(){
 
       </div>
 
-
       <div class="availability-calendar-wrap">
 
         ${availabilityCalendar()}
 
       </div>
-
 
       <div
         id="availabilitySelectedDates"
@@ -896,17 +861,14 @@ function schedule(){
 
       </div>
 
-
       <div
         id="availabilityTimeArea">
       </div>
-
 
       <div
         id="availabilityExistingArea"
         style="margin-top:12px">
       </div>
-
 
       <div
         class="field"
@@ -920,7 +882,6 @@ function schedule(){
 
       </div>
 
-
       <button
         type="button"
         class="btn primary"
@@ -933,7 +894,6 @@ function schedule(){
     </div>
 
   `;
-
 
 }
 /* =========================================================
