@@ -1112,12 +1112,13 @@ function availabilityCalendar(){
 
     html+=`
 
-      <button
-        type="button"
-        class="availability-day ${
-          selected ? "selected" : ""
-        }"
-        data-availability-date="${date}">
+     <button
+  type="button"
+  class="availability-day ${
+    selected ? "selected" : ""
+  }"
+  data-availability-date="${date}"
+  onclick="toggleAvailabilityDate('${date}')">
 
         <b>${day}</b>
 
