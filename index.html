@@ -821,22 +821,27 @@ function selectAvailabilityMember(member){
 if(!area)return;
 
 /* 같은 팀원을 다시 누르면 닫기 */
-if(area.style.display === "block"){
-  area.style.display = "none";
-  area.innerHTML = "";
+if(area.innerHTML.trim() !== ""){
+
+  area.style.display="none";
+  area.innerHTML="";
+
+  selectedAvailabilityDates=[];
+  selectedAvailabilityTimes=[];
+  availabilityRangeStart=null;
+
   return;
 }
 
 /* 다른 팀원의 영역 닫기 */
 document
-    .querySelectorAll('[id^="memberSchedule-"]')
-    .forEach(el=>{
-      if(el!==area){
-        el.style.display="none";
-        el.innerHTML="";
-      }
-    });
-
+  .querySelectorAll('[id^="memberSchedule-"]')
+  .forEach(el=>{
+    if(el!==area){
+      el.style.display="none";
+      el.innerHTML="";
+    }
+  });
   /* 현재 선택한 팀원 */
   const select=
     document.getElementById(
