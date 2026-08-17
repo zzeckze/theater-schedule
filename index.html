@@ -1203,13 +1203,12 @@ function toggleAvailabilityDate(date){
 
 }
 
-  function updateSelectedMemberAvailability(){
+function updateSelectedMemberAvailability(){
 
   const member=
     document.getElementById(
       "availabilityMember"
     )?.value || "";
-
 
   if(!member)return;
 
@@ -1219,12 +1218,12 @@ function toggleAvailabilityDate(date){
       `memberSchedule-${member}`
     );
 
-
   if(!area)return;
 
 
   const entries=
     getMemberAvailability(member);
+
 
   area.innerHTML=`
 
@@ -1272,6 +1271,7 @@ function toggleAvailabilityDate(date){
           selectedAvailabilityDates.length
             ? `
               <b>선택한 날짜</b><br>
+
               ${selectedAvailabilityDates
                 .map(d=>`
                   <span class="pill">
@@ -1292,7 +1292,6 @@ function toggleAvailabilityDate(date){
       <div
         id="availabilityExistingArea"
         style="margin-top:12px">
-
       </div>
 
 
@@ -1326,20 +1325,21 @@ function toggleAvailabilityDate(date){
 
   renderExistingAvailability();
 
- document
-  .querySelectorAll(
-    "[data-availability-date]"
-  )
-  .forEach(button=>{
 
-    button.addEventListener(
-      "click",
-      ()=>toggleAvailabilityDate(
-        button.dataset.availabilityDate
-      )
-    );
+  document
+    .querySelectorAll(
+      "[data-availability-date]"
+    )
+    .forEach(button=>{
 
-  });
+      button.addEventListener(
+        "click",
+        ()=>toggleAvailabilityDate(
+          button.dataset.availabilityDate
+        )
+      );
+
+    });
 
 }
 /* =========================================================
