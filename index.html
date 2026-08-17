@@ -301,10 +301,9 @@ function render(){
   if(state.tab==="notice")m.innerHTML=notice();
   if(state.tab==="admin")m.innerHTML=admin();
 
- if(state.tab==="schedule"){
-
-  renderAvailabilitySelection();
-
+  if(state.tab==="schedule"){
+    renderAvailabilitySelection();
+  }
 }
 
 function home(){
@@ -1157,8 +1156,6 @@ function toggleAvailabilityDate(date){
    * 날짜를 누를 때 팀원 캘린더 전체를 다시 만들지 않고
    * 선택 날짜와 시간 영역만 업데이트
    */
-
- selectedAvailabilityDates.sort();
 
 updateSelectedMemberAvailability();
 
