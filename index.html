@@ -808,10 +808,12 @@ function schedule(){
 
 
   /*
-   * 같은 이름을 다시 누르면 닫기
+   * 이미 열려 있는 같은 팀원이면 닫기
    */
 
-  if(area.style.display==="block"){
+  if(
+    area.style.display === "block"
+  ){
 
     area.style.display="none";
 
@@ -823,7 +825,7 @@ function schedule(){
 
 
   /*
-   * 다른 팀원의 캘린더는 닫기
+   * 다른 팀원의 캘린더는 모두 닫기
    */
 
   document
@@ -832,16 +834,16 @@ function schedule(){
     )
     .forEach(el=>{
 
-      if(el!==area){
+      el.style.display="none";
 
-        el.style.display="none";
-
-        el.innerHTML="";
-
-      }
+      el.innerHTML="";
 
     });
 
+
+  /*
+   * 현재 선택한 팀원 저장
+   */
 
   const select=
     document.getElementById(
@@ -856,12 +858,20 @@ function schedule(){
   }
 
 
+  /*
+   * 날짜 / 시간 선택 초기화
+   */
+
   selectedAvailabilityDates=[];
 
   selectedAvailabilityTimes=[];
 
   availabilityRangeStart=null;
 
+
+  /*
+   * 현재 팀원 캘린더 열기
+   */
 
   area.style.display="block";
 
@@ -913,13 +923,14 @@ function schedule(){
       </div>
 
 
-      <div id="availabilityTimeArea"></div>
+      <div
+        id="availabilityTimeArea">
+      </div>
 
 
       <div
         id="availabilityExistingArea"
         style="margin-top:12px">
-
       </div>
 
 
@@ -937,6 +948,7 @@ function schedule(){
 
 
       <button
+        type="button"
         class="btn primary"
         onclick="saveAvailability()">
 
@@ -948,6 +960,10 @@ function schedule(){
 
   `;
 
+
+  /*
+   * 선택 화면 초기화
+   */
 
   renderAvailabilitySelection();
 
