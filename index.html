@@ -967,6 +967,21 @@ function schedule(){
 
   renderAvailabilitySelection();
 
+  document
+  .querySelectorAll(
+    "[data-availability-date]"
+  )
+  .forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>toggleAvailabilityDate(
+        button.dataset.availabilityDate
+      )
+    );
+
+  });
+
 }
 /* =========================================================
    스케줄 조율 달력
@@ -1099,11 +1114,12 @@ function availabilityCalendar(){
 
       <button
         type="button"
-        class="availability-day ${selected?"selected":""}"
-        onclick="toggleAvailabilityDate('${date}')">
+        class="availability-day ${
+          selected ? "selected" : ""
+        }"
+        data-availability-date="${date}">
 
         <b>${day}</b>
-
 
         ${
           registered
@@ -1130,7 +1146,12 @@ function availabilityCalendar(){
   }
 
 
-  html+=`</div>`;
+  html+=`
+
+    </div>
+
+  `;
+
 
   return html;
 
@@ -1303,6 +1324,21 @@ function updateSelectedMemberAvailability(){
   renderAvailabilityTimes();
 
   renderExistingAvailability();
+
+ document
+  .querySelectorAll(
+    "[data-availability-date]"
+  )
+  .forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>toggleAvailabilityDate(
+        button.dataset.availabilityDate
+      )
+    );
+
+  });
 
 }
 /* =========================================================
