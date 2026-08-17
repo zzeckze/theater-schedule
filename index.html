@@ -301,9 +301,24 @@ function render(){
   if(state.tab==="notice")m.innerHTML=notice();
   if(state.tab==="admin")m.innerHTML=admin();
 
-  if(state.tab==="schedule"){
-    renderAvailabilitySelection();
-  }
+ if(state.tab==="schedule"){
+
+  renderAvailabilitySelection();
+
+  document
+    .querySelectorAll("[data-member]")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>selectAvailabilityMember(
+          button.dataset.member
+        )
+      );
+
+    });
+
+}
 }
 
 function home(){
@@ -629,7 +644,7 @@ function schedule(){
                 display:flex;
                 justify-content:space-between;
                 align-items:center"
-              onclick="selectAvailabilityMember('${name}')">
+              data-member="${name}"
 
               <span>
                 👤 ${name}
