@@ -609,8 +609,6 @@ function schedule(){
   </div>
 
 
-  <!-- 팀원 선택 -->
-
   <div class="card">
 
     <div class="section-title">
@@ -634,27 +632,39 @@ function schedule(){
         names.length
           ? names.map(name=>`
 
-            <button
-              type="button"
-              class="btn"
-              style="
-                width:100%;
-                text-align:left;
-                padding:13px 15px;
-                display:flex;
-                justify-content:space-between;
-                align-items:center"
-              data-member="${name}"
+            <div>
 
-              <span>
-                👤 ${name}
-              </span>
+              <button
+                type="button"
+                class="btn"
+                style="
+                  width:100%;
+                  text-align:left;
+                  padding:13px 15px;
+                  display:flex;
+                  justify-content:space-between;
+                  align-items:center"
+                data-member="${name}">
 
-              <span>
-                ›
-              </span>
+                <span>
+                  👤 ${name}
+                </span>
 
-            </button>
+                <span
+                  class="member-arrow">
+                  ›
+                </span>
+
+              </button>
+
+
+              <div
+                id="memberSchedule-${name}"
+                style="display:none;margin-top:8px">
+
+              </div>
+
+            </div>
 
           `).join("")
           : `
@@ -667,21 +677,6 @@ function schedule(){
 
           `
       }
-
-    </div>
-
-
-    <!-- 선택된 팀원의 등록 화면 -->
-
-    <div
-      id="selectedMemberSchedule"
-      style="margin-top:15px">
-
-      <div class="notice">
-
-        위에서 팀원 이름을 선택해주세요.
-
-      </div>
 
     </div>
 
@@ -770,8 +765,6 @@ function schedule(){
     state.admin
       ? `
 
-        <!-- 관리자 -->
-
         <div class="card">
 
           <h3>🧮 관리자 연습 확정</h3>
@@ -803,27 +796,75 @@ function schedule(){
 
 }
 
-  function selectAvailabilityMember(member){
+ function selectAvailabilityMember(member){
+
+  const area=
+    document.getElementById(
+      `memberSchedule-${member}`
+    );
+
+
+  if(!area)return;
+
+
+  /*
+   * 같은 이름을 다시 누르면 닫기
+   */
+
+  if(area.style.display==="block"){
+
+    area.style.display="none";
+
+    area.innerHTML="";
+
+    return;
+
+  }
+
+
+  /*
+   * 다른 팀원의 캘린더는 닫기
+   */
+
+  document
+    .querySelectorAll(
+      '[id^="memberSchedule-"]'
+    )
+    .forEach(el=>{
+
+      if(el!==area){
+
+        el.style.display="none";
+
+        el.innerHTML="";
+
+      }
+
+    });
+
 
   const select=
     document.getElementById(
       "availabilityMember"
     );
 
+
   if(select){
+
     select.value=member;
+
   }
 
+
   selectedAvailabilityDates=[];
+
   selectedAvailabilityTimes=[];
+
   availabilityRangeStart=null;
 
-  const area=
-    document.getElementById(
-      "selectedMemberSchedule"
-    );
 
-  if(!area)return;
+  area.style.display="block";
+
 
   area.innerHTML=`
 
@@ -840,10 +881,11 @@ function schedule(){
         </h3>
 
         <span class="pill">
-          가능시간 등록
+          가능시간
         </span>
 
       </div>
+
 
       <div
         class="field"
@@ -853,11 +895,13 @@ function schedule(){
 
       </div>
 
+
       <div class="availability-calendar-wrap">
 
         ${availabilityCalendar()}
 
       </div>
+
 
       <div
         id="availabilitySelectedDates"
@@ -868,13 +912,16 @@ function schedule(){
 
       </div>
 
+
       <div id="availabilityTimeArea"></div>
+
 
       <div
         id="availabilityExistingArea"
         style="margin-top:12px">
 
       </div>
+
 
       <div
         class="field"
@@ -888,6 +935,7 @@ function schedule(){
 
       </div>
 
+
       <button
         class="btn primary"
         onclick="saveAvailability()">
@@ -899,6 +947,7 @@ function schedule(){
     </div>
 
   `;
+
 
   renderAvailabilitySelection();
 
@@ -941,6 +990,18 @@ function availabilityCalendar(){
   const days=[
     "일","월","화","수","목","금","토"
   ];
+
+
+  const member=
+    document.getElementById(
+      "availabilityMember"
+    )?.value || "";
+
+
+  const entries=
+    member
+      ? getMemberAvailability(member)
+      : {};
 
 
   let html=`
@@ -1014,6 +1075,10 @@ function availabilityCalendar(){
       selectedAvailabilityDates.includes(date);
 
 
+    const registered=
+      entries[date];
+
+
     html+=`
 
       <button
@@ -1022,6 +1087,25 @@ function availabilityCalendar(){
         onclick="toggleAvailabilityDate('${date}')">
 
         <b>${day}</b>
+
+
+        ${
+          registered
+            ? `
+              <span
+                style="
+                  display:block;
+                  margin-top:4px;
+                  font-size:10px;
+                  line-height:1.3;
+                  font-weight:600">
+
+                ${registered.time}
+
+              </span>
+            `
+            : ""
+        }
 
       </button>
 
@@ -1033,6 +1117,7 @@ function availabilityCalendar(){
   html+=`</div>`;
 
   return html;
+
 }
 
 
@@ -1974,6 +2059,7 @@ function saveAvailability(){
 
   render();
 
+  selectAvailabilityMember(member);
 }
 
 
