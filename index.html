@@ -2100,9 +2100,14 @@ function deleteAvailability(date,member){
   }
 
 
-  save();
+save();
 
-  render();
+selectedAvailabilityDates =
+  selectedAvailabilityDates.filter(
+    x => x !== date
+  );
+
+renderExistingAvailability();
 
 }
 
