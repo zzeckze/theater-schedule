@@ -1467,6 +1467,114 @@ function getMemberAvailability(member){
 
 }
 
+  /* =========================================================
+   팀원별 등록 현황
+   ========================================================= */
+
+function renderAvailabilityMemberList(){
+
+  const names=
+    state.members.map(
+      x=>x.name
+    );
+
+
+  if(!names.length){
+
+    return `
+      <div class="empty">
+        등록된 팀원이 없습니다.
+      </div>
+    `;
+
+  }
+
+
+  return names.map(member=>{
+
+    const entries=
+      getMemberAvailability(member);
+
+
+    const dates=
+      Object.keys(entries)
+        .sort();
+
+
+    return `
+
+      <div
+        class="schedule-item"
+        style="padding:13px 0">
+
+        <div class="row">
+
+          <b>${member}</b>
+
+          <span class="pill">
+            ${dates.length}일 등록
+          </span>
+
+        </div>
+
+
+        ${
+          dates.length
+            ? dates.map(date=>`
+
+              <div
+                style="
+                  margin-top:8px;
+                  padding:10px;
+                  background:#f7f7fb;
+                  border-radius:12px">
+
+                <b>${date}</b>
+
+                <div
+                  class="people"
+                  style="margin-top:4px">
+
+                  ${entries[date].time}
+
+                </div>
+
+
+                ${
+                  entries[date].memo
+                    ? `
+                      <div
+                        class="muted small"
+                        style="margin-top:5px">
+
+                        📝 ${entries[date].memo}
+
+                      </div>
+                    `
+                    : ""
+                }
+
+              </div>
+
+            `).join("")
+            : `
+              <div
+                class="empty"
+                style="padding:14px 0">
+
+                등록된 가능시간이 없습니다.
+
+              </div>
+            `
+        }
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
 
 /* =========================================================
    가능시간 저장
