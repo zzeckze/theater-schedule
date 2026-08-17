@@ -575,108 +575,125 @@ function cancelPractice(i){
 
 function schedule(){
 
-  const names=state.members.map(x=>x.name);
+  const names=
+    state.members.map(
+      x=>x.name
+    );
+
 
   return `
+
   <div class="section-title">
+
     <h2>스케줄 조율</h2>
-    <span class="pill">모두 조회 가능</span>
-  </div>
 
-
-  <!-- 가능 시간 등록 -->
-  <div class="card">
-
-    <h3>🕐 내 가능 시간</h3>
-
-    <div class="field">
-      <label>이름</label>
-
-<select id="availabilityMember">
-        <option value="">내 이름을 선택해주세요</option>
-
-        ${names.map(n=>`
-          <option value="${n}">${n}</option>
-        `).join("")}
-      </select>
-    </div>
-
-
-    <div class="field">
-      <label>날짜 선택</label>
-    </div>
-
-
-    <div class="availability-calendar-wrap">
-      ${availabilityCalendar()}
-    </div>
-
-
-    <div
-      id="availabilitySelectedDates"
-      class="people"
-      style="margin-top:10px">
-      날짜를 선택해주세요.
-    </div>
-
-
-    <div id="availabilityTimeArea"></div>
-
-
-    <div
-      id="availabilityExistingArea"
-      style="margin-top:12px">
-    </div>
-
-
-    <div
-      class="field"
-      style="margin-top:15px">
-
-      <label>특이사항 / 메모</label>
-
-      <textarea
-        id="memo"
-        placeholder="예: 20시 이후 참여 가능"></textarea>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      onclick="saveAvailability()">
-
-      가능시간 저장
-
-    </button>
+    <span class="pill">
+      모두 조회 가능
+    </span>
 
   </div>
 
 
-  <!-- 팀원별 등록 현황 -->
+  <!-- 팀원 선택 -->
+
   <div class="card">
 
     <div class="section-title">
 
-      <h3>👥 팀원별 등록 현황</h3>
+      <h3>👥 팀원별 가능시간</h3>
 
       <span class="pill">
-        전체 공개
+        이름을 선택하세요
       </span>
 
     </div>
 
 
-    <div id="availabilityMemberList">
+    <div
+      style="
+        display:flex;
+        flex-direction:column;
+        gap:8px">
 
-      ${renderAvailabilityMemberList()}
+      ${
+        names.length
+          ? names.map(name=>`
+
+            <button
+              type="button"
+              class="btn"
+              style="
+                width:100%;
+                text-align:left;
+                padding:13px 15px;
+                display:flex;
+                justify-content:space-between;
+                align-items:center"
+              onclick="selectAvailabilityMember('${name}')">
+
+              <span>
+                👤 ${name}
+              </span>
+
+              <span>
+                ›
+              </span>
+
+            </button>
+
+          `).join("")
+          : `
+
+            <div class="empty">
+
+              등록된 팀원이 없습니다.
+
+            </div>
+
+          `
+      }
 
     </div>
+
+
+    <!-- 선택된 팀원의 등록 화면 -->
+
+    <div
+      id="selectedMemberSchedule"
+      style="margin-top:15px">
+
+      <div class="notice">
+
+        위에서 팀원 이름을 선택해주세요.
+
+      </div>
+
+    </div>
+
+
+    <!-- 기존 함수에서 사용하는 이름 선택값 -->
+
+    <select
+      id="availabilityMember"
+      style="display:none">
+
+      <option value="">
+        내 이름을 선택해주세요
+      </option>
+
+      ${names.map(n=>`
+        <option value="${n}">
+          ${n}
+        </option>
+      `).join("")}
+
+    </select>
 
   </div>
 
 
   <!-- 원하는 팀원 조합 -->
+
   <div class="card">
 
     <div class="section-title">
@@ -698,6 +715,7 @@ function schedule(){
     <div class="chips">
 
       ${names.map(n=>`
+
         <button
           type="button"
           class="chip"
@@ -707,6 +725,7 @@ function schedule(){
           ${n}
 
         </button>
+
       `).join("")}
 
     </div>
@@ -732,37 +751,42 @@ function schedule(){
   </div>
 
 
-  ${state.admin?`
+  ${
+    state.admin
+      ? `
 
-    <!-- 관리자 -->
-    <div class="card">
+        <!-- 관리자 -->
 
-      <h3>🧮 관리자 연습 확정</h3>
+        <div class="card">
 
-      <div class="notice">
+          <h3>🧮 관리자 연습 확정</h3>
 
-        선택한 팀원의 공통 가능시간을 확인한 뒤
-        연습일정을 확정할 수 있습니다.
+          <div class="notice">
 
-      </div>
+            선택한 팀원의 공통 가능시간을 확인한 뒤
+            연습일정을 확정할 수 있습니다.
+
+          </div>
 
 
-      <button
-        class="btn primary"
-        style="margin-top:10px"
-        onclick="confirmPractice()">
+          <button
+            class="btn primary"
+            style="margin-top:10px"
+            onclick="confirmPractice()">
 
-        연습 확정
+            연습 확정
 
-      </button>
+          </button>
 
-    </div>
+        </div>
 
-  `:""}
+      `
+      : ""
+  }
 
   `;
-}
 
+}
 
 /* =========================================================
    스케줄 조율 달력
