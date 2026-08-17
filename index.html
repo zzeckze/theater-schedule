@@ -788,6 +788,106 @@ function schedule(){
 
 }
 
+  function selectAvailabilityMember(member){
+
+  const select=
+    document.getElementById(
+      "availabilityMember"
+    );
+
+  if(select){
+    select.value=member;
+  }
+
+  selectedAvailabilityDates=[];
+  selectedAvailabilityTimes=[];
+  availabilityRangeStart=null;
+
+  const area=
+    document.getElementById(
+      "selectedMemberSchedule"
+    );
+
+  if(!area)return;
+
+  area.innerHTML=`
+
+    <div
+      style="
+        padding:14px;
+        background:#f7f7fb;
+        border-radius:14px">
+
+      <div class="section-title">
+
+        <h3 style="margin:0">
+          👤 ${member}
+        </h3>
+
+        <span class="pill">
+          가능시간 등록
+        </span>
+
+      </div>
+
+      <div
+        class="field"
+        style="margin-top:12px">
+
+        <label>날짜 선택</label>
+
+      </div>
+
+      <div class="availability-calendar-wrap">
+
+        ${availabilityCalendar()}
+
+      </div>
+
+      <div
+        id="availabilitySelectedDates"
+        class="people"
+        style="margin-top:10px">
+
+        날짜를 선택해주세요.
+
+      </div>
+
+      <div id="availabilityTimeArea"></div>
+
+      <div
+        id="availabilityExistingArea"
+        style="margin-top:12px">
+
+      </div>
+
+      <div
+        class="field"
+        style="margin-top:15px">
+
+        <label>특이사항 / 메모</label>
+
+        <textarea
+          id="memo"
+          placeholder="예: 20시 이후 참여 가능"></textarea>
+
+      </div>
+
+      <button
+        class="btn primary"
+        onclick="saveAvailability()">
+
+        ${member} 가능시간 저장
+
+      </button>
+
+    </div>
+
+  `;
+
+  renderAvailabilitySelection();
+
+}
 /* =========================================================
    스케줄 조율 달력
    ========================================================= */
