@@ -828,17 +828,6 @@ function schedule(){
    * 다른 팀원의 캘린더는 모두 닫기
    */
 
-  document
-    .querySelectorAll(
-      '[id^="memberSchedule-"]'
-    )
-    .forEach(el=>{
-
-      el.style.display="none";
-
-      el.innerHTML="";
-
-    });
 
 
   /*
@@ -1325,21 +1314,6 @@ function updateSelectedMemberAvailability(){
 
   renderExistingAvailability();
 
-
-  document
-    .querySelectorAll(
-      "[data-availability-date]"
-    )
-    .forEach(button=>{
-
-      button.addEventListener(
-        "click",
-        ()=>toggleAvailabilityDate(
-          button.dataset.availabilityDate
-        )
-      );
-
-    });
 
 }
 /* =========================================================
