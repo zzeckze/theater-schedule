@@ -1158,30 +1158,9 @@ function toggleAvailabilityDate(date){
    * 선택 날짜와 시간 영역만 업데이트
    */
 
-  renderAvailabilitySelection();
+ selectedAvailabilityDates.sort();
 
-
-  /*
-   * 현재 달력의 선택 상태만 즉시 반영
-   */
-
-  document
-    .querySelectorAll(
-      "[data-availability-date]"
-    )
-    .forEach(button=>{
-
-      const buttonDate=
-        button.dataset.availabilityDate;
-
-      button.classList.toggle(
-        "selected",
-        selectedAvailabilityDates.includes(
-          buttonDate
-        )
-      );
-
-    });
+updateSelectedMemberAvailability();
 
 }
 
