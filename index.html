@@ -813,37 +813,49 @@ function schedule(){
 
 function selectAvailabilityMember(member){
 
-  alert("클릭됨: " + member);
-  
   const area=
     document.getElementById(
       `memberSchedule-${member}`
     );
 
-if(!area)return;
+  if(!area)return;
 
-/* 같은 팀원을 다시 누르면 닫기 */
-if(area.innerHTML.trim() !== ""){
 
-  area.style.display="none";
-  area.innerHTML="";
+  /* 같은 팀원을 다시 누르면 닫기 */
+  if(openedAvailabilityMember===member){
 
-  selectedAvailabilityDates=[];
-  selectedAvailabilityTimes=[];
-  availabilityRangeStart=null;
+    area.style.display="none";
+    area.innerHTML="";
 
-  return;
-}
+    openedAvailabilityMember=null;
 
-/* 다른 팀원의 영역 닫기 */
-document
-  .querySelectorAll('[id^="memberSchedule-"]')
-  .forEach(el=>{
-    if(el!==area){
-      el.style.display="none";
-      el.innerHTML="";
-    }
-  });
+    selectedAvailabilityDates=[];
+    selectedAvailabilityTimes=[];
+    availabilityRangeStart=null;
+
+    return;
+  }
+
+
+  /* 다른 팀원의 영역 닫기 */
+  document
+    .querySelectorAll('[id^="memberSchedule-"]')
+    .forEach(el=>{
+
+      if(el!==area){
+
+        el.style.display="none";
+        el.innerHTML="";
+
+      }
+
+    });
+
+
+  /* 현재 열려 있는 팀원 저장 */
+  openedAvailabilityMember=member;
+
+
   /* 현재 선택한 팀원 */
   const select=
     document.getElementById(
@@ -854,13 +866,16 @@ document
     select.value=member;
   }
 
+
   /* 선택 상태 초기화 */
   selectedAvailabilityDates=[];
   selectedAvailabilityTimes=[];
   availabilityRangeStart=null;
 
+
   /* 현재 팀원 영역 열기 */
   area.style.display="block";
+
 
   area.innerHTML=`
 
@@ -882,6 +897,7 @@ document
 
       </div>
 
+
       <div
         class="field"
         style="margin-top:12px">
@@ -890,11 +906,13 @@ document
 
       </div>
 
+
       <div class="availability-calendar-wrap">
 
         ${availabilityCalendar()}
 
       </div>
+
 
       <div
         id="availabilitySelectedDates"
@@ -905,14 +923,17 @@ document
 
       </div>
 
+
       <div
         id="availabilityTimeArea">
       </div>
+
 
       <div
         id="availabilityExistingArea"
         style="margin-top:12px">
       </div>
+
 
       <div
         class="field"
@@ -925,6 +946,7 @@ document
           placeholder="예: 20시 이후 참여 가능"></textarea>
 
       </div>
+
 
       <button
         type="button"
@@ -954,6 +976,7 @@ let availabilityHalfHour=false;
 
 let availabilityRangeStart=null;
 
+let openedAvailabilityMember=null;
 
 /* =========================================================
    달력
