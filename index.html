@@ -1153,7 +1153,35 @@ function toggleAvailabilityDate(date){
   selectedAvailabilityDates.sort();
 
 
-  updateSelectedMemberAvailability();
+  /*
+   * 날짜를 누를 때 팀원 캘린더 전체를 다시 만들지 않고
+   * 선택 날짜와 시간 영역만 업데이트
+   */
+
+  renderAvailabilitySelection();
+
+
+  /*
+   * 현재 달력의 선택 상태만 즉시 반영
+   */
+
+  document
+    .querySelectorAll(
+      "[data-availability-date]"
+    )
+    .forEach(button=>{
+
+      const buttonDate=
+        button.dataset.availabilityDate;
+
+      button.classList.toggle(
+        "selected",
+        selectedAvailabilityDates.includes(
+          buttonDate
+        )
+      );
+
+    });
 
 }
 
