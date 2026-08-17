@@ -1202,14 +1202,28 @@ function toggleAvailabilityDate(date){
 
 }
 
-function updateSelectedMemberAvailability(){
+  function updateSelectedMemberAvailability(){
+
+  const member=
+    document.getElementById(
+      "availabilityMember"
+    )?.value || "";
+
+
+  if(!member)return;
+
 
   const area=
     document.getElementById(
-      "selectedMemberSchedule"
+      `memberSchedule-${member}`
     );
 
+
   if(!area)return;
+
+
+  const entries=
+    getMemberAvailability(member);
 
 
   const member=
