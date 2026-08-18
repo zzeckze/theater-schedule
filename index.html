@@ -289,6 +289,91 @@ button[data-member]:not(.danger){background:var(--large-button-bg,var(--primary)
 </head>
 <body>
 <div id="app"></div>
+<!-- ===== Firebase shared database configuration =====
+  1) Firebase Console > Project settings > Your apps > Web app에서 firebaseConfig 값을 복사합니다.
+  2) 아래 PASTE_... 값을 실제 값으로 교체하세요.
+  3) Authentication > Sign-in method > Anonymous 를 활성화하세요.
+  4) Firestore Database를 생성하고 안내된 보안 규칙을 적용하세요.
+-->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAg35-YGDPxl8pvPDY3snQteDFWQSlPtJI",
+  authDomain: "theater-schedule-89f26.firebaseapp.com",
+  projectId: "theater-schedule-89f26",
+  storageBucket: "theater-schedule-89f26.firebasestorage.app",
+  messagingSenderId: "286330395772",
+  appId: "1:286330395772:web:c9b08b49b0e28fd2103df9"
+};
+
+const configured = !Object.values(firebaseConfig).some(v => String(v).includes("PASTE_"));
+window.TCFirebase = { configured, ready:false, status: configured ? "connecting" : "not-configured" };
+
+if(configured){
+  try{
+    const fbApp = initializeApp(firebaseConfig);
+    const auth = getAuth(fbApp);
+    const db = getFirestore(fbApp);
+    const sharedRef = doc(db, "theaterClown", "shared");
+    let applyingRemote = false;
+
+    window.TCFirebase.save = async (payload)=>{
+      if(!window.TCFirebase.ready || applyingRemote){
+        window.__TC_PENDING_CLOUD_STATE = payload;
+        return;
+      }
+      const clean = JSON.parse(JSON.stringify(payload || {}));
+      clean._cloudMeta = { updatedAt: serverTimestamp() };
+      await setDoc(sharedRef, clean, { merge:false });
+    };
+
+    async function startCloud(user){
+      if(!user) return;
+      window.TCFirebase.ready = true;
+      window.TCFirebase.status = "connected";
+
+      const initial = await getDoc(sharedRef);
+      if(!initial.exists()){
+        const seed = window.__TC_getCloudPayload ? window.__TC_getCloudPayload() : {};
+        await window.TCFirebase.save(seed);
+      }
+
+      onSnapshot(sharedRef, snap=>{
+        if(!snap.exists()) return;
+        const data = snap.data() || {};
+        delete data._cloudMeta;
+        applyingRemote = true;
+        try{ window.__TC_applyCloudState && window.__TC_applyCloudState(data); }
+        finally{ applyingRemote = false; }
+      }, err=>{
+        console.error("Firestore listener error", err);
+        window.TCFirebase.status = "error";
+      });
+
+      if(window.__TC_PENDING_CLOUD_STATE){
+        const pending = window.__TC_PENDING_CLOUD_STATE;
+        window.__TC_PENDING_CLOUD_STATE = null;
+        await window.TCFirebase.save(pending);
+      }
+    }
+
+    onAuthStateChanged(auth, user=>{
+      if(user) startCloud(user).catch(console.error);
+      else signInAnonymously(auth).catch(err=>{
+        console.error("Anonymous Firebase sign-in failed", err);
+        window.TCFirebase.status = "auth-error";
+      });
+    });
+  }catch(err){
+    console.error("Firebase initialization failed", err);
+    window.TCFirebase.status = "error";
+  }
+}
+</script>
+
 <script>
 const DEFAULT_ENTRY_CODE="2026";
 const DEFAULT_ADMIN_CODE="THEATER2026";
@@ -331,9 +416,54 @@ const state={
   theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
 };
 
-function save(){
+const TC_LOCAL_ONLY_KEYS=new Set([
+  "logged","admin","tab","view","practiceDate",
+  "_ddayEdit","_confirmAnchor"
+]);
+
+function cloudStatePayload(){
+  const out={};
+  Object.entries(state).forEach(([k,v])=>{
+    if(TC_LOCAL_ONLY_KEYS.has(k) || k.startsWith("_")) return;
+    if(typeof v === "function" || v === undefined) return;
+    out[k]=v;
+  });
+  return JSON.parse(JSON.stringify(out));
+}
+window.__TC_getCloudPayload=cloudStatePayload;
+
+function saveLocalOnly(){
   localStorage.setItem("theaterClown",JSON.stringify(state));
 }
+function save(){
+  saveLocalOnly();
+  const payload=cloudStatePayload();
+  if(window.TCFirebase?.configured){
+    if(window.TCFirebase.ready && typeof window.TCFirebase.save==="function"){
+      window.TCFirebase.save(payload).catch(err=>console.error("Firebase save failed",err));
+    }else{
+      window.__TC_PENDING_CLOUD_STATE=payload;
+    }
+  }
+}
+window.__TC_applyCloudState=function(remote){
+  if(!remote || typeof remote!=="object") return;
+  const session={logged:state.logged,admin:state.admin,tab:state.tab,view:state.view,practiceDate:state.practiceDate};
+  Object.entries(remote).forEach(([k,v])=>{
+    if(!TC_LOCAL_ONLY_KEYS.has(k) && !k.startsWith("_")) state[k]=v;
+  });
+  Object.assign(state,session);
+  state.entryCode=state.entryCode||DEFAULT_ENTRY_CODE;
+  state.adminCode=state.adminCode||DEFAULT_ADMIN_CODE;
+  if(!Array.isArray(state.showDates)) state.showDates=state.showDate?[{date:state.showDate,time:state.showTime||""}]:[];
+  if(state.bannerSmallName===undefined||state.bannerSmallName===null) state.bannerSmallName=state.venue||"";
+  if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
+  if(!state.theme) state.theme={};
+  state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
+  saveLocalOnly();
+  applyTheme();
+  app();
+};
 function load(){
   try{
     const saved=JSON.parse(localStorage.getItem("theaterClown")||"null");
