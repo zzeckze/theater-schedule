@@ -337,6 +337,66 @@ button:not(.swatch):active{
   transform:translateY(1px) scale(.985);
 }
 
+
+/* ===== v21: schedule-add time layout =====
+   Each selected date owns the full modal width; multiple dates stack vertically. */
+.sm-times-list{display:block;width:100%;margin-top:8px}
+.sm-time-date-block{
+  display:block;
+  width:100%;
+  margin:12px 0 16px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.42);
+}
+.sm-time-date-title{display:block;margin:0 0 9px;font-size:14px}
+.sm-time-grid{width:100%;grid-template-columns:repeat(6,minmax(0,1fr));max-height:none;overflow:visible}
+.sm-time-grid .tc-time-btn{min-width:0;padding-left:2px;padding-right:2px;font-size:12px}
+@media(max-width:430px){
+  .sm-time-date-block{padding:10px}
+  .sm-time-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+/* ===== v21: functional grouping for small buttons =====
+   The administrator-selected small-button color remains the dominant/base group.
+   Secondary functional groups use automatically-derived variants of that same color. */
+.btn:not(.danger):not(.primary){
+  background:var(--small-button-bg-soft,var(--small-button-bg,var(--primary)))!important;
+  border-color:var(--small-button-bg-soft,var(--small-button-bg,var(--primary)))!important;
+}
+.tc-month-head button:not(.danger),
+.availability-calendar-header .btn:not(.danger){
+  background:var(--small-button-bg-light,var(--small-button-bg,var(--primary)))!important;
+  border-color:var(--small-button-bg-light,var(--small-button-bg,var(--primary)))!important;
+}
+.tc-type:not(.danger){
+  background:var(--small-button-bg-deep,var(--small-button-bg,var(--primary)))!important;
+  border-color:var(--small-button-bg-deep,var(--small-button-bg,var(--primary)))!important;
+}
+.chip:not(.danger){
+  background:var(--small-button-bg-muted,var(--small-button-bg,var(--primary)))!important;
+  border-color:var(--small-button-bg-muted,var(--small-button-bg,var(--primary)))!important;
+}
+/* High-frequency time controls and primary actions keep the exact administrator-selected base color. */
+.tc-time-btn:not(.danger),
+.time-slot:not(.danger),
+.btn.primary:not(.danger){
+  background:var(--small-button-bg,var(--primary))!important;
+  border-color:var(--small-button-bg,var(--primary))!important;
+}
+/* Persistent selection stays visibly distinct on top of every functional shade. */
+.tc-time-btn.sel,
+.tc-type.sel,
+.chip.on,
+.time-slot.on,
+.tc-day.sel,
+.availability-day.selected,
+.aggregate-day.selected{
+  filter:brightness(.76) saturate(1.18)!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.66),0 2px 8px rgba(23,27,45,.20)!important;
+}
+
 </style>
 </head>
 <body>
@@ -550,7 +610,8 @@ if(!state.theme) state.theme={};
 /* v13: every theme palette is fixed to 12 colors in a 6 x 2 grid.
    Non-background palettes are more varied while keeping white/black and excluding red tones. */
 (()=>{const map={'#7f86cf':'#a99bf3','#9b86bd':'#8fc8f6','#c89a68':'#f3bd7f','#b6a162':'#f1d46f','#72a58a':'#8fd8c0','#739fac':'#7fd6dc','#9685bd':'#d5b7f5','#ad84a2':'#b8d98f'};const t=state.theme||{};['largeButtonBg','largeButtonText','smallButtonBg','smallButtonText','ddayBg','ddayText','badgeBg','badgeText','primary','buttonText'].forEach(k=>{if(map[t[k]])t[k]=map[t[k]];});})();
-function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
+function mixThemeHex(hex,target,ratio){const clean=String(hex||'').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(clean))return hex;const a=[0,2,4].map(i=>parseInt(clean.slice(i,i+2),16)),b=target==='black'?[0,0,0]:[255,255,255];return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*ratio).toString(16).padStart(2,'0')).join('');}
+function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--small-button-bg-light",mixThemeHex(smallBg,'white',.20));root.style.setProperty("--small-button-bg-soft",mixThemeHex(smallBg,'white',.10));root.style.setProperty("--small-button-bg-muted",mixThemeHex(smallBg,'white',.28));root.style.setProperty("--small-button-bg-deep",mixThemeHex(smallBg,'black',.10));root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
 applyTheme();
 state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
 
@@ -1062,11 +1123,11 @@ function addPractice(){
 function openScheduleModal(){
   const dates=[],timesByDate={},typeState={value:'연습'},people=[],fixed={value:false};let half=false,view=new Date();view.setDate(1);
   const bg=document.createElement('div');bg.className='tc-modal-bg';bg.id='scheduleModal';
-  bg.innerHTML=`<div class="tc-modal"><h3>일정 추가</h3><div id="smCal"></div><div class="field"><label>시간</label><button class="btn" id="smHalf">30분 단위로 입력</button><div id="smTimes" class="tc-time-grid"></div></div><div class="field"><label>일정 종류</label><div id="smTypes" class="tc-types"></div></div><div class="field"><label>참여팀원</label><div id="smPeople" class="chips"></div></div><div class="field"><label>메모 / 연습내용</label><textarea id="smMemo" style="width:100%;min-height:80px" placeholder="내용을 입력하세요"></textarea></div><label class="checkline"><input type="checkbox" id="smFixed"> 주요 일정 고정</label><div class="tc-actions"><button class="btn danger" id="smCancel">취소</button><button class="btn primary" id="smSave">일정 추가</button></div></div>`;
+  bg.innerHTML=`<div class="tc-modal"><h3>일정 추가</h3><div id="smCal"></div><div class="field"><label>시간</label><button class="btn" id="smHalf">30분 단위로 입력</button><div id="smTimes" class="sm-times-list"></div></div><div class="field"><label>일정 종류</label><div id="smTypes" class="tc-types"></div></div><div class="field"><label>참여팀원</label><div id="smPeople" class="chips"></div></div><div class="field"><label>메모 / 연습내용</label><textarea id="smMemo" style="width:100%;min-height:80px" placeholder="내용을 입력하세요"></textarea></div><label class="checkline"><input type="checkbox" id="smFixed"> 주요 일정 고정</label><div class="tc-actions"><button class="btn danger" id="smCancel">취소</button><button class="btn primary" id="smSave">일정 추가</button></div></div>`;
   document.body.appendChild(bg);
   const pad=n=>String(n).padStart(2,'0');
   function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="smPrev">◀</button><b>${y}년 ${m+1}월</b><button id="smNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#smCal').innerHTML=h+'</div>';bg.querySelectorAll('#smCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v))dates.splice(dates.indexOf(v),1);else{dates.push(v);timesByDate[v]=[];}renderCal();renderTimes();});bg.querySelector('#smPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#smNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
-  function renderTimes(){const selected=dates.slice().sort();if(!selected.length){bg.querySelector('#smTimes').innerHTML='<div class="empty">날짜를 먼저 선택해주세요.</div>';return;}bg.querySelector('#smTimes').innerHTML=selected.map(date=>{const arr=timesByDate[date]||[];const step=half?30:60;let h=`<div style="margin:8px 0"><b>${date}</b><div class="tc-time-grid">`;for(let m=0;m<1440;m+=step){const t=formatMin(m);h+=`<button type="button" class="tc-time-btn ${arr.includes(t)?'sel':''}" data-date="${date}" data-time="${t}">${t}</button>`;}return h+'</div></div>';}).join('');bg.querySelectorAll('#smTimes [data-time]').forEach(b=>b.onclick=()=>{const date=b.dataset.date,v=b.dataset.time,arr=timesByDate[date]||[],anchor=arr._anchor;if(anchor&&anchor!==v){const set=new Set(arr);for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=(half?30:60))set.add(formatMin(m));timesByDate[date]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));timesByDate[date]._anchor=null;}else if(arr.includes(v)){timesByDate[date]=arr.filter(x=>x!==v);timesByDate[date]._anchor=null;}else{arr.push(v);arr._anchor=v;timesByDate[date]=arr;}renderTimes();});}
+  function renderTimes(){const selected=dates.slice().sort();if(!selected.length){bg.querySelector('#smTimes').innerHTML='<div class="empty">날짜를 먼저 선택해주세요.</div>';return;}bg.querySelector('#smTimes').innerHTML=selected.map(date=>{const arr=timesByDate[date]||[];const step=half?30:60;let h=`<div class="sm-time-date-block"><b class="sm-time-date-title">${date}</b><div class="tc-time-grid sm-time-grid">`;for(let m=0;m<1440;m+=step){const t=formatMin(m);h+=`<button type="button" class="tc-time-btn ${arr.includes(t)?'sel':''}" data-date="${date}" data-time="${t}">${t}</button>`;}return h+'</div></div>';}).join('');bg.querySelectorAll('#smTimes [data-time]').forEach(b=>b.onclick=()=>{const date=b.dataset.date,v=b.dataset.time,arr=timesByDate[date]||[],anchor=arr._anchor;if(anchor&&anchor!==v){const set=new Set(arr);for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=(half?30:60))set.add(formatMin(m));timesByDate[date]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));timesByDate[date]._anchor=null;}else if(arr.includes(v)){timesByDate[date]=arr.filter(x=>x!==v);timesByDate[date]._anchor=null;}else{arr.push(v);arr._anchor=v;timesByDate[date]=arr;}renderTimes();});}
   function renderTypes(){bg.querySelector('#smTypes').innerHTML=['연습','공연','셋업','기타'].map(x=>`<button type="button" class="tc-type ${x===typeState.value?'sel':''}" data-type="${x}">${x}</button>`).join('');bg.querySelectorAll('#smTypes [data-type]').forEach(b=>b.onclick=()=>{typeState.value=b.dataset.type;renderTypes()});}
   bg.querySelector('#smPeople').innerHTML=state.members.map(m=>`<button type="button" class="chip" data-name="${m.name}">${m.name}</button>`).join('');bg.querySelectorAll('#smPeople .chip').forEach(b=>b.onclick=()=>{b.classList.toggle('on');});
   bg.querySelector('#smHalf').onclick=()=>{half=!half;Object.keys(timesByDate).forEach(k=>timesByDate[k]=[]);bg.querySelector('#smHalf').textContent=half?'1시간 단위로 입력':'30분 단위로 입력';renderTimes()};bg.querySelector('#smCancel').onclick=()=>bg.remove();bg.querySelector('#smSave').onclick=()=>{if(!dates.length)return alert('날짜를 하나 이상 선택해주세요.');if(dates.some(d=>!(timesByDate[d]||[]).length))return alert('모든 날짜의 시간을 선택해주세요.');const selectedPeople=[...bg.querySelectorAll('#smPeople .chip.on')].map(b=>b.dataset.name);const memo=bg.querySelector('#smMemo').value.trim();dates.sort().forEach(date=>{const arr=(timesByDate[date]||[]).filter(x=>/^\d/.test(x));const time=compressTimes(arr).join(' / ');const item={date,time,title:typeState.value,type:typeState.value,people:selectedPeople.slice(),memo};state.schedules.push(item);if(bg.querySelector('#smFixed').checked)state.stage.push({date,time,title:typeState.value});});save();bg.remove();render()};renderCal();renderTimes();renderTypes();
@@ -2882,7 +2943,7 @@ function deleteNotice(i){if(confirm('이 공지/자료를 삭제할까요?')){st
 function admin(){
   if(!state.admin)return `<div class="card"><div class="empty">관리 권한이 있는 사용자만 입장 가능합니다</div></div>`;
   const t=state.theme||{};
-  const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividPalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette);
+  const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividBasePalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const vividAddedPalette=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7','#ffc8d8','#ffb9b9']; const vividPalette=[...vividBasePalette,...vividAddedPalette]; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette);
   return `<div class="section-title"><h2>관리</h2><span class="pill">${state.role==="security"?"보안자":"관리자"}</span></div><div class="adminbar">상단 배너, 팀원, 사이트 디자인과 운영 기능을 관리합니다.</div>
   <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
   <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>큰 버튼 글씨색</label>${swVivid('thLargeButtonText',t.largeButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>작은 버튼 색</label>${swVivid('thSmallButtonBg',t.smallButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>작은 버튼 글씨색</label>${swVivid('thSmallButtonText',t.smallButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${swVivid('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${swVivid('thDdayText',t.ddayText||'#ffffff')}</div></div><div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><h3 style="margin-bottom:8px">🏷️ 안내 아이콘 색상 설정</h3><p class="muted small" style="margin-top:0">상단 관리자/방문자, 일정 인원수, 조율 안내, 공지 종류 등 작은 안내 아이콘에 일괄 적용됩니다.</p><div class="theme-grid"><div class="field"><label>안내 아이콘 배경색</label>${swVivid('thBadgeBg',t.badgeBg||t.primary||'#6657e8')}</div><div class="field"><label>안내 아이콘 글씨색</label>${swVivid('thBadgeText',t.badgeText||'#ffffff')}</div></div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
