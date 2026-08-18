@@ -825,6 +825,19 @@ button[data-member]:not(.danger),
   border-color:var(--large-button-bg,var(--primary))!important;
 }
 
+/* 전체 가능시간의 일괄 선택/해제 버튼은 큰 버튼 색상 체계를 유지하면서 크기만 컴팩트하게 표시 */
+.tc-aggregate-quick-actions{gap:5px!important;align-items:center}
+.tc-aggregate-quick-actions .tc-aggregate-compact{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:6px 8px!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+  white-space:nowrap;
+}
+
 /* Home/Admin member lists: three people per row with row/column dividers. */
 .member-grid{
   display:grid;
@@ -1816,7 +1829,7 @@ function schedule(){
   <div class="card"><div class="section-title"><h3>👥 팀원별 가능시간</h3></div>${memberRowsHtml}<select id="availabilityMember" style="display:none"><option value="">내 이름</option>${names.map(n=>`<option>${n}</option>`).join('')}</select></div>
   <div class="card"><div class="section-title"><h3>📅 전체 가능시간</h3></div><p class="muted small" style="margin-bottom:10px">아래에서 원하는 팀원을 선택하면 공통 가능한 날짜와 시간이 자동으로 다른 색으로 표시됩니다.</p>
   <div class="chips" style="margin-bottom:8px">${names.map(n=>`<button type="button" class="chip ${state.aggregateMembers.includes(n)?'on':''}" onclick="toggleAggregateMember('${n}')">${n}</button>`).join('')}</div>
-  <div class="actions" style="margin-bottom:10px"><button class="btn tc-large-control" onclick="toggleAllAggregateMembers()">${state.aggregateMembers.length===names.length&&names.length?'이름선택해제':'이름전체선택'}</button><button class="btn ghost tc-large-control" onclick="clearAggregateMembers()">이름선택해제</button><button class="btn ghost tc-large-control" onclick="clearAggregateDates()">날짜선택해제</button></div>
+  <div class="actions tc-aggregate-quick-actions" style="margin-bottom:10px"><button class="btn tc-large-control tc-aggregate-compact" onclick="toggleAllAggregateMembers()">${state.aggregateMembers.length===names.length&&names.length?'이름선택해제':'이름전체선택'}</button><button class="btn ghost tc-large-control tc-aggregate-compact" onclick="clearAggregateMembers()">이름선택해제</button><button class="btn ghost tc-large-control tc-aggregate-compact" onclick="clearAggregateDates()">날짜선택해제</button></div>
   <div id="aggregateCommonNotice" class="notice" style="display:none;margin-bottom:10px">*공통된 시간이 없습니다.</div>
   <div class="aggregate-availability">${aggregateAvailabilityCalendar()}</div>
   <div id="aggregateAvailabilityDetail" class="aggregate-detail">날짜를 선택해주세요.</div>
@@ -2007,7 +2020,7 @@ function selectAvailabilityMember(member){
 
       <button
         type="button"
-        class="btn primary"
+        class="btn primary tc-large-control"
         onclick="saveAvailability()">
 
         ${member} 가능시간 저장
@@ -2078,7 +2091,7 @@ function availabilityCalendar(){
 
       <button
         type="button"
-        class="btn"
+        class="btn tc-large-control"
         onclick="moveAvailabilityMonth(-1)">
 
         ◀
@@ -2093,7 +2106,7 @@ function availabilityCalendar(){
 
       <button
         type="button"
-        class="btn"
+        class="btn tc-large-control"
         onclick="moveAvailabilityMonth(1)">
 
         ▶
@@ -2347,7 +2360,7 @@ function updateSelectedMemberAvailability(){
 
 
       <button
-        class="btn primary"
+        class="btn primary tc-large-control"
         onclick="saveAvailability()">
 
         ${member} 가능시간 저장
@@ -2507,7 +2520,7 @@ function renderAvailabilityTimes(){
 
         <button
           type="button"
-          class="btn"
+          class="btn tc-large-control"
           onclick="toggleAvailabilityHalfHour()">
 
           ${
@@ -2544,7 +2557,7 @@ function renderAvailabilityTimes(){
 
         <button
           type="button"
-          class="btn"
+          class="btn tc-large-control"
           onclick="clearAvailabilityTimes()">
 
           시간 선택 초기화
