@@ -789,6 +789,83 @@ button:not(.swatch):active{
   }
   .dday-cal-day{font-size:46px}
 }
+
+
+/* ===== v32: requested navigation/theme/button/member-grid refinements ===== */
+/* Top banner always follows the overall page background color. */
+header{background:var(--bg)!important}
+
+/* Bottom navigation has its own administrator-configurable palette. */
+.bottom{background:var(--bottom-menu-bg,#fff)!important}
+.bottom button:not(.danger),.bottom button.active{
+  background:transparent!important;
+  color:var(--bottom-menu-text,#6657e8)!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+.bottom button{opacity:.68}
+.bottom button.active{opacity:1!important;filter:none!important;font-weight:900!important}
+
+/* Segmented menus: remove the outer-rim/border look on schedule and notice filters. */
+.seg{background:transparent!important;padding:0!important;gap:6px!important;border:0!important;outline:0!important}
+.seg button,.seg button.active{border:0!important;outline:0!important;box-shadow:none!important}
+
+/* Explicit large-button group. This wins over the later small-button functional shades. */
+.btn.tc-large-control:not(.danger),
+button[data-member]:not(.danger),
+.availability-member-btn:not(.danger){
+  background:var(--large-button-bg,var(--primary))!important;
+  color:var(--large-button-text,var(--button-text,#fff))!important;
+  border-color:var(--large-button-bg,var(--primary))!important;
+}
+.btn.tc-large-control.ghost:not(.danger){
+  background:var(--large-button-bg,var(--primary))!important;
+  color:var(--large-button-text,var(--button-text,#fff))!important;
+  border-color:var(--large-button-bg,var(--primary))!important;
+}
+
+/* Home/Admin member lists: three people per row with row/column dividers. */
+.member-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  border-top:1px solid var(--line);
+  border-left:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+.member-grid-item{
+  min-width:0;
+  padding:11px 7px;
+  text-align:center;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  overflow-wrap:anywhere;
+}
+.member-grid-item .people{font-size:11px;margin-top:4px}
+.member-cell-actions{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.member-cell-actions .btn{padding:6px 7px!important;font-size:10px!important;border-radius:8px!important}
+
+/* Availability member-name buttons: three across, details remain below the name grid. */
+.member-button-group{margin-bottom:8px}.member-button-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.availability-member-btn{
+  width:100%;
+  min-width:0;
+  padding:11px 6px!important;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:4px;
+  font-size:11px;
+}
+.availability-member-btn span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.member-detail-stack{display:block;width:100%}
+
+@media(max-width:360px){
+  .member-grid-item{padding-left:5px;padding-right:5px}
+  .availability-member-btn{font-size:10px;padding-left:4px!important;padding-right:4px!important}
+}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -923,7 +1000,7 @@ const state={
   availability:{},
   aggregateMembers:[],
   accessLogs:{},
-  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",ddayFont:"original",ddayMarkShape:"circle",mode:"light"}
+  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",bottomMenuBg:"#ffffff",bottomMenuText:"#6657e8",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",ddayFont:"original",ddayMarkShape:"circle",mode:"light"}
 };
 
 const TC_LOCAL_ONLY_KEYS=new Set([
@@ -1019,7 +1096,7 @@ state.securityCode=state.securityCode||DEFAULT_SECURITY_CODE;
 if(!state.theme) state.theme={};
 /* v13: every theme palette is fixed to 12 colors in a 6 x 2 grid.
    Non-background palettes are more varied while keeping white/black and excluding red tones. */
-(()=>{const map={'#7f86cf':'#a99bf3','#9b86bd':'#8fc8f6','#c89a68':'#f3bd7f','#b6a162':'#f1d46f','#72a58a':'#8fd8c0','#739fac':'#7fd6dc','#9685bd':'#d5b7f5','#ad84a2':'#b8d98f'};const t=state.theme||{};['largeButtonBg','largeButtonText','smallButtonBg','smallButtonText','ddayBg','ddayText','badgeBg','badgeText','primary','buttonText'].forEach(k=>{if(map[t[k]])t[k]=map[t[k]];});})();
+(()=>{const map={'#7f86cf':'#a99bf3','#9b86bd':'#8fc8f6','#c89a68':'#f3bd7f','#b6a162':'#f1d46f','#72a58a':'#8fd8c0','#739fac':'#7fd6dc','#9685bd':'#d5b7f5','#ad84a2':'#b8d98f'};const t=state.theme||{};['largeButtonBg','largeButtonText','smallButtonBg','smallButtonText','bottomMenuBg','bottomMenuText','ddayBg','ddayText','badgeBg','badgeText','primary','buttonText'].forEach(k=>{if(map[t[k]])t[k]=map[t[k]];});})();
 function mixThemeHex(hex,target,ratio){const clean=String(hex||'').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(clean))return hex;const a=[0,2,4].map(i=>parseInt(clean.slice(i,i+2),16)),b=target==='black'?[0,0,0]:[255,255,255];return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*ratio).toString(16).padStart(2,'0')).join('');}
 function themeHexRgb(hex){const c=String(hex||'').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c))return null;return [0,2,4].map(i=>parseInt(c.slice(i,i+2),16));}
 function themeLuma(hex){const rgb=themeHexRgb(hex);if(!rgb)return .5;const s=rgb.map(v=>v/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*s[0]+.7152*s[1]+.0722*s[2];}
@@ -1033,7 +1110,7 @@ function getDdayFontFamily(key){
   return '"Snell Roundhand", "Apple Chancery", "Segoe Script", "Brush Script MT", cursive';
 }
 
-function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";const ddayBg=t.ddayBg||"#fffaf3",ddayPoint=t.ddayText||"#a63a42",ddayMain=contrastTextFor(ddayBg),ddayMuted=themeLuma(ddayBg)>.44?mixThemeHex(ddayBg,'black',.28):mixThemeHex(ddayBg,'white',.42),ddayFont=getDdayFontFamily(t.ddayFont||"script");root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--small-button-bg-light",mixThemeHex(smallBg,'white',.20));root.style.setProperty("--small-button-bg-soft",mixThemeHex(smallBg,'white',.10));root.style.setProperty("--small-button-bg-muted",mixThemeHex(smallBg,'white',.28));root.style.setProperty("--small-button-bg-deep",mixThemeHex(smallBg,'black',.10));root.style.setProperty("--dday-bg",ddayBg);root.style.setProperty("--dday-point",ddayPoint);root.style.setProperty("--dday-text",ddayPoint);root.style.setProperty("--dday-main",ddayMain);root.style.setProperty("--dday-muted",ddayMuted);root.style.setProperty("--dday-mark-text",contrastTextFor(ddayPoint));root.style.setProperty("--dday-display-font",ddayFont);root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
+function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff",bottomMenuBg=t.bottomMenuBg||t.card||"#ffffff",bottomMenuText=t.bottomMenuText||t.primary||"#6657e8";const ddayBg=t.ddayBg||"#fffaf3",ddayPoint=t.ddayText||"#a63a42",ddayMain=contrastTextFor(ddayBg),ddayMuted=themeLuma(ddayBg)>.44?mixThemeHex(ddayBg,'black',.28):mixThemeHex(ddayBg,'white',.42),ddayFont=getDdayFontFamily(t.ddayFont||"script");root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--bottom-menu-bg",bottomMenuBg);root.style.setProperty("--bottom-menu-text",bottomMenuText);root.style.setProperty("--small-button-bg-light",mixThemeHex(smallBg,'white',.20));root.style.setProperty("--small-button-bg-soft",mixThemeHex(smallBg,'white',.10));root.style.setProperty("--small-button-bg-muted",mixThemeHex(smallBg,'white',.28));root.style.setProperty("--small-button-bg-deep",mixThemeHex(smallBg,'black',.10));root.style.setProperty("--dday-bg",ddayBg);root.style.setProperty("--dday-point",ddayPoint);root.style.setProperty("--dday-text",ddayPoint);root.style.setProperty("--dday-main",ddayMain);root.style.setProperty("--dday-muted",ddayMuted);root.style.setProperty("--dday-mark-text",contrastTextFor(ddayPoint));root.style.setProperty("--dday-display-font",ddayFont);root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
 applyTheme();
 state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
 
@@ -1371,7 +1448,7 @@ function home(){
   const detail=detailShow?`${detailShow.date.replace(/-/g,'.')} (${ddayWeekdayShort(detailShow.date)}) ${displayScheduleTime(detailShow.time)}`:'공연 날짜를 설정해주세요';
   const markShape=['circle','heart','star','rounded'].includes(state.theme?.ddayMarkShape)?state.theme.ddayMarkShape:'circle'; const cell=(x,pos)=>`<div class="dday-cal-cell ${pos}"><div class="dday-cal-weekday">${x.weekday}</div><div class="dday-cal-body"><div class="dday-cal-month">${x.month}</div>${pos==='center'?`<div class="dday-cal-mark ${markShape}"><div class="dday-cal-day">${x.day}</div></div>`:`<div class="dday-cal-day">${x.day}</div>`}</div></div>`;
   const ddayFontKey=((state.theme&&state.theme.ddayFont)==='script'?'original':((state.theme&&state.theme.ddayFont)||'original'));const banner=state.admin&&state._ddayEdit?ddayEditor():`<section class="hero dday-poster dday-font-${ddayFontKey}"><div class="dday-poster-head"><div class="dday-poster-title">Curtain Up ${statusText}</div><div class="dday-poster-detail">${detail}</div></div><div class="dday-calendar">${cell(prev,'left side')}${cell(center,'center')}${cell(next,'right side')}</div><div class="dday-poster-venue">${state.venue||''}</div>${state.admin?'<button class="btn dday-edit-mini" onclick="toggleDdayEdit()">D-day 수정</button>':''}</section>`;
-  return `${banner}${fixedScheduleNotes()}${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3></div><div class="notice content-scroll"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:''}<div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('practice')">전체보기</button></div>${upcoming.length?upcoming.map(x=>`<div class="schedule-item"><span class="pill">${x.kind}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${displayScheduleTime(x.time)}</div><div class="people content-scroll">${x.title||''}</div></div>`).join(''):'<div class="empty">등록된 일정이 없습니다.</div>'}</div><div class="card"><h3>👥 팀원</h3>${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}</span></div></div>`).join(''):'<div class="empty">등록된 팀원이 없습니다.</div>'}</div>`;
+  return `${banner}${fixedScheduleNotes()}${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3></div><div class="notice content-scroll"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:''}<div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('practice')">전체보기</button></div>${upcoming.length?upcoming.map(x=>`<div class="schedule-item"><span class="pill">${x.kind}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${displayScheduleTime(x.time)}</div><div class="people content-scroll">${x.title||''}</div></div>`).join(''):'<div class="empty">등록된 일정이 없습니다.</div>'}</div><div class="card"><h3>👥 팀원</h3>${state.members.length?`<div class="member-grid home-member-grid">${state.members.map(x=>`<div class="member-grid-item"><b>${x.name}</b><div class="people">${x.pos}</div></div>`).join('')}</div>`:'<div class="empty">등록된 팀원이 없습니다.</div>'}</div>`;
 }
 function movePracticeDate(days){
   if(!state.practiceDate){
@@ -1589,7 +1666,7 @@ function practice(){
   let weekLabel="";if(state.view==='week'){const ws=new Date(selected);ws.setDate(selected.getDate()-selected.getDay());const we=new Date(ws);we.setDate(ws.getDate()+6);weekLabel=`${ws.getFullYear()}년 ${ws.getMonth()+1}월 ${ws.getDate()}일 ~ ${we.getFullYear()}년 ${we.getMonth()+1}월 ${we.getDate()}일`;}
   return `${fixedScheduleNotes()}<div class="section-title"><h2>일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
   <div class="seg"><button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button><button class="${state.view==='week'?'active':''}" onclick="setView('week')">주간</button><button class="${state.view==='day'?'active':''}" onclick="setView('day')">일간</button></div>
-  ${state.view!=='month'?`<div class="card"><div class="row"><button class="btn" onclick="movePracticeDate(-1)">◀</button><b>${state.view==='day'?dateLabel:weekLabel}</b><button class="btn" onclick="movePracticeDate(1)">▶</button></div></div>`:''}
+  ${state.view!=='month'?`<div class="card"><div class="row"><button class="btn tc-large-control" onclick="movePracticeDate(-1)">◀</button><b>${state.view==='day'?dateLabel:weekLabel}</b><button class="btn tc-large-control" onclick="movePracticeDate(1)">▶</button></div></div>`:''}
   ${state.view==='month'?miniMonth():list.length?list.map(x=>{
     const isSchedule=Number.isInteger(x._idx), idx=isSchedule?x._idx:x._stageIdx;
     const people=Array.isArray(x.people)?x.people:[];
@@ -1608,7 +1685,7 @@ function setView(v){state.view=v;save();render()}
 function miniMonth(){
   const base=state.practiceDate?new Date(state.practiceDate+"T00:00:00"):new Date();const year=base.getFullYear(),month=base.getMonth();
   const first=new Date(year,month,1),last=new Date(year,month+1,0);const days=["일","월","화","수","목","금","토"];
-  let s=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><button class="btn" onclick="movePracticeMonth(-1)">◀</button><b style="font-size:18px">${year}년 ${month+1}월</b><button class="btn" onclick="movePracticeMonth(1)">▶</button></div><div class="calendar">`+days.map(d=>`<div class="calhead">${d}</div>`).join('');
+  let s=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><button class="btn tc-large-control" onclick="movePracticeMonth(-1)">◀</button><b style="font-size:18px">${year}년 ${month+1}월</b><button class="btn tc-large-control" onclick="movePracticeMonth(1)">▶</button></div><div class="calendar">`+days.map(d=>`<div class="calhead">${d}</div>`).join('');
   for(let i=0;i<first.getDay();i++)s+=`<div class="day"></div>`;
   for(let day=1;day<=last.getDate();day++){
     const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
@@ -1734,11 +1811,12 @@ function cancelPractice(i){
 function schedule(){
   const names=state.members.map(x=>x.name);
   if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
-  return `${fixedScheduleNotes()}<div class="section-title"><h2>스케줄 조율</h2><span class="pill">모두 조회 가능</span></div>
-  <div class="card"><div class="section-title"><h3>👥 팀원별 가능시간</h3><span class="pill">이름을 선택하세요</span></div><div style="display:flex;flex-direction:column;gap:8px">${names.length?names.map(name=>`<div><button type="button" class="btn" style="width:100%;text-align:left;padding:13px 15px;display:flex;justify-content:space-between" data-member="${name}"><span>👤 ${name}</span><span>›</span></button><div id="memberSchedule-${name}" style="display:none;margin-top:8px"></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div><select id="availabilityMember" style="display:none"><option value="">내 이름</option>${names.map(n=>`<option>${n}</option>`).join('')}</select></div>
-  <div class="card"><div class="section-title"><h3>📅 전체 가능시간</h3><span class="pill">공통 가능시간 자동 표시</span></div><p class="muted small" style="margin-bottom:10px">아래에서 원하는 팀원을 선택하면 공통 가능한 날짜와 시간이 자동으로 다른 색으로 표시됩니다.</p>
+  const memberRowsHtml=names.length?Array.from({length:Math.ceil(names.length/3)},(_,rowIndex)=>{const group=names.slice(rowIndex*3,rowIndex*3+3);return `<div class="member-button-group"><div class="member-button-grid">${group.map(name=>`<button type="button" class="btn availability-member-btn" data-member="${name}"><span>👤 ${name}</span><span>›</span></button>`).join('')}</div>${group.map(name=>`<div id="memberSchedule-${name}" style="display:none;margin-top:8px"></div>`).join('')}</div>`;}).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`;
+  return `${fixedScheduleNotes()}<div class="section-title"><h2>스케줄 조율</h2></div>
+  <div class="card"><div class="section-title"><h3>👥 팀원별 가능시간</h3></div>${memberRowsHtml}<select id="availabilityMember" style="display:none"><option value="">내 이름</option>${names.map(n=>`<option>${n}</option>`).join('')}</select></div>
+  <div class="card"><div class="section-title"><h3>📅 전체 가능시간</h3></div><p class="muted small" style="margin-bottom:10px">아래에서 원하는 팀원을 선택하면 공통 가능한 날짜와 시간이 자동으로 다른 색으로 표시됩니다.</p>
   <div class="chips" style="margin-bottom:8px">${names.map(n=>`<button type="button" class="chip ${state.aggregateMembers.includes(n)?'on':''}" onclick="toggleAggregateMember('${n}')">${n}</button>`).join('')}</div>
-  <div class="actions" style="margin-bottom:10px"><button class="btn tc-small-control" onclick="toggleAllAggregateMembers()">${state.aggregateMembers.length===names.length&&names.length?'이름선택해제':'이름전체선택'}</button><button class="btn ghost tc-small-control" onclick="clearAggregateMembers()">이름선택해제</button><button class="btn ghost tc-small-control" onclick="clearAggregateDates()">날짜선택해제</button></div>
+  <div class="actions" style="margin-bottom:10px"><button class="btn tc-large-control" onclick="toggleAllAggregateMembers()">${state.aggregateMembers.length===names.length&&names.length?'이름선택해제':'이름전체선택'}</button><button class="btn ghost tc-large-control" onclick="clearAggregateMembers()">이름선택해제</button><button class="btn ghost tc-large-control" onclick="clearAggregateDates()">날짜선택해제</button></div>
   <div id="aggregateCommonNotice" class="notice" style="display:none;margin-bottom:10px">*공통된 시간이 없습니다.</div>
   <div class="aggregate-availability">${aggregateAvailabilityCalendar()}</div>
   <div id="aggregateAvailabilityDetail" class="aggregate-detail">날짜를 선택해주세요.</div>
@@ -1765,7 +1843,7 @@ function compressTimes(times){const mins=[...new Set(times.map(getTimeMinutes).f
 function commonForDate(date,people){return commonIntervalsForDate(date,people);}
 function aggregateAvailabilityCalendar(){
   const year=aggregateAvailabilityCalendarDate.getFullYear(),month=aggregateAvailabilityCalendarDate.getMonth(),first=new Date(year,month,1),last=new Date(year,month+1,0),people=aggregateSelectedPeople();
-  let html=`<div class="availability-calendar-header"><button type="button" class="btn" onclick="moveAggregateAvailabilityMonth(-1)">◀</button><b>${year}년 ${month+1}월</b><button type="button" class="btn" onclick="moveAggregateAvailabilityMonth(1)">▶</button></div><div class="aggregate-calendar">${['일','월','화','수','목','금','토'].map(d=>`<div class="calhead">${d}</div>`).join('')}`;
+  let html=`<div class="availability-calendar-header"><button type="button" class="btn tc-large-control" onclick="moveAggregateAvailabilityMonth(-1)">◀</button><b>${year}년 ${month+1}월</b><button type="button" class="btn tc-large-control" onclick="moveAggregateAvailabilityMonth(1)">▶</button></div><div class="aggregate-calendar">${['일','월','화','수','목','금','토'].map(d=>`<div class="calhead">${d}</div>`).join('')}`;
   for(let i=0;i<first.getDay();i++)html+='<div class="aggregate-day empty"></div>';
   let anyCommon=false;
   for(let day=1;day<=last.getDate();day++){
@@ -1873,10 +1951,6 @@ function selectAvailabilityMember(member){
         <h3 style="margin:0">
           👤 ${member}
         </h3>
-
-        <span class="pill">
-          가능시간
-        </span>
 
       </div>
 
@@ -2206,10 +2280,6 @@ function updateSelectedMemberAvailability(){
         <h3 style="margin:0">
           👤 ${member}
         </h3>
-
-        <span class="pill">
-          가능시간 등록
-        </span>
 
       </div>
 
@@ -3452,15 +3522,15 @@ function renderAdminPracticeConfirmPanel(){
   const dates=state.confirmDates;
   syncConfirmPeople();
   return `<div class="card" style="margin-top:12px;background:#faf9ff">
-    <div class="section-title"><h3>🧮 연습 확정</h3><span class="pill">관리자</span></div>
+    <div class="section-title"><h3>🧮 연습 확정</h3></div>
     <label class="checkline"><input type="checkbox" ${state.confirmSameTime?'checked':''} onchange="toggleConfirmSameTime(this.checked)"> 선택한 날짜 모두 동일 한시간으로 적용</label>
     ${state.confirmSameTime?renderConfirmTimeArea('all'):dates.map(d=>`<div class="card" style="margin:8px 0"><b>📅 ${d}</b>${renderConfirmTimeArea(d)}</div>`).join('')}
     <div class="muted small" style="margin-top:10px">참여자는 각 날짜의 개인 가능시간을 기준으로 자동 계산됩니다.</div>
     <div class="field"><label>연습내용 (선택)</label><textarea id="confirmMemo" style="width:100%;min-height:70px" placeholder="연습내용을 입력하세요" oninput="state.confirmMemo=this.value">${state.confirmMemo||''}</textarea></div>
-    <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveConfirmedPractice()">연습 확정</button>
+    <button class="btn primary tc-large-control" style="width:100%;margin-top:10px" onclick="saveConfirmedPractice()">연습 확정</button>
   </div>`;
 }
-function renderConfirmTimeArea(key){const half=state.confirmHalfHour;const times=state.confirmTimesByDate[key]||[];const step=half?30:60;let html='';for(let m=0;m<=1440;m+=step){const t=formatMin(m);html+=`<button type="button" class="tc-time-btn ${times.includes(t)?'sel':''}" onclick="toggleConfirmTime('${key}','${t}')">${timeOptionLabel(t)}</button>`;}return `<div class="row" style="margin-top:10px"><b>연습시간</b><button class="btn" onclick="toggleConfirmHalfHour()">${half?'1시간 단위로 입력':'30분 단위로 입력'}</button></div><p class="muted small">시작 시간을 누른 뒤 끝 시간을 누르면 사이 시간이 자동 선택됩니다.</p><div class="tc-time-grid">${html}</div><button class="btn ghost" style="margin-top:8px" onclick="clearConfirmTimes('${key}')">시간 선택 초기화</button>`;}
+function renderConfirmTimeArea(key){const half=state.confirmHalfHour;const times=state.confirmTimesByDate[key]||[];const step=half?30:60;let html='';for(let m=0;m<=1440;m+=step){const t=formatMin(m);html+=`<button type="button" class="tc-time-btn ${times.includes(t)?'sel':''}" onclick="toggleConfirmTime('${key}','${t}')">${timeOptionLabel(t)}</button>`;}return `<div class="row" style="margin-top:10px"><b>연습시간</b><button class="btn tc-large-control" onclick="toggleConfirmHalfHour()">${half?'1시간 단위로 입력':'30분 단위로 입력'}</button></div><p class="muted small">시작 시간을 누른 뒤 끝 시간을 누르면 사이 시간이 자동 선택됩니다.</p><div class="tc-time-grid">${html}</div><button class="btn ghost tc-large-control" style="margin-top:8px" onclick="clearConfirmTimes('${key}')">시간 선택 초기화</button>`;}
 function toggleConfirmPerson(name){initConfirmState();const i=state.confirmPeople.indexOf(name);if(i>=0){state.confirmPeople.splice(i,1);if(!state.confirmExcludedPeople.includes(name))state.confirmExcludedPeople.push(name);if(Array.isArray(state.confirmManualPeople))state.confirmManualPeople=state.confirmManualPeople.filter(x=>x!==name);}else{state.confirmExcludedPeople=state.confirmExcludedPeople.filter(x=>x!==name);state.confirmPeople.push(name);}save();render();}
 function toggleConfirmSameTime(v){initConfirmState();state.confirmSameTime=v;state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
 function toggleConfirmHalfHour(){initConfirmState();state.confirmHalfHour=!state.confirmHalfHour;Object.keys(state.confirmTimesByDate).forEach(k=>state.confirmTimesByDate[k]=[]);state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
@@ -3528,13 +3598,17 @@ function admin(){
   if(!state.admin)return `<div class="card"><div class="empty">관리 권한이 있는 사용자만 입장 가능합니다</div></div>`;
   const t=state.theme||{};
   const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividBasePalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const vividAddedPalette=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7','#ffc8d8','#ffb9b9']; const vividPalette=[...vividBasePalette,...vividAddedPalette]; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const ddayPalette=vividPalette.map(c=>c==="#ffffff"?"#fff0d8":c==="#111827"?"#273b57":c); const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette); const swDday=(id,val)=>swWith(id,val,ddayPalette);
-  return `<div class="section-title"><h2>관리</h2><span class="pill">${state.role==="security"?"보안자":"관리자"}</span></div><div class="adminbar">상단 배너, 팀원, 사이트 디자인과 운영 기능을 관리합니다.</div>
+  return `<div class="section-title"><h2>관리</h2></div><div class="adminbar">상단 배너, 팀원, 사이트 디자인과 운영 기능을 관리합니다.</div>
   <div class="card"><h3>🪧 사이트 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><textarea id="loginTitle" rows="3" style="min-height:86px;resize:vertical" placeholder="줄바꿈은 Enter로 직접 지정할 수 있습니다.">${String(state.loginTitle||'THEATER CLOWN').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea><div class="muted small" style="margin-top:5px">직접 줄바꿈하지 않은 한 줄은 화면 폭을 넘기기 전에 글씨 크기가 자동으로 줄어듭니다.</div></div><div class="field"><label>첫 입장 화면 제목 글씨체</label><select id="loginTitleFont"><option value="bold" ${(state.loginTitleFont||'bold')==='bold'?'selected':''}>1. 기존 굵은 글씨체</option><option value="script" ${(state.loginTitleFont||'bold')==='script'?'selected':''}>2. 손글씨체</option><option value="serif" ${(state.loginTitleFont||'bold')==='serif'?'selected':''}>3. 우아한 명조체</option><option value="clean" ${(state.loginTitleFont||'bold')==='clean'?'selected':''}>4. 단정한 글씨체</option></select></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
   <div class="card"><h3>🎨 사이트 디자인 설정</h3>
   <div class="design-settings-grid">
     <div class="design-row divider-strong">
       <div class="field design-cell"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div>
       <div class="field design-cell"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div>
+    </div>
+    <div class="design-row divider-strong">
+      <div class="field design-cell"><label>하단 메뉴 색</label>${swVivid('thBottomMenuBg',t.bottomMenuBg||t.card||'#ffffff')}</div>
+      <div class="field design-cell"><label>하단 메뉴 글씨색</label>${swVivid('thBottomMenuText',t.bottomMenuText||t.primary||'#6657e8')}</div>
     </div>
     <div class="design-row divider-strong">
       <div class="field design-cell"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div>
@@ -3578,7 +3652,7 @@ function admin(){
     <button class="btn primary" onclick="saveTheme()">디자인 저장</button>
   </div>
 </div>
-  <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?state.members.map((m,i)=>`<div class="schedule-item"><div class="row"><div><b>${m.name}</b><div class="people">${m.pos}</div></div><span class="pill">팀원</span></div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
+  <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?`<div class="member-grid admin-member-grid">${state.members.map((m,i)=>`<div class="member-grid-item"><b>${m.name}</b><div class="people">${m.pos}</div><div class="member-cell-actions"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join('')}</div>`:`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
   ${state.role==="security"?securityOnlyAdminCards():""}`;
 }
 function formatVisitTime(value){
@@ -3590,13 +3664,13 @@ function roleLabel(role){return role==="security"?"보안자":role==="admin"?"�
 function accessLogPanel(){
   const logs=Object.values(state.accessLogs||{}).sort((a,b)=>String(b.lastAt||"").localeCompare(String(a.lastAt||"")));
   if(!logs.length)return `<div class="card"><h3>🧾 접속 기록</h3><div class="empty">아직 기록된 접속이 없습니다.</div></div>`;
-  return `<div class="card"><div class="section-title"><h3>🧾 접속 기록</h3><span class="pill">보안자 전용</span></div><p class="muted small">로그인 성공 횟수와 브라우저별 기기 기록입니다. 같은 종류의 기기도 기기 번호로 구분합니다.</p>${logs.map(r=>{const devices=Object.values(r.devices||{}).sort((a,b)=>(Number(a.deviceNo)||9999)-(Number(b.deviceNo)||9999)||String(a.firstAt||"").localeCompare(String(b.firstAt||"")));devices.forEach((d,index)=>{if(!d.deviceNo)d.deviceNo=index+1;});return `<details class="schedule-item"><summary style="cursor:pointer"><b>${String(r.name||"").replace(/</g,"&lt;")}</b> · ${roleLabel(r.role)} <span class="pill" style="margin-left:5px">${r.totalVisits||0}회</span><div class="people">최근 ${formatVisitTime(r.lastAt)} · 기기 ${devices.length}개</div></summary><div style="margin-top:9px" class="small"><div>최초 방문: ${formatVisitTime(r.firstAt)}</div>${devices.map(d=>`<div style="margin-top:7px;padding:8px;border:1px solid var(--line);border-radius:10px"><b>${String(d.label||"기기").replace(/</g,"&lt;")} · 기기 ${d.deviceNo}</b> · ${d.visits||0}회<br><span class="muted">최초 ${formatVisitTime(d.firstAt)} / 최근 ${formatVisitTime(d.lastAt)}</span></div>`).join("")}</div></details>`;}).join("")}</div>`;
+  return `<div class="card"><div class="section-title"><h3>🧾 접속 기록</h3><span class="pill">보안자 전용</span></div><p class="muted small">로그인 성공 횟수와 브라우저별 기기 기록입니다. 같은 종류의 기기도 기기 번호로 구분합니다.</p>${logs.map(r=>{const devices=Object.values(r.devices||{}).sort((a,b)=>(Number(a.deviceNo)||9999)-(Number(b.deviceNo)||9999)||String(a.firstAt||"").localeCompare(String(b.firstAt||"")));devices.forEach((d,index)=>{if(!d.deviceNo)d.deviceNo=index+1;});return `<details class="schedule-item"><summary style="cursor:pointer"><b>${roleLabel(r.role)} · ${String(r.name||"").replace(/</g,"&lt;")}-${r.totalVisits||0}회</b><div class="people">최근 ${formatVisitTime(r.lastAt)} · 기기 ${devices.length}개</div></summary><div style="margin-top:9px" class="small"><div>최초 방문: ${formatVisitTime(r.firstAt)}</div>${devices.map(d=>`<div style="margin-top:7px;padding:8px;border:1px solid var(--line);border-radius:10px"><b>${String(d.label||"기기").replace(/</g,"&lt;")} · 기기 ${d.deviceNo}</b> · ${d.visits||0}회<br><span class="muted">최초 ${formatVisitTime(d.firstAt)} / 최근 ${formatVisitTime(d.lastAt)}</span></div>`).join("")}</div></details>`;}).join("")}</div>`;
 }
 function securityOnlyAdminCards(){
   return `<div class="card"><div class="section-title"><h3>🔑 입장 코드 관리</h3><span class="pill">보안자 전용</span></div><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><div class="field"><label>보안자 입장 코드</label><input id="newSecurityCode" type="password" value="${state.securityCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>${accessLogPanel()}<div class="card"><div class="section-title"><h3>⚠️ 새 공연 시작 / 초기화</h3><span class="pill">보안자 전용</span></div><p class="muted">연습일정, 스케줄 조율, 공지/자료, 공연/극장일정, 팀원 정보, 접속기록을 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div>`;
 }
-function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.ddayFont=document.getElementById('thDdayFont')?.value||t.ddayFont||'original';t.ddayMarkShape=document.getElementById('thDdayMarkShape')?.value||t.ddayMarkShape||'circle';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('디자인 설정이 저장되었습니다.');render();}
-function setThemeMode(mode){state.theme=state.theme||{};const keep={ddayFont:state.theme.ddayFont||'original',ddayMarkShape:state.theme.ddayMarkShape||'circle'};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#d77b8c'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#fffaf3',ddayText:'#a63a42'});}Object.assign(state.theme,keep);save();applyTheme();render();}
+function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.bottomMenuBg=pick('thBottomMenuBg')||t.bottomMenuBg||t.card||'#ffffff';t.bottomMenuText=pick('thBottomMenuText')||t.bottomMenuText||t.primary||'#6657e8';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.ddayFont=document.getElementById('thDdayFont')?.value||t.ddayFont||'original';t.ddayMarkShape=document.getElementById('thDdayMarkShape')?.value||t.ddayMarkShape||'circle';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('디자인 설정이 저장되었습니다.');render();}
+function setThemeMode(mode){state.theme=state.theme||{};const keep={ddayFont:state.theme.ddayFont||'original',ddayMarkShape:state.theme.ddayMarkShape||'circle'};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',bottomMenuBg:'#252a40',bottomMenuText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#d77b8c'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',bottomMenuBg:'#ffffff',bottomMenuText:'#6657e8',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#fffaf3',ddayText:'#a63a42'});}Object.assign(state.theme,keep);save();applyTheme();render();}
 function openShowDatesModal(){
   const existing=getShowDates();const map={};existing.forEach(x=>map[x.date]=x.time||'19:00');let dates=Object.keys(map);let view=new Date();view.setDate(1);const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>공연 날짜/시간 설정</h3><div id="sdCal"></div><div id="sdTimes" style="margin-top:12px"></div><div class="tc-actions"><button class="btn danger" id="sdCancel">취소</button><button class="btn primary" id="sdSave">저장</button></div></div>`;document.body.appendChild(bg);const pad=n=>String(n).padStart(2,'0');let times={...map};function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="sdPrev">◀</button><b>${y}년 ${m+1}월</b><button id="sdNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#sdCal').innerHTML=h+'</div>';bg.querySelectorAll('#sdCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v)){dates=dates.filter(x=>x!==v);delete times[v];}else{dates.push(v);times[v]='19:00';}renderCal();renderTimes();});bg.querySelector('#sdPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#sdNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
   function renderTimes(){const list=dates.slice().sort();bg.querySelector('#sdTimes').innerHTML=list.length?`<div class="field"><label>선택한 날짜별 공연 시간</label>${list.map(v=>`<div class="field"><label>${v}</label><input class="sd-time" data-date="${v}" type="time" value="${times[v]||'19:00'}"></div>`).join('')}</div>`:`<div class="empty">날짜를 선택해주세요.</div>`;}
