@@ -285,6 +285,58 @@ button[data-member]:not(.danger){background:var(--large-button-bg,var(--primary)
 .aggregate-day.selected .aggregate-count{color:var(--small-button-text,var(--button-text,#fff))!important}
 .btn.danger{background:#fff0f2!important;color:var(--danger)!important;border-color:#ffd2d9!important}
 
+
+/* ===== v16: persistent visual feedback for selectable buttons =====
+   Selected/toggled controls remain visibly different until the selection is cleared.
+   When their state class is removed, they automatically return to the administrator-set base colors. */
+button,.btn,.chip,.time-slot,.tc-time-btn,.tc-type,.tc-day,.availability-day,.aggregate-day{
+  transition:filter .14s ease,box-shadow .14s ease,transform .14s ease,opacity .14s ease;
+}
+
+/* Small selectable controls */
+.tc-time-btn.sel,
+.tc-type.sel,
+.chip.on,
+.time-slot.on,
+.tc-day.sel,
+.availability-day.selected,
+.aggregate-day.selected{
+  filter:brightness(.82) saturate(1.08)!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.58),0 2px 7px rgba(23,27,45,.16)!important;
+  transform:translateY(1px);
+  font-weight:800;
+}
+
+/* Large selectable controls: bottom menu, segmented filters, member-name controls */
+.seg button.active,
+.bottom button.active,
+button[data-member].active{
+  filter:brightness(.82) saturate(1.08)!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.58),0 2px 7px rgba(23,27,45,.16)!important;
+  transform:translateY(1px);
+  font-weight:800;
+}
+
+/* Preserve clear selection even when the chosen administrator color is black. */
+.tc-time-btn.sel,
+.tc-type.sel,
+.chip.on,
+.time-slot.on,
+.tc-day.sel,
+.availability-day.selected,
+.aggregate-day.selected,
+.seg button.active,
+.bottom button.active,
+button[data-member].active{
+  outline:2px solid rgba(23,27,45,.32);
+  outline-offset:-2px;
+}
+
+/* Non-persistent press feedback for action buttons only. */
+button:not(.swatch):active{
+  transform:translateY(1px) scale(.985);
+}
+
 </style>
 </head>
 <body>
@@ -377,10 +429,13 @@ if(configured){
 <script>
 const DEFAULT_ENTRY_CODE="2026";
 const DEFAULT_ADMIN_CODE="THEATER2026";
+const DEFAULT_SECURITY_CODE="SECURITY2026";
 
 const state={
   logged:false,
   admin:false,
+  role:"visitor",
+  currentUserName:"",
   tab:"home",
   view:"week",
   showName:"THEATER-CLOWN",
@@ -391,6 +446,7 @@ const state={
   showDates:[{date:"2026-10-24",time:"19:00"}],
   entryCode:DEFAULT_ENTRY_CODE,
   adminCode:DEFAULT_ADMIN_CODE,
+  securityCode:DEFAULT_SECURITY_CODE,
   members:[
     {name:"김○○",pos:"배우",joined:true},
     {name:"이○○",pos:"배우",joined:true},
@@ -413,12 +469,13 @@ const state={
   ],
   availability:{},
   aggregateMembers:[],
+  accessLogs:{},
   theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
 };
 
 const TC_LOCAL_ONLY_KEYS=new Set([
-  "logged","admin","tab","view","practiceDate",
-  "_ddayEdit","_confirmAnchor"
+  "logged","admin","role","currentUserName","tab","view","practiceDate",
+  "_ddayEdit","_confirmAnchor","_pendingRole"
 ]);
 
 function cloudStatePayload(){
@@ -448,13 +505,15 @@ function save(){
 }
 window.__TC_applyCloudState=function(remote){
   if(!remote || typeof remote!=="object") return;
-  const session={logged:state.logged,admin:state.admin,tab:state.tab,view:state.view,practiceDate:state.practiceDate};
+  const session={logged:state.logged,admin:state.admin,role:state.role,currentUserName:state.currentUserName,tab:state.tab,view:state.view,practiceDate:state.practiceDate};
   Object.entries(remote).forEach(([k,v])=>{
     if(!TC_LOCAL_ONLY_KEYS.has(k) && !k.startsWith("_")) state[k]=v;
   });
   Object.assign(state,session);
   state.entryCode=state.entryCode||DEFAULT_ENTRY_CODE;
   state.adminCode=state.adminCode||DEFAULT_ADMIN_CODE;
+  state.securityCode=state.securityCode||DEFAULT_SECURITY_CODE;
+  if(!state.accessLogs||typeof state.accessLogs!=="object") state.accessLogs={};
   if(!Array.isArray(state.showDates)) state.showDates=state.showDate?[{date:state.showDate,time:state.showTime||""}]:[];
   if(state.bannerSmallName===undefined||state.bannerSmallName===null) state.bannerSmallName=state.venue||"";
   if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
@@ -471,9 +530,13 @@ function load(){
       Object.assign(state,saved);
       state.logged=false;
       state.admin=false;
+      state.role="visitor";
+      state.currentUserName="";
       state.tab="home";
       state.entryCode=state.entryCode||DEFAULT_ENTRY_CODE;
       state.adminCode=state.adminCode||DEFAULT_ADMIN_CODE;
+      state.securityCode=state.securityCode||DEFAULT_SECURITY_CODE;
+      if(!state.accessLogs||typeof state.accessLogs!=="object") state.accessLogs={};
     }
   }catch(e){}
 }
@@ -481,6 +544,8 @@ load();
 if(!Array.isArray(state.showDates)) state.showDates=state.showDate?[{date:state.showDate,time:state.showTime||""}]:[];
 if(state.bannerSmallName===undefined||state.bannerSmallName===null) state.bannerSmallName=state.venue||"";
 if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
+if(!state.accessLogs||typeof state.accessLogs!=="object") state.accessLogs={};
+state.securityCode=state.securityCode||DEFAULT_SECURITY_CODE;
 if(!state.theme) state.theme={};
 /* v13: every theme palette is fixed to 12 colors in a 6 x 2 grid.
    Non-background palettes are more varied while keeping white/black and excluding red tones. */
@@ -495,7 +560,7 @@ function app(){
     <header>
       <div class="brand">
         <div><b>🎭 ${state.showName}</b><br><small>${state.bannerSmallName||""}</small></div>
-        <span class="pill">${state.admin?"관리자":"방문자"}</span>
+        <span class="pill">${state.role==="security"?"보안자":state.admin?"관리자":"방문자"}</span>
       </div>
 
     </header>
@@ -505,7 +570,7 @@ function app(){
       <button onclick="go('practice')" class="${state.tab==='practice'?'active':''}"><span>📅</span>일정</button>
       <button onclick="go('schedule')" class="${state.tab==='schedule'?'active':''}"><span>✓</span>조율</button>
       <button onclick="go('notice')" class="${state.tab==='notice'?'active':''}"><span>📢</span>공지&자료</button>
-      <button onclick="${state.admin?"go(\'admin\')":"alert(\'관리자만 입장 가능합니다\')"}" class="${state.tab==='admin'?'active':''}"><span>⚙️</span>관리자</button>
+      <button onclick="${state.admin?"go(\'admin\')":"alert(\'관리 권한이 있는 사용자만 입장 가능합니다\')"}" class="${state.tab==='admin'?'active':''}"><span>⚙️</span>관리</button>
     </nav>`;
   render();
 }
@@ -523,40 +588,118 @@ function login(){
           </div>
           <button class="loginbtn codebtn" onclick="enterSite()">입장하기</button>
         </div>
-        <div class="fine">일반 입장 코드는 일반 방문자로, 관리자 코드는 관리자 화면으로 입장합니다.</div>
+        <div class="fine">일반·관리자 코드는 등록된 팀원 이름 확인 후 입장하며, 보안자 코드는 이름 확인 없이 바로 입장합니다.</div>
       </div>
     </section>`;
 }
 
 function enterSite(){
-  const code=document.getElementById("entryCodeInput").value.trim();
+  const code=document.getElementById("entryCodeInput")?.value.trim();
   if(!code){alert("입장 코드를 입력해주세요.");return;}
+  if(code===state.securityCode){
+    finishLogin("security","보안자");
+    return;
+  }
   if(code===state.adminCode){
-    state.logged=true;
-    state.admin=true;
-    state.tab="home";
-    app();
+    state._pendingRole="admin";
+    showNameLogin();
     return;
   }
   if(code===state.entryCode){
-    state.logged=true;
-    state.admin=false;
-    state.tab="home";
-    app();
+    state._pendingRole="visitor";
+    showNameLogin();
     return;
   }
   alert("입장 코드가 올바르지 않습니다.");
 }
 
+function showNameLogin(){
+  const roleLabel=state._pendingRole==="admin"?"관리자":"일반 방문자";
+  document.getElementById("app").innerHTML=`
+    <section class="login">
+      <div class="loginbox">
+        <div class="logo">${(state.loginTitle||"THEATER CLOWN").replace(/\n/g,"<br>")}</div>
+        <p>${roleLabel} 2차 확인</p>
+        <div class="card" style="margin-top:22px">
+          <div class="field">
+            <label>이름</label>
+            <input id="memberNameInput" type="text" autocomplete="off" placeholder="등록된 팀원 이름을 입력하세요" onkeydown="if(event.key==='Enter')verifyMemberName()">
+          </div>
+          <button class="loginbtn codebtn" onclick="verifyMemberName()">이름 확인 후 입장</button>
+          <button class="btn ghost" style="width:100%;margin-top:6px" onclick="state._pendingRole=null;login()">이전으로</button>
+        </div>
+        <div class="fine">팀원 관리에 등록된 이름과 정확히 일치해야 입장할 수 있습니다.</div>
+      </div>
+    </section>`;
+}
+
+function verifyMemberName(){
+  const input=document.getElementById("memberNameInput");
+  const name=(input?.value||"").trim();
+  if(!name){alert("이름을 입력해주세요.");return;}
+  const member=(state.members||[]).find(m=>String(m.name||"").trim()===name);
+  if(!member){alert("등록되어있지않습니다");return;}
+  finishLogin(state._pendingRole==="admin"?"admin":"visitor",member.name);
+}
+
+function getDeviceId(){
+  let id=localStorage.getItem("theaterClownDeviceId");
+  if(!id){
+    id=(crypto.randomUUID?crypto.randomUUID():"dev_"+Date.now().toString(36)+Math.random().toString(36).slice(2));
+    localStorage.setItem("theaterClownDeviceId",id);
+  }
+  return id;
+}
+function getDeviceLabel(){
+  const ua=navigator.userAgent||"";
+  let device=/iPhone/i.test(ua)?"iPhone":/iPad/i.test(ua)?"iPad":/Android/i.test(ua)?"Android":/Windows/i.test(ua)?"Windows":/Macintosh|Mac OS X/i.test(ua)?"macOS":"기타 기기";
+  let browser=/Edg\//i.test(ua)?"Edge":/CriOS|Chrome\//i.test(ua)?"Chrome":/FxiOS|Firefox\//i.test(ua)?"Firefox":/Safari\//i.test(ua)?"Safari":"브라우저";
+  return `${device} · ${browser}`;
+}
+function recordAccess(name,role){
+  if(!state.accessLogs||typeof state.accessLogs!=="object") state.accessLogs={};
+  const key=encodeURIComponent(`${role}|${name}`);
+  const now=new Date().toISOString();
+  const id=getDeviceId();
+  const rec=state.accessLogs[key]||{name,role,totalVisits:0,firstAt:now,lastAt:now,devices:{}};
+  rec.name=name;rec.role=role;rec.totalVisits=(rec.totalVisits||0)+1;rec.firstAt=rec.firstAt||now;rec.lastAt=now;
+  rec.devices=rec.devices||{};
+  // Keep a stable device number per person/role. Existing records are migrated by first visit order.
+  const existingDevices=Object.values(rec.devices);
+  existingDevices
+    .sort((a,b)=>String(a.firstAt||"").localeCompare(String(b.firstAt||"")))
+    .forEach((device,index)=>{if(!device.deviceNo) device.deviceNo=index+1;});
+  const nextDeviceNo=existingDevices.reduce((max,device)=>Math.max(max,Number(device.deviceNo)||0),0)+1;
+  const d=rec.devices[id]||{id,label:getDeviceLabel(),deviceNo:nextDeviceNo,visits:0,firstAt:now,lastAt:now};
+  if(!d.deviceNo)d.deviceNo=nextDeviceNo;
+  d.label=getDeviceLabel();d.visits=(d.visits||0)+1;d.firstAt=d.firstAt||now;d.lastAt=now;
+  rec.devices[id]=d;
+  state.accessLogs[key]=rec;
+  save();
+}
+function finishLogin(role,name){
+  state.logged=true;
+  state.role=role;
+  state.admin=role==="admin"||role==="security";
+  state.currentUserName=name||"";
+  state._pendingRole=null;
+  state.tab="home";
+  recordAccess(state.currentUserName||"보안자",role);
+  app();
+}
+
 function logout(){
   state.logged=false;
   state.admin=false;
+  state.role="visitor";
+  state.currentUserName="";
+  state._pendingRole=null;
   state.tab="home";
   app();
 }
 function go(tab){
   if(tab==="admin" && !state.admin){
-    alert("관리자만 입장 가능합니다");
+    alert("관리 권한이 있는 사용자만 입장 가능합니다");
     return;
   }
   state.tab=tab;
@@ -2737,15 +2880,28 @@ function editNotice(i){noticeModal(state.notices[i],x=>Object.assign(state.notic
 function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);save();render()}
 function deleteNotice(i){if(confirm('이 공지/자료를 삭제할까요?')){state.notices.splice(i,1);save();render()}}
 function admin(){
-  if(!state.admin)return `<div class="card"><div class="empty">관리자만 입장 가능합니다</div></div>`;
+  if(!state.admin)return `<div class="card"><div class="empty">관리 권한이 있는 사용자만 입장 가능합니다</div></div>`;
   const t=state.theme||{};
   const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividPalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette);
-  return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div><div class="adminbar">상단 배너, 팀원, 입장코드, 사이트 디자인을 관리합니다.</div>
+  return `<div class="section-title"><h2>관리</h2><span class="pill">${state.role==="security"?"보안자":"관리자"}</span></div><div class="adminbar">상단 배너, 팀원, 사이트 디자인과 운영 기능을 관리합니다.</div>
   <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
   <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>큰 버튼 글씨색</label>${swVivid('thLargeButtonText',t.largeButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>작은 버튼 색</label>${swVivid('thSmallButtonBg',t.smallButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>작은 버튼 글씨색</label>${swVivid('thSmallButtonText',t.smallButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${swVivid('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${swVivid('thDdayText',t.ddayText||'#ffffff')}</div></div><div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><h3 style="margin-bottom:8px">🏷️ 안내 아이콘 색상 설정</h3><p class="muted small" style="margin-top:0">상단 관리자/방문자, 일정 인원수, 조율 안내, 공지 종류 등 작은 안내 아이콘에 일괄 적용됩니다.</p><div class="theme-grid"><div class="field"><label>안내 아이콘 배경색</label>${swVivid('thBadgeBg',t.badgeBg||t.primary||'#6657e8')}</div><div class="field"><label>안내 아이콘 글씨색</label>${swVivid('thBadgeText',t.badgeText||'#ffffff')}</div></div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
   <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?state.members.map((m,i)=>`<div class="schedule-item"><div class="row"><div><b>${m.name}</b><div class="people">${m.pos}</div></div><span class="pill">팀원</span></div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
-  <div class="card"><h3>🔑 입장 코드 관리</h3><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>
-  <div class="card"><h3>⚠️ 새 공연 시작 / 초기화</h3><p class="muted">연습일정,스케줄 조율, 공지/자료, 공연/극장 일정, 팀원 정보를 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div><div class="card"><button class="btn danger" style="width:100%" onclick="logout()">관리자 나가기</button></div>`;
+  ${state.role==="security"?securityOnlyAdminCards():""}`;
+}
+function formatVisitTime(value){
+  if(!value)return "-";
+  const d=new Date(value);if(Number.isNaN(d.getTime()))return String(value);
+  return d.toLocaleString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+}
+function roleLabel(role){return role==="security"?"보안자":role==="admin"?"관리자":"일반";}
+function accessLogPanel(){
+  const logs=Object.values(state.accessLogs||{}).sort((a,b)=>String(b.lastAt||"").localeCompare(String(a.lastAt||"")));
+  if(!logs.length)return `<div class="card"><h3>🧾 접속 기록</h3><div class="empty">아직 기록된 접속이 없습니다.</div></div>`;
+  return `<div class="card"><div class="section-title"><h3>🧾 접속 기록</h3><span class="pill">보안자 전용</span></div><p class="muted small">로그인 성공 횟수와 브라우저별 기기 기록입니다. 같은 종류의 기기도 기기 번호로 구분합니다.</p>${logs.map(r=>{const devices=Object.values(r.devices||{}).sort((a,b)=>(Number(a.deviceNo)||9999)-(Number(b.deviceNo)||9999)||String(a.firstAt||"").localeCompare(String(b.firstAt||"")));devices.forEach((d,index)=>{if(!d.deviceNo)d.deviceNo=index+1;});return `<details class="schedule-item"><summary style="cursor:pointer"><b>${String(r.name||"").replace(/</g,"&lt;")}</b> · ${roleLabel(r.role)} <span class="pill" style="margin-left:5px">${r.totalVisits||0}회</span><div class="people">최근 ${formatVisitTime(r.lastAt)} · 기기 ${devices.length}개</div></summary><div style="margin-top:9px" class="small"><div>최초 방문: ${formatVisitTime(r.firstAt)}</div>${devices.map(d=>`<div style="margin-top:7px;padding:8px;border:1px solid var(--line);border-radius:10px"><b>${String(d.label||"기기").replace(/</g,"&lt;")} · 기기 ${d.deviceNo}</b> · ${d.visits||0}회<br><span class="muted">최초 ${formatVisitTime(d.firstAt)} / 최근 ${formatVisitTime(d.lastAt)}</span></div>`).join("")}</div></details>`;}).join("")}</div>`;
+}
+function securityOnlyAdminCards(){
+  return `<div class="card"><div class="section-title"><h3>🔑 입장 코드 관리</h3><span class="pill">보안자 전용</span></div><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><div class="field"><label>보안자 입장 코드</label><input id="newSecurityCode" type="password" value="${state.securityCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>${accessLogPanel()}<div class="card"><div class="section-title"><h3>⚠️ 새 공연 시작 / 초기화</h3><span class="pill">보안자 전용</span></div><p class="muted">연습일정, 스케줄 조율, 공지/자료, 공연/극장일정, 팀원 정보, 접속기록을 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div>`;
 }
 function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';/* keep legacy keys synchronized for older saved data / non-button accents */t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('색상 설정이 저장되었습니다.');render();}
 function setThemeMode(mode){state.theme=state.theme||{};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#111827',ddayText:'#ffffff'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#ffffff'});}save();applyTheme();render();}
@@ -2764,17 +2920,21 @@ function deleteMember(i){
   }
 }
 function saveCodes(){
+  if(state.role!=="security"){alert("보안자만 입장 코드를 변경할 수 있습니다.");return;}
   const entry=document.getElementById("newEntryCode").value.trim();
   const admin=document.getElementById("newAdminCode").value.trim();
-  if(!entry||!admin){alert("두 코드를 모두 입력해주세요.");return;}
-  if(entry===admin){alert("기본 입장 코드와 관리자 코드는 서로 다르게 설정해주세요.");return;}
+  const security=document.getElementById("newSecurityCode").value.trim();
+  if(!entry||!admin||!security){alert("세 코드를 모두 입력해주세요.");return;}
+  if(new Set([entry,admin,security]).size!==3){alert("일반, 관리자, 보안자 코드는 서로 다르게 설정해주세요.");return;}
   state.entryCode=entry;
   state.adminCode=admin;
+  state.securityCode=security;
   save();
   alert("입장 코드가 저장되었습니다. 다음 입장부터 적용됩니다.");
-  app();
+  render();
 }
 function resetShow(){
+  if(state.role!=="security"){alert("보안자만 공연 데이터를 초기화할 수 있습니다.");return;}
   if(confirm("정말 공연 데이터를 초기화할까요?")){
     state.schedules=[];
     state.stage=[];
@@ -2792,11 +2952,12 @@ function resetShow(){
     state.confirmManualPeople=[];
     state.confirmExcludedPeople=[];
     state.confirmMemo="";
+    state.accessLogs={};
     state._ddayEdit=null;
     save();
     applyTheme();
     render();
-    alert("공연 데이터가 초기화되었습니다. D-day는 END로 표시됩니다.");
+    alert("공연 데이터와 접속 기록이 초기화되었습니다. D-day는 END로 표시됩니다.");
   }
 }
 
