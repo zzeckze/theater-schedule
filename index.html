@@ -1656,10 +1656,75 @@ function openScheduleModal(){
 function editPractice(i){
   const x=state.schedules[i]; if(!x)return; const host=document.querySelector(`[data-schedule-index="${i}"]`); if(!host)return; host.querySelector('.tc-inline-edit')?.remove();
   const ed=document.createElement('div');ed.className='tc-inline-edit';
-  const existingTimes=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]; let selected=existingTimes.slice(); let anchor=null; const step=30;
-  ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
+  const step=30;
+  let selected=[];
+  const parsedExisting=parseTimeIntervals(x.time||'');
+  parsedExisting.forEach(range=>{
+    for(let m=range.start;m<=range.end;m+=step){
+      const t=formatMin(m);
+      if(!selected.includes(t)) selected.push(t);
+    }
+  });
+  if(!selected.length){
+    selected=[...new Set((String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]))];
+  }
+  selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));
+
+  // 기존 시간이 있으면 개별 토글 모드로 시작한다.
+  // 모든 시간을 해제한 뒤에는 첫 클릭=시작, 두 번째 클릭=끝으로 범위를 자동 선택한다.
+  let anchor=null;
+  let rangePickMode=selected.length===0;
+
+  ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="people" style="margin-bottom:8px">기존 시간은 범위 전체가 선택됩니다. 선택된 시간은 다시 누르면 해제되고, 모두 해제된 뒤에는 시작 시간과 끝 시간을 차례로 누르면 사이 시간이 자동 선택됩니다.</div><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
   host.appendChild(ed);
-  function draw(){ed.querySelector('#ieTimes').innerHTML=Array.from({length:Math.floor(1440/step)+1},(_,j)=>{const t=formatMin(j*step);return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${timeOptionLabel(t)}</button>`}).join('');ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(anchor){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=step)if(!selected.includes(formatMin(m)))selected.push(formatMin(m));selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));anchor=null;}else{anchor=v;if(!selected.includes(v))selected.push(v);}draw();});}
+
+  function draw(){
+    ed.querySelector('#ieTimes').innerHTML=Array.from({length:Math.floor(1440/step)+1},(_,j)=>{
+      const t=formatMin(j*step);
+      return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${timeOptionLabel(t)}</button>`;
+    }).join('');
+
+    ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v;
+      const isSelected=selected.includes(v);
+
+      if(rangePickMode){
+        // 모든 시간이 비어 있는 상태: 1회차는 시작점, 2회차는 끝점.
+        if(anchor===null){
+          selected=[v];
+          anchor=v;
+        }else if(v===anchor){
+          // 시작점을 다시 누르면 선택 취소 후 처음부터 다시 시작.
+          selected=[];
+          anchor=null;
+        }else{
+          const from=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));
+          const to=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));
+          selected=[];
+          for(let m=from;m<=to;m+=step) selected.push(formatMin(m));
+          anchor=null;
+          rangePickMode=false;
+        }
+      }else{
+        // 기존 선택이 있는 동안에는 각 시간을 완전히 독립적으로 켜고 끈다.
+        if(isSelected){
+          selected=selected.filter(t=>t!==v);
+        }else{
+          selected.push(v);
+          selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));
+        }
+
+        // 마지막 선택까지 모두 해제되면 다음 클릭부터 다시 시작/끝 범위 선택 모드.
+        if(!selected.length){
+          anchor=null;
+          rangePickMode=true;
+        }
+      }
+
+      draw();
+    });
+  }
+
   ed.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{ed.querySelectorAll('[data-t]').forEach(z=>z.classList.remove('sel'));b.classList.add('sel')});ed.querySelectorAll('#iePeople .chip').forEach(b=>b.onclick=()=>b.classList.toggle('on'));ed.querySelector('#ieCancel').onclick=()=>ed.remove();ed.querySelector('#ieSave').onclick=()=>{const date=ed.querySelector('#ieDate').value;if(!date||!selected.length)return alert('날짜와 시간을 선택해주세요.');x.date=date;x.time=compressTimes(selected).join(' / ');x.type=ed.querySelector('#ieTypes .sel')?.dataset.t||x.type;x.title=x.type;x.people=[...ed.querySelectorAll('#iePeople .chip.on')].map(b=>b.dataset.name);x.memo=ed.querySelector('#ieMemo').value.trim();scheduleId(x);x._syncSnapshot={};x.people.forEach(n=>{const e=getAvailabilityEntry(n,x.date);x._syncSnapshot[n]=e?.time||null;});save();render()};draw();
 }
 function cancelPractice(i){
