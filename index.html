@@ -251,9 +251,41 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 @media(max-width:430px){.tc-time-grid{grid-template-columns:repeat(3,1fr)}.tc-types{grid-template-columns:repeat(2,1fr)}}
 
 
-.swatches{display:flex;flex-wrap:wrap;gap:7px}.swatch{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,.12);cursor:pointer}.swatch.sel{outline:3px solid var(--primary);outline-offset:2px}.tc-inline-edit{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.tc-inline-edit textarea{width:100%;min-height:90px;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px}.schedule-item .time{font-weight:800}.schedule-item .date-line{font-weight:800}.schedule-item .kind-line{opacity:.7;font-size:12px;margin-top:3px}.tc-time-grid{max-height:260px;overflow:auto}
+.swatches{display:flex;flex-wrap:wrap;gap:7px}.palette-grid{display:grid;grid-template-columns:repeat(6,30px);grid-auto-rows:30px;gap:7px;width:max-content;max-width:100%}.swatch{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,.12);cursor:pointer}.swatch.sel{outline:3px solid var(--primary);outline-offset:2px}.tc-inline-edit{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.tc-inline-edit textarea{width:100%;min-height:90px;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px}.schedule-item .time{font-weight:800}.schedule-item .date-line{font-weight:800}.schedule-item .kind-line{opacity:.7;font-size:12px;margin-top:3px}.tc-time-grid{max-height:260px;overflow:auto}
 .dday-editor{background:var(--dday-bg);color:var(--dday-text);padding:18px;border-radius:18px;margin-bottom:12px}.dday-editor .card{color:var(--ink)}.dday-editor .field label{color:inherit}.tc-small-control{font-size:11px!important;padding:6px 8px!important}.chips .chip{font-size:12px;padding:7px 9px}.schedule-item .date-line,.schedule-item .time,.schedule-item .kind-line{display:block}.schedule-item .date-line{font-size:13px}.schedule-item .time{font-size:15px;margin-top:2px}.schedule-item .kind-line{font-weight:800;font-size:13px;margin-top:2px}.schedule-item .content-note{font-weight:400;font-size:13px;margin-top:3px}.content-scroll{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;max-height:220px;overflow:auto}
-.schedule-card .schedule-date{font-size:20px;font-weight:900;line-height:1.2;margin-bottom:4px}.schedule-card .schedule-time{font-size:15px;font-weight:800}.schedule-card .schedule-kind{font-size:13px;font-weight:800;margin-top:5px}.schedule-people,.schedule-memo{margin-top:8px;font-size:13px}.schedule-special-note{margin-top:9px}.schedule-card .schedule-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.schedule-card .schedule-main{min-width:0}.schedule-card .pill{flex:none}</style>
+.schedule-card .schedule-date{font-size:20px;font-weight:900;line-height:1.2;margin-bottom:4px}.schedule-card .schedule-time{font-size:15px;font-weight:800}.schedule-card .schedule-kind{font-size:13px;font-weight:800;margin-top:5px}.schedule-people,.schedule-memo{margin-top:8px;font-size:13px}.schedule-special-note{margin-top:9px}.schedule-card .schedule-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.schedule-card .schedule-main{min-width:0}.schedule-card .pill{flex:none}.tc-aggregate-display{display:block;white-space:nowrap;font-size:11px;line-height:1.25;margin-top:2px}
+
+/* ===== v8: aggregate calendar readability + unified controls/badges ===== */
+.pill{background:var(--badge-bg,#6657e8)!important;color:var(--badge-text,#fff)!important;border-color:var(--badge-bg,#6657e8)!important}
+.aggregate-calendar{gap:7px}
+.aggregate-calendar .calhead{font-size:12px;padding:8px 0}
+.aggregate-day{min-height:88px;padding:8px 3px;border-radius:13px;font-size:13px;line-height:1.15}
+.aggregate-day>b{display:block;font-size:14px;line-height:1;font-weight:900}
+.aggregate-count{margin-top:7px;font-size:10px;line-height:1.3;font-weight:800;white-space:normal;overflow-wrap:anywhere;word-break:keep-all}
+@media(max-width:430px){.aggregate-day{min-height:82px;padding:7px 2px}.aggregate-day>b{font-size:13px}.aggregate-count{font-size:9.5px}}
+
+/* v9: button palette is split by role/location, not physical dimensions.
+   Large group: bottom navigation, segmented page filters, and member-name buttons in availability.
+   Small group: all remaining normal clickable controls. Danger/cancel/delete remain red. */
+.btn:not(.danger),
+.loginbtn:not(.danger),
+.tc-month-head button:not(.danger),
+.time-slot:not(.danger),
+.tc-time-btn:not(.danger),
+.tc-type:not(.danger),
+.chip:not(.danger){background:var(--small-button-bg,var(--primary))!important;color:var(--small-button-text,var(--button-text,#fff))!important;border-color:var(--small-button-bg,var(--primary))!important}
+.btn:not(.danger).ghost{background:var(--small-button-bg,var(--primary))!important;color:var(--small-button-text,var(--button-text,#fff))!important;border-color:var(--small-button-bg,var(--primary))!important}
+/* Large-button group requested by administrator settings */
+.bottom button:not(.danger),
+.seg button:not(.danger),
+button[data-member]:not(.danger){background:var(--large-button-bg,var(--primary))!important;color:var(--large-button-text,var(--button-text,#fff))!important;border-color:var(--large-button-bg,var(--primary))!important}
+.tc-day.sel,.availability-day.selected,.aggregate-day.selected{background:var(--small-button-bg,var(--primary))!important;color:var(--small-button-text,var(--button-text,#fff))!important;border-color:var(--small-button-bg,var(--primary))!important}
+.tc-time-btn.sel,.tc-type.sel,.chip.on,.time-slot.on{color:var(--small-button-text,var(--button-text,#fff))!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45)}
+.seg button.active,.bottom button.active,button[data-member].active{color:var(--large-button-text,var(--button-text,#fff))!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45)}
+.aggregate-day.selected .aggregate-count{color:var(--small-button-text,var(--button-text,#fff))!important}
+.btn.danger{background:#fff0f2!important;color:var(--danger)!important;border-color:#ffd2d9!important}
+
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -268,6 +300,7 @@ const state={
   view:"week",
   showName:"THEATER-CLOWN",
   venue:"문학씨어터",
+  bannerSmallName:"문학씨어터",
   showDate:"2026-10-24",
   showTime:"19:00",
   showDates:[{date:"2026-10-24",time:"19:00"}],
@@ -295,7 +328,7 @@ const state={
   ],
   availability:{},
   aggregateMembers:[],
-  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
+  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
 };
 
 function save(){
@@ -316,9 +349,13 @@ function load(){
 }
 load();
 if(!Array.isArray(state.showDates)) state.showDates=state.showDate?[{date:state.showDate,time:state.showTime||""}]:[];
+if(state.bannerSmallName===undefined||state.bannerSmallName===null) state.bannerSmallName=state.venue||"";
 if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
 if(!state.theme) state.theme={};
-function applyTheme(){const t=state.theme||{};const root=document.documentElement;root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",t.primary||"#6657e8");root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--button-text",t.buttonText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
+/* v13: every theme palette is fixed to 12 colors in a 6 x 2 grid.
+   Non-background palettes are more varied while keeping white/black and excluding red tones. */
+(()=>{const map={'#7f86cf':'#a99bf3','#9b86bd':'#8fc8f6','#c89a68':'#f3bd7f','#b6a162':'#f1d46f','#72a58a':'#8fd8c0','#739fac':'#7fd6dc','#9685bd':'#d5b7f5','#ad84a2':'#b8d98f'};const t=state.theme||{};['largeButtonBg','largeButtonText','smallButtonBg','smallButtonText','ddayBg','ddayText','badgeBg','badgeText','primary','buttonText'].forEach(k=>{if(map[t[k]])t[k]=map[t[k]];});})();
+function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
 applyTheme();
 state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
 
@@ -327,7 +364,7 @@ function app(){
   document.getElementById("app").innerHTML=`
     <header>
       <div class="brand">
-        <div><b>🎭 ${state.showName}</b><br><small>${state.venue}</small></div>
+        <div><b>🎭 ${state.showName}</b><br><small>${state.bannerSmallName||""}</small></div>
         <span class="pill">${state.admin?"관리자":"방문자"}</span>
       </div>
 
@@ -471,7 +508,7 @@ function ddayEditor(){
   cal+='</div>';
   const selected=ed.dates.slice().sort();
   const timeButtons=(date)=>{const vals=ed.times[date]||[];let h='<div class="tc-time-grid">';for(let mm=0;mm<1440;mm+=30){const t=formatMin(mm);h+=`<button type="button" class="tc-time-btn ${vals.includes(t)?'sel':''}" onclick="ddayToggleTime('${date}','${t}')">${t}</button>`;}return h+'</div>';};
-  return `<div class="dday-editor"><div class="section-title"><b>D-day 수정</b><span class="pill">관리자</span></div><div class="field"><label>공연 날짜</label>${cal}</div><div class="field"><label>날짜별 공연 시간</label>${selected.length?selected.map(d=>`<div class="card" style="margin:8px 0"><b>${d}</b>${timeButtons(d)}</div>`).join(''):'<div class="empty">공연 날짜를 선택해주세요.</div>'}</div><div class="field"><label>공연장소</label><input id="ddayVenue" value="${String(ed.venue).replace(/"/g,'&quot;')}"></div><div class="tc-actions"><button type="button" class="btn" onclick="cancelDdayEdit()">취소</button><button type="button" class="btn primary" onclick="saveDdayEdit()">저장</button></div></div>`;
+  return `<div class="dday-editor"><div class="section-title"><b>D-day 수정</b><span class="pill">관리자</span></div><div class="field"><label>공연 날짜</label>${cal}</div><div class="field"><label>날짜별 공연 시간</label>${selected.length?selected.map(d=>`<div class="card" style="margin:8px 0"><b>${d}</b>${timeButtons(d)}</div>`).join(''):'<div class="empty">공연 날짜를 선택해주세요.</div>'}</div><div class="field"><label>공연장소</label><input id="ddayVenue" value="${String(ed.venue).replace(/"/g,'&quot;')}"></div><div class="tc-actions"><button type="button" class="btn danger" onclick="cancelDdayEdit()">취소</button><button type="button" class="btn primary" onclick="saveDdayEdit()">저장</button></div></div>`;
 }
 function toggleDdayEdit(){if(state._ddayEdit){delete state._ddayEdit;}else{const shows=getShowDates();const map={};shows.forEach(x=>map[x.date]=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]);state._ddayEdit={dates:shows.map(x=>x.date),times:map,month:shows[0]?.date||new Date().toISOString().slice(0,10),venue:state.venue||''};}render();}
 function ddayMoveMonth(n){const d=new Date(state._ddayEdit.month+'T00:00:00');d.setMonth(d.getMonth()+n);state._ddayEdit.month=d.toISOString().slice(0,10);render();}
@@ -574,82 +611,94 @@ function syncConfirmedSchedulesForDate(date,changedMember){
   return touched;
 }
 function pendingScheduleChanges(date){return state.schedules.filter(s=>s.date===date).some(s=>(s._changes||[]).some(c=>!c.done));}
-function markScheduleChangeDone(si,cid){if(!state.admin){alert('관리자만 확인할 수 있습니다.');render();return;}const s=state.schedules[si];if(!s)return;const c=(s._changes||[]).find(x=>x.id===cid);if(c)c.done=true;save();render();}
+function markScheduleChangeDone(si,cid){if(!state.admin){alert('관리자만 확인할 수 있습니다.');render();return;}const s=state.schedules?.[si];if(!s)return;const c=(s._changes||[]).find(x=>x.id===cid);if(!c)return;c.done=true;s._changes=(s._changes||[]).filter(x=>!x.done);save();render();}
 
 function parseTimeIntervals(text){
   const raw=String(text||'');
-  const intervals=[];
+  const explicit=[];
   const rangeRe=/(\d{1,2}:\d{2})\s*[-–~]\s*(\d{1,2}:\d{2})/g;
   let m;
   while((m=rangeRe.exec(raw))){
     const a=getTimeMinutes(m[1]),b=getTimeMinutes(m[2]);
-    if(Number.isFinite(a)&&Number.isFinite(b)&&b>a) intervals.push({start:a,end:b});
+    if(Number.isFinite(a)&&Number.isFinite(b)&&b>a) explicit.push({start:a,end:b});
   }
-  if(intervals.length) return intervals.sort((a,b)=>a.start-b.start);
-  const points=(raw.match(/\d{1,2}:\d{2}/g)||[]).map(getTimeMinutes).filter(Number.isFinite);
-  for(let i=0;i+1<points.length;i+=2){
-    const a=Math.min(points[i],points[i+1]),b=Math.max(points[i],points[i+1]);
-    if(b>a) intervals.push({start:a,end:b});
+  if(explicit.length) return explicit.sort((a,b)=>a.start-b.start);
+
+  // 구버전 저장 데이터는 "20:00, 21:00, 22:00, 23:00"처럼
+  // 선택한 시각의 목록으로 남아 있다. 두 개씩 짝짓지 않고 실제 연속 구간으로 복원한다.
+  const points=[...new Set((raw.match(/\d{1,2}:\d{2}/g)||[]).map(getTimeMinutes).filter(Number.isFinite))].sort((a,b)=>a-b);
+  if(!points.length) return [];
+  if(points.length===1) return [{start:points[0],end:Math.min(points[0]+30,1440)}];
+  const diffs=[];
+  for(let i=1;i<points.length;i++){const d=points[i]-points[i-1];if(d>0&&d<=60)diffs.push(d);}
+  const step=diffs.length?Math.min(...diffs):30;
+  const intervals=[];
+  let start=points[0],prev=points[0];
+  for(let i=1;i<points.length;i++){
+    if(points[i]-prev>step){if(prev>start)intervals.push({start,end:prev});else intervals.push({start,end:Math.min(start+step,1440)});start=points[i];}
+    prev=points[i];
   }
-  return intervals.sort((a,b)=>a.start-b.start);
+  if(prev>start)intervals.push({start,end:prev});else intervals.push({start,end:Math.min(start+step,1440)});
+  return intervals.filter(r=>r.end>r.start).sort((a,b)=>a.start-b.start);
 }
 function intervalsOverlap(a,b){
   return !!a&&!!b&&a.start<b.end&&b.start<a.end;
 }
 function commonIntervalsForDate(date,people){
-  const list=Array.isArray(state.availability?.[date])?state.availability[date]:(state.availability?.[date]?[state.availability[date]]:[]);
-  const registered=list.filter(v=>v&&v.member&&parseTimeIntervals(v.time).length);
+  const raw=Array.isArray(state.availability?.[date])?state.availability[date]:(state.availability?.[date]?[state.availability[date]]:[]);
+
+  // 같은 팀원이 중복 저장되어 있어도 한 사람으로만 계산한다.
+  const byMember=new Map();
+  raw.forEach(v=>{if(v&&v.member&&parseTimeIntervals(v.time).length)byMember.set(v.member,v);});
+  const registered=[...byMember.values()];
   const totalRegistered=registered.length;
-  if(!totalRegistered) return {count:0,total:0,ranges:[],ok:false};
+  if(!totalRegistered) return {count:0,total:0,ranges:[],ok:false,display:""};
 
-  // If specific people are selected, keep the existing "all selected people"
-  // behavior. With no name filter, show the largest group that can overlap.
-  const target=people.length
-    ? people.map(n=>registered.find(v=>v.member===n)).filter(Boolean)
-    : registered;
+  const selectedNames=Array.isArray(people)?people:[];
+  const target=selectedNames.length?registered.filter(v=>selectedNames.includes(v.member)):registered;
+  if(!target.length) return {count:0,total:totalRegistered,ranges:[],ok:false,display:""};
 
-  if(!target.length) return {count:0,total:totalRegistered,ranges:[],ok:false};
-
-  const intervals=target.map(e=>parseTimeIntervals(e.time));
-  const boundaries=new Set();
-  intervals.forEach(arr=>arr.forEach(r=>{
-    boundaries.add(r.start); boundaries.add(r.end);
-  }));
-  const pts=[...boundaries].sort((a,b)=>a-b);
-
-  // Evaluate every 30-minute slot. For each slot count how many registered
-  // people are available. This also handles input ranges that are not on
-  // half-hour boundaries by intersecting them with the 30-minute grid.
-  const slots=[];
-  for(let m=0;m<1440;m+=30){
-    const a=m,b=m+30;
-    let count=0;
-    intervals.forEach(arr=>{
-      if(arr.some(r=>r.start<=a && r.end>=b)) count++;
+  // 한 명만 계산할 때는 30분 슬롯으로 다시 쪼개지 않고 실제 등록 구간을 그대로 표시한다.
+  if(target.length===1){
+    const rs=parseTimeIntervals(target[0].time).slice().sort((a,b)=>a.start-b.start);
+    const merged=[];
+    rs.forEach(r=>{
+      const last=merged[merged.length-1];
+      if(last&&r.start<=last.end)last.end=Math.max(last.end,r.end);
+      else merged.push({start:r.start,end:r.end});
     });
-    if(count>0) slots.push({start:a,end:b,count});
+    const ranges=merged.map(r=>`${formatMin(r.start)}–${formatMin(r.end)}`);
+    return {count:1,total:totalRegistered,ranges,ok:true,display:`1명/${totalRegistered}명 ${ranges.join(' / ')}`};
   }
 
-  if(!slots.length) return {count:0,total:people.length?target.length:totalRegistered,ranges:[],ok:false};
+  // 내부 계산은 30분 단위. 각 슬롯에서 실제 가능한 팀원 이름까지 보존한다.
+  const parsed=target.map(person=>({member:person.member,ranges:parseTimeIntervals(person.time)}));
+  const slots=[];
+  for(let start=0;start<1440;start+=30){
+    const end=start+30;
+    const members=parsed.filter(p=>p.ranges.some(r=>r.start<=start&&r.end>=end)).map(p=>p.member).sort();
+    if(members.length)slots.push({start,end,count:members.length,key:members.join('\u0001')});
+  }
+  if(!slots.length)return {count:0,total:totalRegistered,ranges:[],ok:false,display:`${totalRegistered}명`};
 
   const max=Math.max(...slots.map(x=>x.count));
-  const best=slots.filter(x=>x.count===max);
+  if(max<2)return {count:0,total:totalRegistered,ranges:[],ok:false,display:`${totalRegistered}명`};
 
-  // Merge adjacent half-hour slots having the same maximum attendance.
-  const merged=[];
-  best.forEach(r=>{
-    const last=merged[merged.length-1];
-    if(last && last.end===r.start) last.end=r.end;
-    else merged.push({start:r.start,end:r.end,count:r.count});
+  const best=slots.filter(x=>x.count===max);
+  const groups=[];
+  best.forEach(slot=>{
+    const last=groups[groups.length-1];
+    if(last&&last.end===slot.start&&last.key===slot.key)last.end=slot.end;
+    else groups.push({start:slot.start,end:slot.end,key:slot.key});
   });
 
-  const denominator=people.length?target.length:totalRegistered;
-  return {
-    count:max,
-    total:denominator,
-    ranges:merged.map(r=>`${formatMin(r.start)}-${formatMin(r.end)}`),
-    ok:merged.length>0
-  };
+  // 최대 인원 그룹이 둘 이상이면 특정 시간을 임의 선택하지 않는다.
+  if(groups.length>1){
+    return {count:max,total:totalRegistered,ranges:[],ok:true,display:groups.map(()=>`${max}명`).join('·')+`/${totalRegistered}명`};
+  }
+
+  const range=`${formatMin(groups[0].start)}–${formatMin(groups[0].end)}`;
+  return {count:max,total:totalRegistered,ranges:[range],ok:true,display:`${max}명/${totalRegistered}명 ${range}`};
 }
 function getScheduleRange(text){const vals=String(text||'').match(/\d{1,2}:\d{2}/g)||[];if(!vals.length)return null;const mins=vals.map(getTimeMinutes).filter(Number.isFinite).sort((a,b)=>a-b);return mins.length?{start:mins[0],end:mins[mins.length-1]}:null;}
 function buildAttendanceNotes(date,time,people){
@@ -674,12 +723,12 @@ function buildPersonalMemos(date,people){
   return rows;
 }
 function practice(){
-  const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const schedules=state.schedules.map((x,i)=>({...x,_stateIdx:i})).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const stages=[...state.stage].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   if(!state.practiceDate) state.practiceDate=schedules[0]?.date||stages[0]?.date||new Date().toISOString().slice(0,10);
   const selected=new Date(state.practiceDate+"T00:00:00");
   let list=[];
-  const all=[...schedules.map((x,i)=>({...x,_kind:(x.type==='공연'?'공연':x.type==='셋업'?'셋업':x.type==='기타'?'기타':'연습'),_idx:i})),...stages.map((x,i)=>({...x,_kind:'주요 일정',_stageIdx:i}))];
+  const all=[...schedules.map(x=>({...x,_kind:(x.type==='공연'?'공연':x.type==='셋업'?'셋업':x.type==='기타'?'기타':'연습'),_idx:x._stateIdx})),...stages.map((x,i)=>({...x,_kind:'주요 일정',_stageIdx:i}))];
   if(state.view==='day') list=all.filter(x=>x.date===state.practiceDate);
   if(state.view==='week'){
     const ws=new Date(selected);ws.setDate(selected.getDate()-selected.getDay());const we=new Date(ws);we.setDate(ws.getDate()+6);
@@ -740,7 +789,7 @@ function addPractice(){
 function openScheduleModal(){
   const dates=[],timesByDate={},typeState={value:'연습'},people=[],fixed={value:false};let half=false,view=new Date();view.setDate(1);
   const bg=document.createElement('div');bg.className='tc-modal-bg';bg.id='scheduleModal';
-  bg.innerHTML=`<div class="tc-modal"><h3>일정 추가</h3><div id="smCal"></div><div class="field"><label>시간</label><button class="btn" id="smHalf">30분 단위로 입력</button><div id="smTimes" class="tc-time-grid"></div></div><div class="field"><label>일정 종류</label><div id="smTypes" class="tc-types"></div></div><div class="field"><label>참여팀원</label><div id="smPeople" class="chips"></div></div><div class="field"><label>메모 / 연습내용</label><textarea id="smMemo" style="width:100%;min-height:80px" placeholder="내용을 입력하세요"></textarea></div><label class="checkline"><input type="checkbox" id="smFixed"> 주요 일정 고정</label><div class="tc-actions"><button class="btn" id="smCancel">취소</button><button class="btn primary" id="smSave">일정 추가</button></div></div>`;
+  bg.innerHTML=`<div class="tc-modal"><h3>일정 추가</h3><div id="smCal"></div><div class="field"><label>시간</label><button class="btn" id="smHalf">30분 단위로 입력</button><div id="smTimes" class="tc-time-grid"></div></div><div class="field"><label>일정 종류</label><div id="smTypes" class="tc-types"></div></div><div class="field"><label>참여팀원</label><div id="smPeople" class="chips"></div></div><div class="field"><label>메모 / 연습내용</label><textarea id="smMemo" style="width:100%;min-height:80px" placeholder="내용을 입력하세요"></textarea></div><label class="checkline"><input type="checkbox" id="smFixed"> 주요 일정 고정</label><div class="tc-actions"><button class="btn danger" id="smCancel">취소</button><button class="btn primary" id="smSave">일정 추가</button></div></div>`;
   document.body.appendChild(bg);
   const pad=n=>String(n).padStart(2,'0');
   function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="smPrev">◀</button><b>${y}년 ${m+1}월</b><button id="smNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#smCal').innerHTML=h+'</div>';bg.querySelectorAll('#smCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v))dates.splice(dates.indexOf(v),1);else{dates.push(v);timesByDate[v]=[];}renderCal();renderTimes();});bg.querySelector('#smPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#smNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
@@ -753,7 +802,7 @@ function editPractice(i){
   const x=state.schedules[i]; if(!x)return; const host=document.querySelector(`[data-schedule-index="${i}"]`); if(!host)return; host.querySelector('.tc-inline-edit')?.remove();
   const ed=document.createElement('div');ed.className='tc-inline-edit';
   const existingTimes=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]; let selected=existingTimes.slice(); let anchor=null; const step=30;
-  ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
+  ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
   host.appendChild(ed);
   function draw(){ed.querySelector('#ieTimes').innerHTML=Array.from({length:48},(_,j)=>{const t=formatMin(j*step);return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${t}</button>`}).join('');ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(anchor){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=step)if(!selected.includes(formatMin(m)))selected.push(formatMin(m));selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));anchor=null;}else{anchor=v;if(!selected.includes(v))selected.push(v);}draw();});}
   ed.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{ed.querySelectorAll('[data-t]').forEach(z=>z.classList.remove('sel'));b.classList.add('sel')});ed.querySelectorAll('#iePeople .chip').forEach(b=>b.onclick=()=>b.classList.toggle('on'));ed.querySelector('#ieCancel').onclick=()=>ed.remove();ed.querySelector('#ieSave').onclick=()=>{const date=ed.querySelector('#ieDate').value;if(!date||!selected.length)return alert('날짜와 시간을 선택해주세요.');x.date=date;x.time=compressTimes(selected).join(' / ');x.type=ed.querySelector('#ieTypes .sel')?.dataset.t||x.type;x.title=x.type;x.people=[...ed.querySelectorAll('#iePeople .chip.on')].map(b=>b.dataset.name);x.memo=ed.querySelector('#ieMemo').value.trim();scheduleId(x);x._syncSnapshot={};x.people.forEach(n=>{const e=getAvailabilityEntry(n,x.date);x._syncSnapshot[n]=e?.time||null;});save();render()};draw();
@@ -800,8 +849,12 @@ function aggregateAvailabilityCalendar(){
   for(let i=0;i<first.getDay();i++)html+='<div class="aggregate-day empty"></div>';
   let anyCommon=false;
   for(let day=1;day<=last.getDate();day++){
-    const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;const info=commonForDate(date,people);if(people.length&&info.ok)anyCommon=true;const selected=selectedAggregateAvailabilityDates.includes(date);const filtered=people.length&&info.ok;
-    html+=`<button type="button" class="aggregate-day ${info.count?'has-data':''} ${filtered?'filtered-common':''} ${selected?'selected':''}" onclick="toggleAggregateAvailabilityDate('${date}')"><b>${day}</b>${info.count?`<span class="aggregate-count">${info.count}명</span>`:''}${info.ranges.length?`<span class="aggregate-time-range">${info.ranges.join(' / ')}</span>`:''}</button>`;
+    const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const info=commonForDate(date,people);
+    if(people.length&&info.ok)anyCommon=true;
+    const selected=selectedAggregateAvailabilityDates.includes(date);
+    const hasDisplay=!!info.display;
+    html+=`<button type="button" class="aggregate-day ${hasDisplay?'has-data':''} ${people.length&&info.ok?'filtered-common':''} ${selected?'selected':''}" onclick="toggleAggregateAvailabilityDate('${date}')"><b>${day}</b>${hasDisplay?`<span class="aggregate-count">${info.display}</span>`:''}</button>`;
   }
   html+='</div>';
   setTimeout(()=>{const n=document.getElementById('aggregateCommonNotice');if(n)n.style.display=people.length&&!anyCommon?'block':'none';},0);
@@ -2064,7 +2117,7 @@ function saveAvailability(){
 
         member:member,
 
-        time:time,
+        time:mergeAvailabilityText(time),
 
         memo:memo
 
@@ -2547,8 +2600,8 @@ function deleteStage(i){
 }
 
 let noticeFilter='전체';
-function notice(){const types=['전체','일반','공연음악','연습영상','연습이미지'];const list=noticeFilter==='전체'?state.notices:state.notices.filter(n=>n.type===noticeFilter||(noticeFilter==='일반'&&n.type==='일반공지'));return `<div class="section-title"><h2>공지&자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div><div class="seg">${types.map(t=>`<button class="${noticeFilter===t?'active':''}" onclick="noticeFilter='${t}';render()">${t}</button>`).join('')}</div><div class="notice-list">${list.length?list.map(n=>{const i=state.notices.indexOf(n);const label=n.type==='일반공지'?'일반':n.type;return `<div class="card"><div class="row"><span class="pill" style="background:${n.type==='일반공지'?(state.theme?.noticeGeneral||'#6657e8'):n.type==='공연음악'?(state.theme?.noticeMusic||'#e84b5f'):n.type==='연습영상'?(state.theme?.noticeVideo||'#7a57d1'):(state.theme?.noticeImage||'#20a36a')};color:#fff">${label}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':''}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted content-scroll">${n.text}</div><div class="people">작성자 · ${n.author||'미입력'}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editNotice(${i})">수정</button><button class="btn" onclick="toggleSpecial(${i})">${n.special?'특수공지 해제':'특수공지 지정'}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div></div>`}).join(''):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;}
-function noticeModal(initial,onSave){const x=initial||{type:'일반공지',title:'',text:'',author:''};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'공지&자료 수정':'공지&자료 작성'}</h3><div class="field"><label>공지 종류</label><div class="tc-types" id="nmTypes">${['일반공지','공연음악','연습영상','연습이미지'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-type="${t}">${t==='일반공지'?'일반':t}</button>`).join('')}</div></div><div class="field"><label>작성자</label><input id="nmAuthor" value="${String(x.author||'').replace(/"/g,'&quot;')}" placeholder="작성자 이름"></div><div class="field"><label>제목</label><input id="nmTitle" value="${String(x.title||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>내용</label><textarea id="nmText" style="min-height:240px" placeholder="공지 내용을 입력하세요">${x.text||''}</textarea></div><div class="tc-actions"><button class="btn" id="nmCancel">취소</button><button class="btn primary" id="nmSave">저장</button></div></div>`;document.body.appendChild(bg);let type=x.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(b=>b.onclick=()=>{type=b.dataset.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(z=>z.classList.toggle('sel',z===b));});bg.querySelector('#nmCancel').onclick=()=>bg.remove();bg.querySelector('#nmSave').onclick=()=>{const title=bg.querySelector('#nmTitle').value.trim(),author=bg.querySelector('#nmAuthor').value.trim();if(!title)return alert('제목을 입력해주세요.');if(!author)return alert('작성자를 입력해주세요.');onSave({type,title,text:bg.querySelector('#nmText').value,author});save();bg.remove();render()};}
+function notice(){const types=['전체','일반','공연음악','연습영상','연습이미지'];const list=noticeFilter==='전체'?state.notices:state.notices.filter(n=>n.type===noticeFilter||(noticeFilter==='일반'&&n.type==='일반공지'));return `<div class="section-title"><h2>공지&자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div><div class="seg">${types.map(t=>`<button class="${noticeFilter===t?'active':''}" onclick="noticeFilter='${t}';render()">${t}</button>`).join('')}</div><div class="notice-list">${list.length?list.map(n=>{const i=state.notices.indexOf(n);const label=n.type==='일반공지'?'일반':n.type;return `<div class="card"><div class="row"><span class="pill">${label}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':''}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted content-scroll">${n.text}</div><div class="people">작성자 · ${n.author||'미입력'}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editNotice(${i})">수정</button><button class="btn" onclick="toggleSpecial(${i})">${n.special?'특수공지 해제':'특수공지 지정'}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div></div>`}).join(''):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;}
+function noticeModal(initial,onSave){const x=initial||{type:'일반공지',title:'',text:'',author:''};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'공지&자료 수정':'공지&자료 작성'}</h3><div class="field"><label>공지 종류</label><div class="tc-types" id="nmTypes">${['일반공지','공연음악','연습영상','연습이미지'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-type="${t}">${t==='일반공지'?'일반':t}</button>`).join('')}</div></div><div class="field"><label>작성자</label><input id="nmAuthor" value="${String(x.author||'').replace(/"/g,'&quot;')}" placeholder="작성자 이름"></div><div class="field"><label>제목</label><input id="nmTitle" value="${String(x.title||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>내용</label><textarea id="nmText" style="min-height:240px" placeholder="공지 내용을 입력하세요">${x.text||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="nmCancel">취소</button><button class="btn primary" id="nmSave">저장</button></div></div>`;document.body.appendChild(bg);let type=x.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(b=>b.onclick=()=>{type=b.dataset.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(z=>z.classList.toggle('sel',z===b));});bg.querySelector('#nmCancel').onclick=()=>bg.remove();bg.querySelector('#nmSave').onclick=()=>{const title=bg.querySelector('#nmTitle').value.trim(),author=bg.querySelector('#nmAuthor').value.trim();if(!title)return alert('제목을 입력해주세요.');if(!author)return alert('작성자를 입력해주세요.');onSave({type,title,text:bg.querySelector('#nmText').value,author});save();bg.remove();render()};}
 function addNotice(){noticeModal(null,x=>state.notices.unshift({type:x.type,title:x.title,text:x.text,author:x.author,special:false}));}
 function editNotice(i){noticeModal(state.notices[i],x=>Object.assign(state.notices[i],x));}
 function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);save();render()}
@@ -2556,23 +2609,23 @@ function deleteNotice(i){if(confirm('이 공지/자료를 삭제할까요?')){st
 function admin(){
   if(!state.admin)return `<div class="card"><div class="empty">관리자만 입장 가능합니다</div></div>`;
   const t=state.theme||{};
-  const swatchesTop=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#fff1f2']; const swatchesBottom=['#111827','#ffd6e7','#cde9ff','#d9f7d6']; const sw=(id,val)=>`<div class="swatches" id="${id}" style="display:flex;flex-direction:column;gap:8px"><div class="swatches">${swatchesTop.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div><div class="swatches">${swatchesBottom.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div></div>`;
+  const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividPalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette);
   return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div><div class="adminbar">상단 배너, 팀원, 입장코드, 사이트 디자인을 관리합니다.</div>
-  <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="venue" value="${state.venue||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
-  <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>기본 버튼 색</label>${sw('thPrimary',t.primary||'#6657e8')}</div><div class="field"><label>버튼 글씨색</label>${sw('thButtonText',t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${sw('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${sw('thDdayText',t.ddayText||'#ffffff')}</div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
+  <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
+  <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>큰 버튼 글씨색</label>${swVivid('thLargeButtonText',t.largeButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>작은 버튼 색</label>${swVivid('thSmallButtonBg',t.smallButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>작은 버튼 글씨색</label>${swVivid('thSmallButtonText',t.smallButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${swVivid('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${swVivid('thDdayText',t.ddayText||'#ffffff')}</div></div><div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><h3 style="margin-bottom:8px">🏷️ 안내 아이콘 색상 설정</h3><p class="muted small" style="margin-top:0">상단 관리자/방문자, 일정 인원수, 조율 안내, 공지 종류 등 작은 안내 아이콘에 일괄 적용됩니다.</p><div class="theme-grid"><div class="field"><label>안내 아이콘 배경색</label>${swVivid('thBadgeBg',t.badgeBg||t.primary||'#6657e8')}</div><div class="field"><label>안내 아이콘 글씨색</label>${swVivid('thBadgeText',t.badgeText||'#ffffff')}</div></div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
   <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?state.members.map((m,i)=>`<div class="schedule-item"><div class="row"><div><b>${m.name}</b><div class="people">${m.pos}</div></div><span class="pill">팀원</span></div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
   <div class="card"><h3>🔑 입장 코드 관리</h3><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>
   <div class="card"><h3>⚠️ 새 공연 시작 / 초기화</h3><p class="muted">연습일정,스케줄 조율, 공지/자료, 공연/극장 일정, 팀원 정보를 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div><div class="card"><button class="btn danger" style="width:100%" onclick="logout()">관리자 나가기</button></div>`;
 }
-function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c; t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.primary=pick('thPrimary')||t.primary||'#6657e8';t.buttonText=pick('thButtonText')||t.buttonText||'#ffffff';t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';state.theme=t;save();applyTheme();alert('색상 설정이 저장되었습니다.');render();}
-function setThemeMode(mode){state.theme=state.theme||{};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',ddayBg:'#111827',ddayText:'#ffffff'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',ddayBg:'#171b2d',ddayText:'#ffffff'});}save();applyTheme();render();}
+function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';/* keep legacy keys synchronized for older saved data / non-button accents */t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('색상 설정이 저장되었습니다.');render();}
+function setThemeMode(mode){state.theme=state.theme||{};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#111827',ddayText:'#ffffff'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#ffffff'});}save();applyTheme();render();}
 function openShowDatesModal(){
-  const existing=getShowDates();const map={};existing.forEach(x=>map[x.date]=x.time||'19:00');let dates=Object.keys(map);let view=new Date();view.setDate(1);const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>공연 날짜/시간 설정</h3><div id="sdCal"></div><div id="sdTimes" style="margin-top:12px"></div><div class="tc-actions"><button class="btn" id="sdCancel">취소</button><button class="btn primary" id="sdSave">저장</button></div></div>`;document.body.appendChild(bg);const pad=n=>String(n).padStart(2,'0');let times={...map};function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="sdPrev">◀</button><b>${y}년 ${m+1}월</b><button id="sdNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#sdCal').innerHTML=h+'</div>';bg.querySelectorAll('#sdCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v)){dates=dates.filter(x=>x!==v);delete times[v];}else{dates.push(v);times[v]='19:00';}renderCal();renderTimes();});bg.querySelector('#sdPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#sdNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
+  const existing=getShowDates();const map={};existing.forEach(x=>map[x.date]=x.time||'19:00');let dates=Object.keys(map);let view=new Date();view.setDate(1);const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>공연 날짜/시간 설정</h3><div id="sdCal"></div><div id="sdTimes" style="margin-top:12px"></div><div class="tc-actions"><button class="btn danger" id="sdCancel">취소</button><button class="btn primary" id="sdSave">저장</button></div></div>`;document.body.appendChild(bg);const pad=n=>String(n).padStart(2,'0');let times={...map};function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="sdPrev">◀</button><b>${y}년 ${m+1}월</b><button id="sdNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#sdCal').innerHTML=h+'</div>';bg.querySelectorAll('#sdCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v)){dates=dates.filter(x=>x!==v);delete times[v];}else{dates.push(v);times[v]='19:00';}renderCal();renderTimes();});bg.querySelector('#sdPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#sdNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
   function renderTimes(){const list=dates.slice().sort();bg.querySelector('#sdTimes').innerHTML=list.length?`<div class="field"><label>선택한 날짜별 공연 시간</label>${list.map(v=>`<div class="field"><label>${v}</label><input class="sd-time" data-date="${v}" type="time" value="${times[v]||'19:00'}"></div>`).join('')}</div>`:`<div class="empty">날짜를 선택해주세요.</div>`;}
   bg.querySelector('#sdCancel').onclick=()=>bg.remove();bg.querySelector('#sdSave').onclick=()=>{bg.querySelectorAll('.sd-time').forEach(i=>times[i.dataset.date]=i.value);const out=dates.slice().sort().map(date=>({date,time:times[date]||'19:00'}));state.showDates=out;state.showDate=out[0]?.date||state.showDate;state.showTime=out[0]?.time||state.showTime;save();bg.remove();render()};renderCal();renderTimes();
 }
-function saveShowInfo(){state.showName=document.getElementById('showName').value.trim()||state.showName;state.venue=document.getElementById('venue').value.trim()||state.venue;state.loginTitle=document.getElementById('loginTitle').value.trim()||'THEATER CLOWN';state.loginSubtitle=document.getElementById('loginSubtitle').value.trim()||'공연팀 일정 · 공지 · 자료 관리';save();alert('정보가 저장되었습니다.');render()}
-function memberModal(initial,onSave){const x=initial||{name:'',pos:'배우'};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'팀원 수정':'팀원 추가'}</h3><div class="field"><label>이름</label><input id="mmName" value="${x.name||''}"></div><div class="field"><label>포지션</label><input id="mmPos" value="${x.pos||'배우'}"></div><div class="tc-actions"><button class="btn" id="mmCancel">취소</button><button class="btn primary" id="mmSave">저장</button></div></div>`;document.body.appendChild(bg);bg.querySelector('#mmCancel').onclick=()=>bg.remove();bg.querySelector('#mmSave').onclick=()=>{const name=bg.querySelector('#mmName').value.trim(),pos=bg.querySelector('#mmPos').value.trim();if(!name)return alert('이름을 입력해주세요.');onSave({name,pos:pos||'배우'});bg.remove();save();render()}}
+function saveShowInfo(){state.showName=document.getElementById('showName').value.trim()||state.showName;state.bannerSmallName=document.getElementById('bannerSmallName').value.trim();state.loginTitle=document.getElementById('loginTitle').value.trim()||'THEATER CLOWN';state.loginSubtitle=document.getElementById('loginSubtitle').value.trim()||'공연팀 일정 · 공지 · 자료 관리';save();alert('정보가 저장되었습니다.');render()}
+function memberModal(initial,onSave){const x=initial||{name:'',pos:'배우'};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'팀원 수정':'팀원 추가'}</h3><div class="field"><label>이름</label><input id="mmName" value="${x.name||''}"></div><div class="field"><label>포지션</label><input id="mmPos" value="${x.pos||'배우'}"></div><div class="tc-actions"><button class="btn danger" id="mmCancel">취소</button><button class="btn primary" id="mmSave">저장</button></div></div>`;document.body.appendChild(bg);bg.querySelector('#mmCancel').onclick=()=>bg.remove();bg.querySelector('#mmSave').onclick=()=>{const name=bg.querySelector('#mmName').value.trim(),pos=bg.querySelector('#mmPos').value.trim();if(!name)return alert('이름을 입력해주세요.');onSave({name,pos:pos||'배우'});bg.remove();save();render()}}
 function addMember(){memberModal(null,x=>state.members.push({...x,joined:true}))}
 function editMember(i){memberModal(state.members[i],x=>Object.assign(state.members[i],x))}
 function deleteMember(i){
