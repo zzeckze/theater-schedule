@@ -20,7 +20,7 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 .bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:30}.bottom button{background:none;color:#74798a;font-size:11px;padding:5px 0}.bottom button.active{color:var(--primary);font-weight:800}.bottom span{display:block;font-size:20px;margin-bottom:2px}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:8px 0}.section-title h2{font-size:20px;margin:0}.seg{display:flex;background:#ececf3;padding:3px;border-radius:12px;margin:10px 0}.seg button{flex:1;background:transparent;border-radius:9px;padding:8px;color:#666}.seg button.active{background:#fff;color:var(--ink);box-shadow:0 1px 5px #00000012}
 .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calhead{text-align:center;font-size:11px;color:var(--muted);padding:4px}.day{min-height:70px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;font-size:12px}.day b{display:block}.dot{display:block;margin-top:5px;font-size:10px;color:var(--primary);font-weight:700}.dot.stage{color:#d77b1d}.dot.show{color:#e84b5f}
-.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{padding:10px 13px;border-radius:12px;background:#f0efff;color:var(--primary);font-weight:700}.btn.primary{background:var(--primary);color:#fff}.btn.ghost{background:#fff;border:1px solid var(--line);color:#555}.btn.danger{background:#fff0f2;color:var(--danger)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{padding:10px 13px;border-radius:12px;background:#f0efff;color:var(--primary);font-weight:700}.btn.primary{background:var(--primary);color:var(--button-text,#fff)}.btn.ghost{background:#fff;border:1px solid var(--line);color:#555}.btn.danger{background:#fff0f2;color:var(--danger)}
 .field{margin:10px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;outline:none}.field textarea{min-height:90px;resize:vertical}
 .chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px}.chip.on{background:#eeecff;border-color:#c9c3ff;color:var(--primary);font-weight:700}
 .notice-list .card{margin-bottom:8px}.media{height:120px;border-radius:14px;background:#eef0f7;display:grid;place-items:center;color:#858b9b;margin-bottom:10px}
@@ -235,7 +235,25 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
   color:var(--muted);
 }
   
-</style>
+
+/* ===== Final navigation / content / modal improvements ===== */
+.toplinks{display:none!important}
+.bottom{grid-template-columns:repeat(5,1fr)}
+.content-scroll{max-height:260px;overflow-y:auto;overflow-wrap:anywhere;word-break:break-word;white-space:pre-wrap}
+.tc-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.48);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10000}
+.tc-modal{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:24px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.tc-modal h3{margin:0 0 14px}.tc-month-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.tc-month-head button{background:#f0efff;color:var(--primary);border-radius:10px;padding:8px 11px}
+.tc-week,.tc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.tc-week span{text-align:center;font-size:11px;color:var(--muted);padding:4px}.tc-day{min-height:42px;background:#fff;border:1px solid var(--line);border-radius:10px}.tc-day.sel{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:800}.tc-day.empty{background:transparent;border:0}
+.tc-time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:240px;overflow:auto}.tc-time-btn{padding:9px 4px;border:1px solid var(--line);border-radius:10px;background:#fff}.tc-time-btn.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tc-types{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.tc-type{padding:10px 5px;border:1px solid var(--line);border-radius:12px;background:#fff}.tc-type.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tc-actions{display:flex;gap:8px;margin-top:16px}.tc-actions>*{flex:1}
+.aggregate-day.filtered-common{background:#e9e4ff;border-color:#8d7ff0;color:#30276e;box-shadow:inset 0 0 0 2px #cfc8ff}.aggregate-day.filtered-common .aggregate-count{color:#5d4ee0}.aggregate-time-range{display:block;margin-top:3px;font-size:9px;line-height:1.25;font-weight:800;color:#4b43a5}.aggregate-day.selected{outline:2px solid var(--accent);outline-offset:1px}.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.color-row{display:flex;align-items:center;gap:8px}.color-row input[type=color]{width:52px;height:38px;padding:2px;border:1px solid var(--line);border-radius:10px;background:#fff}
+@media(max-width:430px){.tc-time-grid{grid-template-columns:repeat(3,1fr)}.tc-types{grid-template-columns:repeat(2,1fr)}}
+
+
+.swatches{display:flex;flex-wrap:wrap;gap:7px}.swatch{width:30px;height:30px;border-radius:50%;border:2px solid rgba(0,0,0,.12);cursor:pointer}.swatch.sel{outline:3px solid var(--primary);outline-offset:2px}.tc-inline-edit{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.tc-inline-edit textarea{width:100%;min-height:90px;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px}.schedule-item .time{font-weight:800}.schedule-item .date-line{font-weight:800}.schedule-item .kind-line{opacity:.7;font-size:12px;margin-top:3px}.tc-time-grid{max-height:260px;overflow:auto}
+.dday-editor{background:var(--dday-bg);color:var(--dday-text);padding:18px;border-radius:18px;margin-bottom:12px}.dday-editor .card{color:var(--ink)}.dday-editor .field label{color:inherit}.tc-small-control{font-size:11px!important;padding:6px 8px!important}.chips .chip{font-size:12px;padding:7px 9px}.schedule-item .date-line,.schedule-item .time,.schedule-item .kind-line{display:block}.schedule-item .date-line{font-size:13px}.schedule-item .time{font-size:15px;margin-top:2px}.schedule-item .kind-line{font-weight:800;font-size:13px;margin-top:2px}.schedule-item .content-note{font-weight:400;font-size:13px;margin-top:3px}.content-scroll{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;max-height:220px;overflow:auto}
+.schedule-card .schedule-date{font-size:20px;font-weight:900;line-height:1.2;margin-bottom:4px}.schedule-card .schedule-time{font-size:15px;font-weight:800}.schedule-card .schedule-kind{font-size:13px;font-weight:800;margin-top:5px}.schedule-people,.schedule-memo{margin-top:8px;font-size:13px}.schedule-special-note{margin-top:9px}.schedule-card .schedule-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.schedule-card .schedule-main{min-width:0}.schedule-card .pill{flex:none}</style>
 </head>
 <body>
 <div id="app"></div>
@@ -252,6 +270,7 @@ const state={
   venue:"문학씨어터",
   showDate:"2026-10-24",
   showTime:"19:00",
+  showDates:[{date:"2026-10-24",time:"19:00"}],
   entryCode:DEFAULT_ENTRY_CODE,
   adminCode:DEFAULT_ADMIN_CODE,
   members:[
@@ -274,7 +293,9 @@ const state={
     {type:"연습영상",title:"10/22 장면 영상",text:"연습 참고용 영상입니다.",author:"관리자",special:false},
     {type:"연습이미지",title:"무대 동선 사진",text:"연습 참고용 이미지입니다.",author:"관리자",special:false}
   ],
-  availability:{}
+  availability:{},
+  aggregateMembers:[],
+  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
 };
 
 function save(){
@@ -294,6 +315,12 @@ function load(){
   }catch(e){}
 }
 load();
+if(!Array.isArray(state.showDates)) state.showDates=state.showDate?[{date:state.showDate,time:state.showTime||""}]:[];
+if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
+if(!state.theme) state.theme={};
+function applyTheme(){const t=state.theme||{};const root=document.documentElement;root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",t.primary||"#6657e8");root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--button-text",t.buttonText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
+applyTheme();
+state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
 
 function app(){
   if(!state.logged) return login();
@@ -303,19 +330,15 @@ function app(){
         <div><b>🎭 ${state.showName}</b><br><small>${state.venue}</small></div>
         <span class="pill">${state.admin?"관리자":"방문자"}</span>
       </div>
-      <div class="toplinks">
-        <button onclick="go('calendar')">📅 주요 일정</button>
-        <button onclick="go('notice')">🚨 공지 & 자료</button>
-        <button onclick="go('schedule')">🗓️ 스케줄 조율</button>
-        ${state.admin?'<button onclick="go(\'admin\')">👑 관리자</button>':''}
-      </div>
+
     </header>
     <main id="main"></main>
     <nav class="bottom">
       <button onclick="go('home')" class="${state.tab==='home'?'active':''}"><span>⌂</span>홈</button>
-      <button onclick="go('practice')" class="${state.tab==='practice'?'active':''}"><span>📅</span>연습일정</button>
+      <button onclick="go('practice')" class="${state.tab==='practice'?'active':''}"><span>📅</span>일정</button>
       <button onclick="go('schedule')" class="${state.tab==='schedule'?'active':''}"><span>✓</span>조율</button>
-      <button onclick="go('calendar')" class="${state.tab==='calendar'?'active':''}"><span>🗓</span>일정</button>
+      <button onclick="go('notice')" class="${state.tab==='notice'?'active':''}"><span>📢</span>공지&자료</button>
+      <button onclick="${state.admin?"go(\'admin\')":"alert(\'관리자만 입장 가능합니다\')"}" class="${state.tab==='admin'?'active':''}"><span>⚙️</span>관리자</button>
     </nav>`;
   render();
 }
@@ -324,8 +347,8 @@ function login(){
   document.getElementById("app").innerHTML=`
     <section class="login">
       <div class="loginbox">
-        <div class="logo">THEATER<br>CLOWN</div>
-        <p>공연팀 일정 · 공지 · 자료 관리</p>
+        <div class="logo">${(state.loginTitle||"THEATER CLOWN").replace(/\n/g,"<br>")}</div>
+        <p>${state.loginSubtitle||"공연팀 일정 · 공지 · 자료 관리"}</p>
         <div class="card" style="margin-top:22px">
           <div class="field">
             <label>입장 코드</label>
@@ -366,7 +389,7 @@ function logout(){
 }
 function go(tab){
   if(tab==="admin" && !state.admin){
-    alert("관리자만 접근할 수 있습니다.");
+    alert("관리자만 입장 가능합니다");
     return;
   }
   state.tab=tab;
@@ -404,7 +427,8 @@ function render(){
   }
 
   if(state.tab==="calendar"){
-    m.innerHTML=calendar();
+    state.tab="practice";
+    m.innerHTML=practice();
   }
 
   if(state.tab==="notice"){
@@ -417,28 +441,50 @@ function render(){
 
 }
 
+function getShowDates(){
+  if(Array.isArray(state.showDates) && state.showDates.length) return state.showDates;
+  return state.showDate ? [{date:state.showDate,time:state.showTime||""}] : [];
+}
+function ddayInfo(){
+  const shows=getShowDates().slice().sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
+  if(!shows.length)return {status:'empty'};
+  const now=new Date(), today=new Date(); today.setHours(0,0,0,0), todayKey=today.toISOString().slice(0,10), nowMin=now.getHours()*60+now.getMinutes();
+  const last=shows[shows.length-1], lastTimes=String(last.time||'').match(/\d{1,2}:\d{2}/g)||[], lastEnd=lastTimes.length?Math.max(...lastTimes.map(getTimeMinutes)):null;
+  if(last.date===todayKey && lastEnd!==null && nowMin>=lastEnd)return {status:'end',show:last,shows};
+  let next=null;
+  for(const show of shows){
+    if(show.date>todayKey){next=show;break;}
+    if(show.date===todayKey){const ts=String(show.time||'').match(/\d{1,2}:\d{2}/g)||[];const end=ts.length?Math.max(...ts.map(getTimeMinutes)):null;if(end===null||nowMin<end){next=show;break;}}
+  }
+  if(!next)return {status:'end',show:last,shows};
+  const d=Math.round((new Date(next.date+'T00:00:00')-today)/86400000);
+  return {status:'dday',show:next,shows,d};
+}
+function ddayEditor(){
+  const shows=getShowDates();
+  const map={}; shows.forEach(x=>map[x.date]=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]);
+  if(!state._ddayEdit)state._ddayEdit={dates:shows.map(x=>x.date),times:map,month:shows[0]?.date||new Date().toISOString().slice(0,10),venue:state.venue||''};
+  const ed=state._ddayEdit, base=new Date(ed.month+'T00:00:00'), y=base.getFullYear(),m=base.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),pad=n=>String(n).padStart(2,'0');
+  let cal=`<div class="tc-month-head"><button type="button" onclick="ddayMoveMonth(-1)">◀</button><b>${y}년 ${m+1}월</b><button type="button" onclick="ddayMoveMonth(1)">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;
+  for(let i=0;i<first.getDay();i++)cal+='<button class="tc-day empty"></button>';
+  for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;cal+=`<button type="button" class="tc-day ${ed.dates.includes(v)?'sel':''}" onclick="ddayToggleDate('${v}')">${d}</button>`;}
+  cal+='</div>';
+  const selected=ed.dates.slice().sort();
+  const timeButtons=(date)=>{const vals=ed.times[date]||[];let h='<div class="tc-time-grid">';for(let mm=0;mm<1440;mm+=30){const t=formatMin(mm);h+=`<button type="button" class="tc-time-btn ${vals.includes(t)?'sel':''}" onclick="ddayToggleTime('${date}','${t}')">${t}</button>`;}return h+'</div>';};
+  return `<div class="dday-editor"><div class="section-title"><b>D-day 수정</b><span class="pill">관리자</span></div><div class="field"><label>공연 날짜</label>${cal}</div><div class="field"><label>날짜별 공연 시간</label>${selected.length?selected.map(d=>`<div class="card" style="margin:8px 0"><b>${d}</b>${timeButtons(d)}</div>`).join(''):'<div class="empty">공연 날짜를 선택해주세요.</div>'}</div><div class="field"><label>공연장소</label><input id="ddayVenue" value="${String(ed.venue).replace(/"/g,'&quot;')}"></div><div class="tc-actions"><button type="button" class="btn" onclick="cancelDdayEdit()">취소</button><button type="button" class="btn primary" onclick="saveDdayEdit()">저장</button></div></div>`;
+}
+function toggleDdayEdit(){if(state._ddayEdit){delete state._ddayEdit;}else{const shows=getShowDates();const map={};shows.forEach(x=>map[x.date]=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]);state._ddayEdit={dates:shows.map(x=>x.date),times:map,month:shows[0]?.date||new Date().toISOString().slice(0,10),venue:state.venue||''};}render();}
+function ddayMoveMonth(n){const d=new Date(state._ddayEdit.month+'T00:00:00');d.setMonth(d.getMonth()+n);state._ddayEdit.month=d.toISOString().slice(0,10);render();}
+function ddayToggleDate(date){const ed=state._ddayEdit,i=ed.dates.indexOf(date);if(i>=0){ed.dates.splice(i,1);delete ed.times[date];}else{ed.dates.push(date);ed.times[date]=[];}render();}
+function ddayToggleTime(date,time){const a=state._ddayEdit.times[date]||[],i=a.indexOf(time);if(i>=0)a.splice(i,1);else a.push(time);a.sort((x,y)=>getTimeMinutes(x)-getTimeMinutes(y));state._ddayEdit.times[date]=a;render();}
+function cancelDdayEdit(){delete state._ddayEdit;render();}
+function saveDdayEdit(){const ed=state._ddayEdit;if(!ed||!ed.dates.length)return alert('공연 날짜를 하나 이상 선택해주세요.');const out=ed.dates.slice().sort().map(date=>({date,time:(ed.times[date]||[]).join(' / ')}));if(out.some(x=>!x.time))return alert('모든 공연 날짜의 시간을 선택해주세요.');state.showDates=out;state.showDate=out[0].date;state.showTime=out[0].time;state.venue=document.getElementById('ddayVenue')?.value.trim()||state.venue;delete state._ddayEdit;save();render();}
 function home(){
-  const d=Math.ceil((new Date(state.showDate)-new Date())/86400000);
+  const info=ddayInfo();
   const special=state.notices.find(n=>n.special);
-  return `
-    <section class="hero">
-      <div class="dday">D-${Math.max(d,0)}</div>
-      <p>공연까지 · ${state.showDate.slice(5).replace('-','/')} ${state.showTime}</p>
-      <p>${state.venue}</p>
-    </section>
-    ${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3><span class="pill">고정 1개</span></div><div class="notice"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:""}
-    <div class="card">
-      <div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('calendar')">전체보기</button></div>
-      ${state.stage.slice(0,3).map(x=>`<div class="schedule-item"><span class="pill">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${x.time}</div><div class="people">${x.title}</div></div>`).join("")}
-    </div>
-    <div class="card">
-      <div class="section-title"><h3>📅 다음 연습</h3><button class="btn" onclick="go('practice')">일정 보기</button></div>
-      ${state.schedules.slice(0,3).map(x=>`<div class="schedule-item"><div class="row"><div><b>${x.date.slice(5).replace('-','/')}</b><div class="time">${x.time}</div></div><span class="pill">${x.people.length}명</span></div><div class="people">${x.title}</div></div>`).join("")}
-    </div>
-    <div class="card">
-      <h3>👥 팀원</h3>
-      ${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}${x.phone?` · ${x.phone}`:""}</span></div></div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
-    </div>`;
+  const upcoming=[...state.stage.map(x=>({...x,kind:'주요'})),...state.schedules.map(x=>({...x,kind:x.type||'연습'}))].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).slice(0,3);
+  const banner=state.admin&&state._ddayEdit?ddayEditor():`<section class="hero" style="background:var(--dday-bg);color:var(--dday-text)"><div class="dday">${info.status==='end'?'END':info.status==='empty'?'—':info.d===0?'D-DAY':`D-${info.d}`}</div><p>${info.show?`공연까지 · ${info.show.date.slice(5).replace('-','/')} ${info.show.time}`:'등록된 공연 일정이 없습니다.'}</p><p>${state.venue}</p>${state.admin?'<button class="btn" style="margin-top:10px" onclick="toggleDdayEdit()">D-day 수정</button>':''}</section>`;
+  return `${banner}${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3></div><div class="notice content-scroll"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:''}<div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('practice')">전체보기</button></div>${upcoming.length?upcoming.map(x=>`<div class="schedule-item"><span class="pill">${x.kind}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${x.time}</div><div class="people content-scroll">${x.title||''}</div></div>`).join(''):'<div class="empty">등록된 일정이 없습니다.</div>'}</div><div class="card"><h3>👥 팀원</h3>${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}</span></div></div>`).join(''):'<div class="empty">등록된 팀원이 없습니다.</div>'}</div>`;
 }
 function movePracticeDate(days){
   if(!state.practiceDate){
@@ -465,193 +511,214 @@ function movePracticeDate(days){
   render();
 }
 
-function practice(){
-  const schedules=[...state.schedules].sort(
-    (a,b)=>(a.date+a.time).localeCompare(b.date+b.time)
-  );
-
-  if(!state.practiceDate){
-    state.practiceDate=schedules.length
-      ? schedules[0].date
-      : new Date().toISOString().slice(0,10);
-  }
-
-  function dateObj(str){
-    const [y,m,d]=str.split("-").map(Number);
-    return new Date(y,m-1,d);
-  }
-
-  function formatDate(d){
-    const y=d.getFullYear();
-    const m=String(d.getMonth()+1).padStart(2,"0");
-    const day=String(d.getDate()).padStart(2,"0");
-    return `${y}-${m}-${day}`;
-  }
-
-  const selected=dateObj(state.practiceDate);
-
-  let list=[];
-
-  if(state.view==="day"){
-    list=schedules.filter(x=>x.date===state.practiceDate);
-  }
-
-  if(state.view==="week"){
-    const weekStart=new Date(selected);
-    weekStart.setDate(selected.getDate()-selected.getDay());
-
-    const weekEnd=new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate()+6);
-
-    list=schedules.filter(x=>{
-      const d=dateObj(x.date);
-      return d>=weekStart && d<=weekEnd;
+function getScheduleIntervals(text){
+  const out=[];
+  const re=/(\d{1,2}:\d{2})\s*[-–~]\s*(\d{1,2}:\d{2})/g; let m;
+  while((m=re.exec(String(text||'')))){const a=getTimeMinutes(m[1]),b=getTimeMinutes(m[2]);if(Number.isFinite(a)&&Number.isFinite(b)&&b>=a)out.push({start:a,end:b});}
+  if(!out.length){const vals=String(text||'').match(/\d{1,2}:\d{2}/g)||[];for(let i=0;i+1<vals.length;i+=2){const a=getTimeMinutes(vals[i]),b=getTimeMinutes(vals[i+1]);if(Number.isFinite(a)&&Number.isFinite(b))out.push({start:Math.min(a,b),end:Math.max(a,b)});}}
+  return out;
+}
+function intervalsOverlap(a,b){return a&&b&&a.start < b.end && b.start < a.end;}
+function availabilityOverlapsSchedule(avText,schText){
+  return getScheduleIntervals(avText).some(a=>getScheduleIntervals(schText).some(b=>intervalsOverlap(a,b)));
+}
+function normalizeAvailText(text){return mergeAvailabilityText(String(text||'').replace(/,/g,' / '));}
+function scheduleId(x){if(!x)return ''; if(!x._id)x._id='sch_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8); return x._id;}
+function getAvailabilityEntry(member,date){return getMemberAvailability(member)[date]||null;}
+function syncConfirmedSchedulesForDate(date,changedMember){
+  if(!state.schedules)return;
+  let touched=false;
+  state.schedules.forEach(s=>{
+    if(s.type!=='연습'||s.date!==date)return;
+    scheduleId(s);
+    const currentPeople=Array.isArray(s.people)?s.people.slice():[];
+    const availEntries={};
+    state.members.forEach(m=>{const e=getAvailabilityEntry(m.name,date);if(e)availEntries[m.name]=e;});
+    if(!s._syncSnapshot){
+      s._syncSnapshot={};
+      currentPeople.forEach(n=>{s._syncSnapshot[n]=availEntries[n]?.time||null;});
+    }
+    const oldSnap={...s._syncSnapshot};
+    const names=new Set([...Object.keys(oldSnap),...currentPeople,...Object.keys(availEntries)]);
+    const nextPeople=currentPeople.slice();
+    const changes=[];
+    names.forEach(name=>{
+      const oldTime=oldSnap[name]||null;
+      const e=availEntries[name]||null;
+      const newTime=e?.time||null;
+      const wasParticipant=currentPeople.includes(name);
+      const overlaps=newTime?availabilityOverlapsSchedule(newTime,s.time):false;
+      if(!oldSnap.hasOwnProperty(name)){
+        // establish baseline for people already in the schedule; only add late registrants when they overlap.
+        if(!wasParticipant && overlaps){nextPeople.push(name);changes.push(`*${name}님 참여가 추가됨.`);}
+      }else if(oldTime!==newTime){
+        if(oldTime && newTime && wasParticipant){
+          const oldN=normalizeAvailText(oldTime),newN=normalizeAvailText(newTime);
+          if(oldN!==newN)changes.push(`*${name}님 ${oldN}에서 ${newN}으로 시간 변경됨.`);
+        }else if(!oldTime && newTime && overlaps && !wasParticipant){nextPeople.push(name);changes.push(`*${name}님 참여가 추가됨.`);}
+        else if(oldTime && !newTime && wasParticipant){const ix=nextPeople.indexOf(name);if(ix>=0)nextPeople.splice(ix,1);changes.push(`*${name}님 참여가 제외됨.`);}
+      }
+      // if the new availability no longer overlaps the confirmed practice, remove the participant.
+      if(wasParticipant && oldTime && newTime && !overlaps){const ix=nextPeople.indexOf(name);if(ix>=0)nextPeople.splice(ix,1);changes.push(`*${name}님 참여가 제외됨.`);}
     });
+    // remove duplicate people and rebuild snapshot from current data
+    s.people=[...new Set(nextPeople)];
+    const snap={};
+    s.people.forEach(n=>{snap[n]=availEntries[n]?.time||null;});
+    Object.keys(availEntries).forEach(n=>{if(!snap.hasOwnProperty(n))snap[n]=availEntries[n].time||null;});
+    s._syncSnapshot=snap;
+    if(changes.length){s._changes=Array.isArray(s._changes)?s._changes:[];changes.forEach(text=>s._changes.push({id:'chg_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),text,done:false}));touched=true;}
+    if(touched){s._lastSync=Date.now();}
+  });
+  if(touched)save();
+  return touched;
+}
+function pendingScheduleChanges(date){return state.schedules.filter(s=>s.date===date).some(s=>(s._changes||[]).some(c=>!c.done));}
+function markScheduleChangeDone(si,cid){if(!state.admin){alert('관리자만 확인할 수 있습니다.');render();return;}const s=state.schedules[si];if(!s)return;const c=(s._changes||[]).find(x=>x.id===cid);if(c)c.done=true;save();render();}
+
+function parseTimeIntervals(text){
+  const raw=String(text||'');
+  const intervals=[];
+  const rangeRe=/(\d{1,2}:\d{2})\s*[-–~]\s*(\d{1,2}:\d{2})/g;
+  let m;
+  while((m=rangeRe.exec(raw))){
+    const a=getTimeMinutes(m[1]),b=getTimeMinutes(m[2]);
+    if(Number.isFinite(a)&&Number.isFinite(b)&&b>a) intervals.push({start:a,end:b});
+  }
+  if(intervals.length) return intervals.sort((a,b)=>a.start-b.start);
+  const points=(raw.match(/\d{1,2}:\d{2}/g)||[]).map(getTimeMinutes).filter(Number.isFinite);
+  for(let i=0;i+1<points.length;i+=2){
+    const a=Math.min(points[i],points[i+1]),b=Math.max(points[i],points[i+1]);
+    if(b>a) intervals.push({start:a,end:b});
+  }
+  return intervals.sort((a,b)=>a.start-b.start);
+}
+function intervalsOverlap(a,b){
+  return !!a&&!!b&&a.start<b.end&&b.start<a.end;
+}
+function commonIntervalsForDate(date,people){
+  const list=Array.isArray(state.availability?.[date])?state.availability[date]:(state.availability?.[date]?[state.availability[date]]:[]);
+  const registered=list.filter(v=>v&&v.member&&parseTimeIntervals(v.time).length);
+  const totalRegistered=registered.length;
+  if(!totalRegistered) return {count:0,total:0,ranges:[],ok:false};
+
+  // If specific people are selected, keep the existing "all selected people"
+  // behavior. With no name filter, show the largest group that can overlap.
+  const target=people.length
+    ? people.map(n=>registered.find(v=>v.member===n)).filter(Boolean)
+    : registered;
+
+  if(!target.length) return {count:0,total:totalRegistered,ranges:[],ok:false};
+
+  const intervals=target.map(e=>parseTimeIntervals(e.time));
+  const boundaries=new Set();
+  intervals.forEach(arr=>arr.forEach(r=>{
+    boundaries.add(r.start); boundaries.add(r.end);
+  }));
+  const pts=[...boundaries].sort((a,b)=>a-b);
+
+  // Evaluate every 30-minute slot. For each slot count how many registered
+  // people are available. This also handles input ranges that are not on
+  // half-hour boundaries by intersecting them with the 30-minute grid.
+  const slots=[];
+  for(let m=0;m<1440;m+=30){
+    const a=m,b=m+30;
+    let count=0;
+    intervals.forEach(arr=>{
+      if(arr.some(r=>r.start<=a && r.end>=b)) count++;
+    });
+    if(count>0) slots.push({start:a,end:b,count});
   }
 
-  const dateLabel=
-    `${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
+  if(!slots.length) return {count:0,total:people.length?target.length:totalRegistered,ranges:[],ok:false};
 
-let weekLabel="";
+  const max=Math.max(...slots.map(x=>x.count));
+  const best=slots.filter(x=>x.count===max);
 
-if(state.view==="week"){
-  const weekStart=new Date(selected);
-  weekStart.setDate(selected.getDate()-selected.getDay());
+  // Merge adjacent half-hour slots having the same maximum attendance.
+  const merged=[];
+  best.forEach(r=>{
+    const last=merged[merged.length-1];
+    if(last && last.end===r.start) last.end=r.end;
+    else merged.push({start:r.start,end:r.end,count:r.count});
+  });
 
-  const weekEnd=new Date(weekStart);
-  weekEnd.setDate(weekStart.getDate()+6);
-
-  weekLabel=
-    `${weekStart.getFullYear()}년 `
-    +`${weekStart.getMonth()+1}월 ${weekStart.getDate()}일`
-    +` ~ `
-    +`${weekEnd.getFullYear()}년 `
-    +`${weekEnd.getMonth()+1}월 ${weekEnd.getDate()}일`;
+  const denominator=people.length?target.length:totalRegistered;
+  return {
+    count:max,
+    total:denominator,
+    ranges:merged.map(r=>`${formatMin(r.start)}-${formatMin(r.end)}`),
+    ok:merged.length>0
+  };
+}
+function getScheduleRange(text){const vals=String(text||'').match(/\d{1,2}:\d{2}/g)||[];if(!vals.length)return null;const mins=vals.map(getTimeMinutes).filter(Number.isFinite).sort((a,b)=>a-b);return mins.length?{start:mins[0],end:mins[mins.length-1]}:null;}
+function buildAttendanceNotes(date,time,people){
+  const range=getScheduleRange(time);if(!range)return '';
+  const late=[],early=[];
+  (people&&people.length?state.members.filter(m=>people.includes(m.name)):state.members).forEach(m=>{
+    const entry=getMemberAvailability(m.name)[date];if(!entry)return;
+    const r=getScheduleRange(entry.time);if(!r)return;
+    if(r.start>range.start)late.push(`${m.name}(${formatMin(r.start)})`);
+    if(r.end<range.end)early.push(`${m.name}(${formatMin(r.end)})`);
+  });
+  if(!late.length&&!early.length)return '';
+  let h='<div class="notice schedule-special-note"><b>특이사항</b>';
+  if(late.length)h+=`<div class="small" style="margin-top:5px">늦참 - ${late.join(', ')}</div>`;
+  if(early.length)h+=`<div class="small" style="margin-top:3px">일퇴 - ${early.join(', ')}</div>`;
+  return h+'</div>';
+}
+function buildPersonalMemos(date,people){
+  const names=people&&people.length?people:state.members.map(m=>m.name);
+  const rows=[];
+  names.forEach(name=>{const entry=getMemberAvailability(name)[date];if(entry&&entry.memo)rows.push(`${name}: ${entry.memo}`);});
+  return rows;
+}
+function practice(){
+  const schedules=[...state.schedules].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const stages=[...state.stage].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  if(!state.practiceDate) state.practiceDate=schedules[0]?.date||stages[0]?.date||new Date().toISOString().slice(0,10);
+  const selected=new Date(state.practiceDate+"T00:00:00");
+  let list=[];
+  const all=[...schedules.map((x,i)=>({...x,_kind:(x.type==='공연'?'공연':x.type==='셋업'?'셋업':x.type==='기타'?'기타':'연습'),_idx:i})),...stages.map((x,i)=>({...x,_kind:'주요 일정',_stageIdx:i}))];
+  if(state.view==='day') list=all.filter(x=>x.date===state.practiceDate);
+  if(state.view==='week'){
+    const ws=new Date(selected);ws.setDate(selected.getDate()-selected.getDay());const we=new Date(ws);we.setDate(ws.getDate()+6);
+    list=all.filter(x=>{const d=new Date(x.date+"T00:00:00");return d>=ws&&d<=we;});
+  }
+  list.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const dateLabel=`${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
+  let weekLabel="";if(state.view==='week'){const ws=new Date(selected);ws.setDate(selected.getDate()-selected.getDay());const we=new Date(ws);we.setDate(ws.getDate()+6);weekLabel=`${ws.getFullYear()}년 ${ws.getMonth()+1}월 ${ws.getDate()}일 ~ ${we.getFullYear()}년 ${we.getMonth()+1}월 ${we.getDate()}일`;}
+  return `<div class="section-title"><h2>일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
+  <div class="seg"><button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button><button class="${state.view==='week'?'active':''}" onclick="setView('week')">주간</button><button class="${state.view==='day'?'active':''}" onclick="setView('day')">일간</button></div>
+  ${state.view!=='month'?`<div class="card"><div class="row"><button class="btn" onclick="movePracticeDate(-1)">◀</button><b>${state.view==='day'?dateLabel:weekLabel}</b><button class="btn" onclick="movePracticeDate(1)">▶</button></div></div>`:''}
+  ${state.view==='month'?miniMonth():list.length?list.map(x=>{
+    const isSchedule=Number.isInteger(x._idx), idx=isSchedule?x._idx:x._stageIdx;
+    const people=Array.isArray(x.people)?x.people:[];
+    const personalMemos=buildPersonalMemos(x.date,people);
+    const special=isSchedule?buildAttendanceNotes(x.date,x.time,people):'';
+    const pendingChanges=isSchedule?(x._changes||[]).filter(c=>!c.done):[];
+    const changes=isSchedule&&pendingChanges.length?`<div class="notice schedule-special-note"><b>안내사항</b>${pendingChanges.map(c=>`<label class="checkline" style="display:flex;margin-top:7px"><input type="checkbox" ${state.admin?'':'disabled'} ${state.admin?'':'title="관리자만 확인할 수 있습니다"'} onchange="markScheduleChangeDone(${idx},'${c.id}')"> ${String(c.text).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</label>`).join('')}</div>`:'';
+    const memo=x.memo?`<div class="schedule-memo"><b>${x._kind==='연습'?'메모 / 연습내용':'메모'}</b><div>${String(x.memo).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`:'';
+    return `<div class="card schedule-card" data-schedule-index="${isSchedule?idx:""}"><div class="schedule-head"><div class="schedule-main"><div class="date-line schedule-date">${x.date}</div><div class="time schedule-time">${x.time}</div><div class="kind-line schedule-kind">${x._kind}</div>${people.length?`<div class="schedule-people"><b>참여자</b><div>${people.join(' · ')}</div></div>`:''}${personalMemos.length?`<div class="schedule-memo"><b>개인 메모</b><div>${personalMemos.map(v=>String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' / ')}</div></div>`:''}${special}${changes}${memo}</div><span class="pill">👥 ${people.length}명</span></div>${state.admin?`<div class="actions" style="margin-top:10px">${isSchedule?`<button class="btn" onclick="editPractice(${idx})">수정</button><button class="btn danger" onclick="cancelPractice(${idx})">취소</button>`:`<button class="btn" onclick="editStage(${idx})">수정</button><button class="btn danger" onclick="deleteStage(${idx})">취소</button>`}<button class="btn" onclick="toggleFixedStage('${x.date}','${String(x.title||x._kind).replace(/'/g,"\\'")}','${x.time}')">${state.stage.some(s=>s.date===x.date&&s.time===x.time&&s.title===x.title)?'⭐ 주요 일정 고정됨':'⭐ 주요 일정 고정'}</button></div>`:''}</div>`;
+  }).join(''):`<div class="card empty">해당 기간에 등록된 일정이 없습니다.</div>`}
+  <div class="card"><h3>📌 고정 주요 일정</h3>${stages.length?stages.map((x,i)=>`<div class="schedule-item"><span class="pill">${x.title.includes('공연')?'🎭 공연':'🏗️ 일정'}</span><div class="time">${x.date} · ${x.time}</div><div class="people content-scroll">${x.title}</div>${state.admin?`<div class="actions" style="margin-top:8px"><button class="btn" onclick="editStage(${i})">수정</button><button class="btn danger" onclick="deleteStage(${i})">삭제</button></div>`:''}</div>`).join(''):`<div class="empty">등록된 주요 일정이 없습니다.</div>`}</div>`;
 }
 
-  return `
-  <div class="section-title">
-    <h2>연습일정</h2>
-    ${state.admin
-      ? '<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>'
-      : ''}
-  </div>
-
-  <div class="seg">
-    <button class="${state.view==='day'?'active':''}"
-      onclick="setView('day')">일간</button>
-
-    <button class="${state.view==='week'?'active':''}"
-      onclick="setView('week')">주간</button>
-
-    <button class="${state.view==='month'?'active':''}"
-      onclick="setView('month')">월간</button>
-  </div>
-
-  ${state.view!=="month" ? `
-    <div class="card" style="margin-bottom:12px">
-      <div class="row">
-        <button class="btn" onclick="movePracticeDate(-1)">◀</button>
-
-        <b>
-          ${state.view==="day"
-            ? dateLabel
-            : weekLabel}
-        </b>
-
-        <button class="btn" onclick="movePracticeDate(1)">▶</button>
-      </div>
-    </div>
-  ` : ""}
-
-  ${state.view==="month"
-    ? miniMonth()
-    : list.length
-      ? list.map(x=>{
-          const originalIndex=state.schedules.indexOf(x);
-
-          return `
-          <div class="card">
-            <div class="row">
-              <div>
-                <span class="pill">${x.date}</span>
-                <div class="time">${x.time}</div>
-                <b>${x.title}</b>
-              </div>
-
-              <span class="pill">
-                👥 ${x.people.length}명
-              </span>
-            </div>
-
-            <div class="people">
-              ${x.people.join(" · ")}
-            </div>
-
-            ${state.admin ? `
-              <div class="actions" style="margin-top:10px">
-                <button class="btn ghost"
-                  onclick="editPractice(${originalIndex})">수정</button>
-
-                <button class="btn danger"
-                  onclick="cancelPractice(${originalIndex})">취소</button>
-              </div>
-            ` : ""}
-          </div>
-          `;
-        }).join("")
-      : `<div class="card empty">
-          해당 기간에 등록된 연습 일정이 없습니다.
-        </div>`
-  }`;
-}
 function setView(v){state.view=v;save();render()}
+
 function miniMonth(){
-  const base = state.practiceDate
-    ? new Date(state.practiceDate + "T00:00:00")
-    : new Date();
-
-  const year = base.getFullYear();
-  const month = base.getMonth();
-
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-
-  const days = ["일","월","화","수","목","금","토"];
-
-let s = `
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-    <button class="btn" onclick="movePracticeMonth(-1)">◀</button>
-    <b style="font-size:18px;">${year}년 ${month + 1}월</b>
-    <button class="btn" onclick="movePracticeMonth(1)">▶</button>
-  </div>
-
-  <div class="calendar">
-`;
-  s += days.map(d => `<div class="calhead">${d}</div>`).join("");
-
-  for(let i=0; i<firstDay.getDay(); i++){
-    s += `<div class="day"></div>`;
+  const base=state.practiceDate?new Date(state.practiceDate+"T00:00:00"):new Date();const year=base.getFullYear(),month=base.getMonth();
+  const first=new Date(year,month,1),last=new Date(year,month+1,0);const days=["일","월","화","수","목","금","토"];
+  let s=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><button class="btn" onclick="movePracticeMonth(-1)">◀</button><b style="font-size:18px">${year}년 ${month+1}월</b><button class="btn" onclick="movePracticeMonth(1)">▶</button></div><div class="calendar">`+days.map(d=>`<div class="calhead">${d}</div>`).join('');
+  for(let i=0;i<first.getDay();i++)s+=`<div class="day"></div>`;
+  for(let day=1;day<=last.getDate();day++){
+    const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const sh=state.schedules.filter(x=>x.date===date),stg=state.stage.filter(x=>x.date===date);
+    s+=`<button class="day" style="text-align:left" onclick="selectPracticeMonthDate('${date}')"><b>${day}</b>${stg.map(x=>`<span class="dot stage">${x.title.includes('공연')?'🎭 공연':'🏗️ 극장'}</span>`).join('')}${sh.length?`<span class="dot">● 연습</span>`:''}${pendingScheduleChanges(date)?`<span class="dot" style="background:#ff6b8a;color:#fff">🔔 변경</span>`:''}</button>`;
   }
-
-  for(let day=1; day<=lastDay.getDate(); day++){
-    const date =
-      `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-
-    const hit = Array.isArray(state.schedules)
-       && state.schedules.some(x => x.date === date);
-
-    s += `
-      <div class="day">
-        <b>${day}</b>
-        ${hit ? `<span class="dot">● 연습</span>` : ""}
-      </div>
-    `;
-  }
-
-return `${s}</div>`;
+  return s+'</div>';
 }
-
+function selectPracticeMonthDate(date){state.practiceDate=date;state.view='day';save();render()}
 function movePracticeMonth(amount){
   const base = state.practiceDate
     ? new Date(state.practiceDate + "T00:00:00")
@@ -668,668 +735,92 @@ function movePracticeMonth(amount){
   render();
 }
 function addPractice(){
-  let date=prompt("날짜 (YYYY-MM-DD)","2026-10-25");if(!date)return;
-  let time=prompt("시간","19:00–22:00");if(!time)return;
-  let title=prompt("연습 내용","장면연습");if(!title)return;
-  state.schedules.push({date,time,title,people:state.members.map(x=>x.name)});
-  save();render();
+  openScheduleModal();
+}
+function openScheduleModal(){
+  const dates=[],timesByDate={},typeState={value:'연습'},people=[],fixed={value:false};let half=false,view=new Date();view.setDate(1);
+  const bg=document.createElement('div');bg.className='tc-modal-bg';bg.id='scheduleModal';
+  bg.innerHTML=`<div class="tc-modal"><h3>일정 추가</h3><div id="smCal"></div><div class="field"><label>시간</label><button class="btn" id="smHalf">30분 단위로 입력</button><div id="smTimes" class="tc-time-grid"></div></div><div class="field"><label>일정 종류</label><div id="smTypes" class="tc-types"></div></div><div class="field"><label>참여팀원</label><div id="smPeople" class="chips"></div></div><div class="field"><label>메모 / 연습내용</label><textarea id="smMemo" style="width:100%;min-height:80px" placeholder="내용을 입력하세요"></textarea></div><label class="checkline"><input type="checkbox" id="smFixed"> 주요 일정 고정</label><div class="tc-actions"><button class="btn" id="smCancel">취소</button><button class="btn primary" id="smSave">일정 추가</button></div></div>`;
+  document.body.appendChild(bg);
+  const pad=n=>String(n).padStart(2,'0');
+  function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="smPrev">◀</button><b>${y}년 ${m+1}월</b><button id="smNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#smCal').innerHTML=h+'</div>';bg.querySelectorAll('#smCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v))dates.splice(dates.indexOf(v),1);else{dates.push(v);timesByDate[v]=[];}renderCal();renderTimes();});bg.querySelector('#smPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#smNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
+  function renderTimes(){const selected=dates.slice().sort();if(!selected.length){bg.querySelector('#smTimes').innerHTML='<div class="empty">날짜를 먼저 선택해주세요.</div>';return;}bg.querySelector('#smTimes').innerHTML=selected.map(date=>{const arr=timesByDate[date]||[];const step=half?30:60;let h=`<div style="margin:8px 0"><b>${date}</b><div class="tc-time-grid">`;for(let m=0;m<1440;m+=step){const t=formatMin(m);h+=`<button type="button" class="tc-time-btn ${arr.includes(t)?'sel':''}" data-date="${date}" data-time="${t}">${t}</button>`;}return h+'</div></div>';}).join('');bg.querySelectorAll('#smTimes [data-time]').forEach(b=>b.onclick=()=>{const date=b.dataset.date,v=b.dataset.time,arr=timesByDate[date]||[],anchor=arr._anchor;if(anchor&&anchor!==v){const set=new Set(arr);for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=(half?30:60))set.add(formatMin(m));timesByDate[date]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));timesByDate[date]._anchor=null;}else if(arr.includes(v)){timesByDate[date]=arr.filter(x=>x!==v);timesByDate[date]._anchor=null;}else{arr.push(v);arr._anchor=v;timesByDate[date]=arr;}renderTimes();});}
+  function renderTypes(){bg.querySelector('#smTypes').innerHTML=['연습','공연','셋업','기타'].map(x=>`<button type="button" class="tc-type ${x===typeState.value?'sel':''}" data-type="${x}">${x}</button>`).join('');bg.querySelectorAll('#smTypes [data-type]').forEach(b=>b.onclick=()=>{typeState.value=b.dataset.type;renderTypes()});}
+  bg.querySelector('#smPeople').innerHTML=state.members.map(m=>`<button type="button" class="chip" data-name="${m.name}">${m.name}</button>`).join('');bg.querySelectorAll('#smPeople .chip').forEach(b=>b.onclick=()=>{b.classList.toggle('on');});
+  bg.querySelector('#smHalf').onclick=()=>{half=!half;Object.keys(timesByDate).forEach(k=>timesByDate[k]=[]);bg.querySelector('#smHalf').textContent=half?'1시간 단위로 입력':'30분 단위로 입력';renderTimes()};bg.querySelector('#smCancel').onclick=()=>bg.remove();bg.querySelector('#smSave').onclick=()=>{if(!dates.length)return alert('날짜를 하나 이상 선택해주세요.');if(dates.some(d=>!(timesByDate[d]||[]).length))return alert('모든 날짜의 시간을 선택해주세요.');const selectedPeople=[...bg.querySelectorAll('#smPeople .chip.on')].map(b=>b.dataset.name);const memo=bg.querySelector('#smMemo').value.trim();dates.sort().forEach(date=>{const arr=(timesByDate[date]||[]).filter(x=>/^\d/.test(x));const time=compressTimes(arr).join(' / ');const item={date,time,title:typeState.value,type:typeState.value,people:selectedPeople.slice(),memo};state.schedules.push(item);if(bg.querySelector('#smFixed').checked)state.stage.push({date,time,title:typeState.value});});save();bg.remove();render()};renderCal();renderTimes();renderTypes();
 }
 function editPractice(i){
-  let x=state.schedules[i];
-  x.time=prompt("시간",x.time)||x.time;
-  x.title=prompt("내용",x.title)||x.title;
-  save();render();
+  const x=state.schedules[i]; if(!x)return; const host=document.querySelector(`[data-schedule-index="${i}"]`); if(!host)return; host.querySelector('.tc-inline-edit')?.remove();
+  const ed=document.createElement('div');ed.className='tc-inline-edit';
+  const existingTimes=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]; let selected=existingTimes.slice(); let anchor=null; const step=30;
+  ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
+  host.appendChild(ed);
+  function draw(){ed.querySelector('#ieTimes').innerHTML=Array.from({length:48},(_,j)=>{const t=formatMin(j*step);return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${t}</button>`}).join('');ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(anchor){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=step)if(!selected.includes(formatMin(m)))selected.push(formatMin(m));selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));anchor=null;}else{anchor=v;if(!selected.includes(v))selected.push(v);}draw();});}
+  ed.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{ed.querySelectorAll('[data-t]').forEach(z=>z.classList.remove('sel'));b.classList.add('sel')});ed.querySelectorAll('#iePeople .chip').forEach(b=>b.onclick=()=>b.classList.toggle('on'));ed.querySelector('#ieCancel').onclick=()=>ed.remove();ed.querySelector('#ieSave').onclick=()=>{const date=ed.querySelector('#ieDate').value;if(!date||!selected.length)return alert('날짜와 시간을 선택해주세요.');x.date=date;x.time=compressTimes(selected).join(' / ');x.type=ed.querySelector('#ieTypes .sel')?.dataset.t||x.type;x.title=x.type;x.people=[...ed.querySelectorAll('#iePeople .chip.on')].map(b=>b.dataset.name);x.memo=ed.querySelector('#ieMemo').value.trim();scheduleId(x);x._syncSnapshot={};x.people.forEach(n=>{const e=getAvailabilityEntry(n,x.date);x._syncSnapshot[n]=e?.time||null;});save();render()};draw();
 }
 function cancelPractice(i){
   if(confirm("연습일정을 취소할까요?")){state.schedules.splice(i,1);save();render();}
 }
 
 function schedule(){
-
-  const names=
-    state.members.map(
-      x=>x.name
-    );
-
-
-  return `
-
-  <div class="section-title">
-
-    <h2>스케줄 조율</h2>
-
-    <span class="pill">
-      모두 조회 가능
-    </span>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="section-title">
-
-      <h3>👥 팀원별 가능시간</h3>
-
-      <span class="pill">
-        이름을 선택하세요
-      </span>
-
-    </div>
-
-
-    <div
-      style="
-        display:flex;
-        flex-direction:column;
-        gap:8px">
-
-      ${
-        names.length
-          ? names.map(name=>`
-
-            <div>
-
-              <button
-                type="button"
-                class="btn"
-                style="
-                  width:100%;
-                  text-align:left;
-                  padding:13px 15px;
-                  display:flex;
-                  justify-content:space-between;
-                  align-items:center"
-                data-member="${name}">
-
-                <span>
-                  👤 ${name}
-                </span>
-
-                <span
-                  class="member-arrow">
-                  ›
-                </span>
-
-              </button>
-
-
-              <div
-                id="memberSchedule-${name}"
-                style="display:none;margin-top:8px">
-
-              </div>
-
-            </div>
-
-          `).join("")
-          : `
-
-            <div class="empty">
-
-              등록된 팀원이 없습니다.
-
-            </div>
-
-          `
-      }
-
-    </div>
-
-
-    <!-- 기존 함수에서 사용하는 이름 선택값 -->
-
-    <select
-      id="availabilityMember"
-      style="display:none">
-
-      <option value="">
-        내 이름을 선택해주세요
-      </option>
-
-      ${names.map(n=>`
-        <option value="${n}">
-          ${n}
-        </option>
-      `).join("")}
-
-    </select>
-
-
-  </div>
-
-  <!-- 전체 가능시간 캘린더 -->
-
-  <div class="card">
-
-    <div class="section-title">
-
-      <h3>📅 전체 가능시간</h3>
-
-      <span class="pill">
-        등록 현황
-      </span>
-
-    </div>
-
-    <p class="muted small" style="margin:0 0 12px">
-      날짜를 누르면 팀원별 등록 가능시간을 확인할 수 있습니다.
-    </p>
-
-    <div class="aggregate-availability">
-
-      ${aggregateAvailabilityCalendar()}
-
-    </div>
-
-    <div
-      id="aggregateAvailabilityDetail"
-      class="aggregate-detail">
-
-      날짜를 선택해주세요.
-
-    </div>
-
-  </div>
-
-  <!-- 원하는 팀원 조합 -->
-
-  <div class="card">
-
-    <div class="section-title">
-
-      <h3>👥 원하는 팀원 조합</h3>
-
-      <button
-        id="allMemberButton"
-        class="btn"
-        onclick="toggleAllMembers()">
-
-        전체 선택
-
-      </button>
-
-    </div>
-
-
-    <div class="chips">
-
-      ${names.map(n=>`
-
-        <button
-          type="button"
-          class="chip"
-          onclick="toggleChip(this)"
-          data-name="${n}">
-
-          ${n}
-
-        </button>
-
-      `).join("")}
-
-    </div>
-
-
-    <button
-      class="btn"
-      style="margin-top:10px"
-      onclick="filterPeople()">
-
-      선택한 인원 모두 가능한 시간 보기
-
-    </button>
-
-
-    <div
-      id="match"
-      class="people"
-      style="margin-top:12px">
-
-    </div>
-
-  </div>
-
-
-  ${
-    state.admin
-      ? `
-
-        <div class="card">
-
-          <h3>🧮 관리자 연습 확정</h3>
-
-          <div class="notice">
-
-            선택한 팀원의 공통 가능시간을 확인한 뒤
-            연습일정을 확정할 수 있습니다.
-
-          </div>
-
-
-          <button
-            class="btn primary"
-            style="margin-top:10px"
-            onclick="confirmPractice()">
-
-            연습 확정
-
-          </button>
-
-        </div>
-
-      `
-      : ""
-  }
-
-  `;
-
+  const names=state.members.map(x=>x.name);
+  if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
+  return `<div class="section-title"><h2>스케줄 조율</h2><span class="pill">모두 조회 가능</span></div>
+  <div class="card"><div class="section-title"><h3>👥 팀원별 가능시간</h3><span class="pill">이름을 선택하세요</span></div><div style="display:flex;flex-direction:column;gap:8px">${names.length?names.map(name=>`<div><button type="button" class="btn" style="width:100%;text-align:left;padding:13px 15px;display:flex;justify-content:space-between" data-member="${name}"><span>👤 ${name}</span><span>›</span></button><div id="memberSchedule-${name}" style="display:none;margin-top:8px"></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div><select id="availabilityMember" style="display:none"><option value="">내 이름</option>${names.map(n=>`<option>${n}</option>`).join('')}</select></div>
+  <div class="card"><div class="section-title"><h3>📅 전체 가능시간</h3><span class="pill">공통 가능시간 자동 표시</span></div><p class="muted small" style="margin-bottom:10px">아래에서 원하는 팀원을 선택하면 공통 가능한 날짜와 시간이 자동으로 다른 색으로 표시됩니다.</p>
+  <div class="chips" style="margin-bottom:8px">${names.map(n=>`<button type="button" class="chip ${state.aggregateMembers.includes(n)?'on':''}" onclick="toggleAggregateMember('${n}')">${n}</button>`).join('')}</div>
+  <div class="actions" style="margin-bottom:10px"><button class="btn tc-small-control" onclick="toggleAllAggregateMembers()">${state.aggregateMembers.length===names.length&&names.length?'이름선택해제':'이름전체선택'}</button><button class="btn ghost tc-small-control" onclick="clearAggregateMembers()">이름선택해제</button><button class="btn ghost tc-small-control" onclick="clearAggregateDates()">날짜선택해제</button></div>
+  <div id="aggregateCommonNotice" class="notice" style="display:none;margin-bottom:10px">*공통된 시간이 없습니다.</div>
+  <div class="aggregate-availability">${aggregateAvailabilityCalendar()}</div>
+  <div id="aggregateAvailabilityDetail" class="aggregate-detail">날짜를 선택해주세요.</div>
+  ${state.admin?renderAdminPracticeConfirmPanel():''}
+  </div>`;
 }
-
-/* =========================================================
-   전체 가능시간 통합 달력
-   ========================================================= */
-
-let aggregateAvailabilityCalendarDate = new Date();
-
-let selectedAggregateAvailabilityDate = null;
-
-
-/* =========================================================
-   통합 달력 만들기
-   ========================================================= */
-
+let aggregateAvailabilityCalendarDate=new Date();
+let selectedAggregateAvailabilityDates=[];
+function aggregateSelectedPeople(){return Array.isArray(state.aggregateMembers)?state.aggregateMembers:[];}
+function toggleAggregateMember(name){const a=aggregateSelectedPeople();const i=a.indexOf(name);if(i>=0)a.splice(i,1);else a.push(name);state.aggregateMembers=a;save();render();}
+function toggleAllAggregateMembers(){const names=state.members.map(x=>x.name);state.aggregateMembers=(state.aggregateMembers.length===names.length)?[]:names.slice();save();render();}
+function clearAggregateMembers(){state.aggregateMembers=[];save();render();}
+function clearAggregateDates(){selectedAggregateAvailabilityDates=[];render();}
+function mergeAvailabilityText(text){
+  const tokens=String(text||'').match(/\d{1,2}:\d{2}(?:\s*[-–~]\s*\d{1,2}:\d{2})?/g)||[];
+  const points=new Set();
+  tokens.forEach(v=>{const q=v.match(/(\d{1,2}:\d{2})(?:\s*[-–~]\s*(\d{1,2}:\d{2}))?/);if(!q)return;const a=getTimeMinutes(q[1]),b=q[2]?getTimeMinutes(q[2]):a;if(!Number.isFinite(a)||!Number.isFinite(b))return;for(let m=Math.min(a,b);m<=Math.max(a,b);m+=30)points.add(formatMin(m));});
+  return compressTimes([...points]).join(' / ');
+}
+function parseTimeList(text){return String(text||'').split(',').map(x=>x.trim()).filter(Boolean);}
+function getTimeMinutes(text){const m=String(text).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):NaN;}
+function formatMin(n){return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;}
+function compressTimes(times){const mins=[...new Set(times.map(getTimeMinutes).filter(Number.isFinite))].sort((a,b)=>a-b);if(!mins.length)return[];let out=[],start=mins[0],prev=mins[0];let step=60;for(let i=1;i<mins.length;i++){const diff=mins[i]-prev;if(diff>0&&diff<step)step=diff; if(diff>step){out.push(start===prev?formatMin(start):`${formatMin(start)}-${formatMin(prev)}`);start=mins[i];}prev=mins[i];}out.push(start===prev?formatMin(start):`${formatMin(start)}-${formatMin(prev)}`);return out;}
+function commonForDate(date,people){return commonIntervalsForDate(date,people);}
 function aggregateAvailabilityCalendar(){
-
-  const year =
-    aggregateAvailabilityCalendarDate.getFullYear();
-
-  const month =
-    aggregateAvailabilityCalendarDate.getMonth();
-
-
-  const firstDay =
-    new Date(year, month, 1);
-
-  const lastDay =
-    new Date(year, month + 1, 0);
-
-
-  const days = [
-    "일","월","화","수","목","금","토"
-  ];
-
-
-  let html = `
-
-    <div class="availability-calendar-header">
-
-      <button
-        type="button"
-        class="btn"
-        onclick="moveAggregateAvailabilityMonth(-1)">
-
-        ◀
-
-      </button>
-
-
-      <b>
-        ${year}년 ${month + 1}월
-      </b>
-
-
-      <button
-        type="button"
-        class="btn"
-        onclick="moveAggregateAvailabilityMonth(1)">
-
-        ▶
-
-      </button>
-
-    </div>
-
-
-    <div class="aggregate-calendar">
-
-      ${days.map(d => `
-        <div class="calhead">
-          ${d}
-        </div>
-      `).join("")}
-
-  `;
-
-
-  /* 앞쪽 빈칸 */
-
-  for(
-    let i = 0;
-    i < firstDay.getDay();
-    i++
-  ){
-
-    html += `
-      <div class="aggregate-day empty"></div>
-    `;
-
+  const year=aggregateAvailabilityCalendarDate.getFullYear(),month=aggregateAvailabilityCalendarDate.getMonth(),first=new Date(year,month,1),last=new Date(year,month+1,0),people=aggregateSelectedPeople();
+  let html=`<div class="availability-calendar-header"><button type="button" class="btn" onclick="moveAggregateAvailabilityMonth(-1)">◀</button><b>${year}년 ${month+1}월</b><button type="button" class="btn" onclick="moveAggregateAvailabilityMonth(1)">▶</button></div><div class="aggregate-calendar">${['일','월','화','수','목','금','토'].map(d=>`<div class="calhead">${d}</div>`).join('')}`;
+  for(let i=0;i<first.getDay();i++)html+='<div class="aggregate-day empty"></div>';
+  let anyCommon=false;
+  for(let day=1;day<=last.getDate();day++){
+    const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;const info=commonForDate(date,people);if(people.length&&info.ok)anyCommon=true;const selected=selectedAggregateAvailabilityDates.includes(date);const filtered=people.length&&info.ok;
+    html+=`<button type="button" class="aggregate-day ${info.count?'has-data':''} ${filtered?'filtered-common':''} ${selected?'selected':''}" onclick="toggleAggregateAvailabilityDate('${date}')"><b>${day}</b>${info.count?`<span class="aggregate-count">${info.count}명</span>`:''}${info.ranges.length?`<span class="aggregate-time-range">${info.ranges.join(' / ')}</span>`:''}</button>`;
   }
-
-
-  /* 날짜 */
-
-  for(
-    let day = 1;
-    day <= lastDay.getDate();
-    day++
-  ){
-
-    const date =
-      `${year}-` +
-      `${String(month + 1).padStart(2,"0")}-` +
-      `${String(day).padStart(2,"0")}`;
-
-
-    let registeredCount = 0;
-
-
-    state.members.forEach(member => {
-
-      const entries =
-        getMemberAvailability(member.name);
-
-      if(entries[date]){
-        registeredCount++;
-      }
-
-    });
-
-
-    const selected =
-      selectedAggregateAvailabilityDate === date;
-
-
-    html += `
-
-      <button
-        type="button"
-        class="aggregate-day
-          ${registeredCount ? "has-data" : ""}
-          ${selected ? "selected" : ""}"
-        onclick="toggleAggregateAvailabilityDate('${date}')">
-
-        <b>${day}</b>
-
-        ${
-          registeredCount
-            ? `
-              <span class="aggregate-count">
-                ${registeredCount}명
-              </span>
-            `
-            : ""
-        }
-
-      </button>
-
-    `;
-
-  }
-
-
-  html += `
-
-    </div>
-
-  `;
-
-
+  html+='</div>';
+  setTimeout(()=>{const n=document.getElementById('aggregateCommonNotice');if(n)n.style.display=people.length&&!anyCommon?'block':'none';},0);
   return html;
-
 }
-
-
-/* =========================================================
-   월 이동
-   ========================================================= */
-
-function moveAggregateAvailabilityMonth(amount){
-
-  aggregateAvailabilityCalendarDate.setMonth(
-    aggregateAvailabilityCalendarDate.getMonth() + amount
-  );
-
-
-  render();
-
-}
-
-
-/* =========================================================
-   날짜 클릭
-   ========================================================= */
-
-function toggleAggregateAvailabilityDate(date){
-
-  if(
-    selectedAggregateAvailabilityDate === date
-  ){
-
-    selectedAggregateAvailabilityDate = null;
-
-  }else{
-
-    selectedAggregateAvailabilityDate = date;
-
-  }
-
-
-  updateAggregateAvailabilityDetail();
-
-  renderAggregateAvailabilityCalendar();
-
-}
-
-
-/* =========================================================
-   캘린더만 다시 그리기
-   ========================================================= */
-
-function renderAggregateAvailabilityCalendar(){
-
-  const area =
-    document.querySelector(
-      ".aggregate-availability"
-    );
-
-
-  if(!area)return;
-
-
-  area.innerHTML =
-    aggregateAvailabilityCalendar();
-
-}
-
-
-/* =========================================================
-   선택 날짜의 팀원별 가능시간 표시
-   ========================================================= */
-
+function moveAggregateAvailabilityMonth(amount){aggregateAvailabilityCalendarDate.setMonth(aggregateAvailabilityCalendarDate.getMonth()+amount);render();}
+function toggleAggregateAvailabilityDate(date){const i=selectedAggregateAvailabilityDates.indexOf(date);if(i>=0)selectedAggregateAvailabilityDates.splice(i,1);else selectedAggregateAvailabilityDates.push(date);selectedAggregateAvailabilityDates.sort();render();setTimeout(updateAggregateAvailabilityDetail,0);}
 function updateAggregateAvailabilityDetail(){
-
-  const area =
-    document.getElementById(
-      "aggregateAvailabilityDetail"
-    );
-
-
-  if(!area)return;
-
-
-  const date =
-    selectedAggregateAvailabilityDate;
-
-
-  if(!date){
-
-    area.innerHTML =
-      "날짜를 선택해주세요.";
-
-    return;
-
-  }
-
-
-  const registered = [];
-
-
-  state.members.forEach(member => {
-
-    const entries =
-      getMemberAvailability(
-        member.name
-      );
-
-
-    if(entries[date]){
-
-      registered.push({
-
-        name: member.name,
-
-        time: entries[date].time,
-
-        memo: entries[date].memo
-
-      });
-
-    }
-
-  });
-
-
-  if(!registered.length){
-
-    area.innerHTML = `
-
-      <div
-        class="empty"
-        style="padding:10px">
-
-        <b>${date}</b>
-
-        <br>
-
-        등록된 가능시간이 없습니다.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  area.innerHTML = `
-
-    <div>
-
-      <b>📅 ${date}</b>
-
-      <div
-        class="muted small"
-        style="margin-top:3px">
-
-        ${registered.length}명의 팀원이
-        가능시간을 등록했습니다.
-
-      </div>
-
-    </div>
-
-
-    <div style="margin-top:8px">
-
-      ${
-        registered.map(person => `
-
-          <div class="aggregate-person">
-
-            <b>
-              👤 ${person.name}
-            </b>
-
-
-            <div class="aggregate-time">
-
-              🕐 ${person.time}
-
-            </div>
-
-
-            ${
-              person.memo
-                ? `
-                  <div
-                    class="muted small"
-                    style="margin-top:4px">
-
-                    📝 ${person.memo}
-
-                  </div>
-                `
-                : ""
-            }
-
-          </div>
-
-        `).join("")
-      }
-
-    </div>
-
-  `;
-
+  const host=document.getElementById('aggregateAvailabilityDetail'); if(!host)return;
+  const dates=selectedAggregateAvailabilityDates||[];
+  if(!dates.length){host.innerHTML='<div class="muted small">날짜를 선택해주세요.</div>';return;}
+  const people=aggregateSelectedPeople();
+  host.innerHTML=dates.map(date=>{
+    const list=state.availability?.[date]; const rows=Array.isArray(list)?list:(list?[list]:[]);
+    const filtered=people.length?rows.filter(x=>people.includes(x.member)):rows;
+    return `<div class="card"><h3>📅 ${date} 상세 가능시간</h3>${filtered.length?filtered.map(x=>`<div class="schedule-item"><b>👤 ${x.member||''}</b><div class="time">가능시간: ${mergeAvailabilityText(x.time)||'등록 없음'}</div><div class="people">특이사항/메모: ${x.memo||'없음'}</div></div>`).join(''):'<div class="empty">해당 날짜에 등록된 팀원이 없습니다.</div>'}</div>`;
+  }).join('');
 }
 
-/* =========================================================
-   전체 가능시간 달력
-   ========================================================= */
-
-  
-  
-  
-let aggregateCalendarDate = new Date();
-
-
-function moveAggregateAvailabilityMonth(amount){
-
-  aggregateCalendarDate.setMonth(
-    aggregateCalendarDate.getMonth() + amount
-  );
-  const calendarArea =
-    document.querySelector(".aggregate-availability");
-
-  if(calendarArea){
-    calendarArea.innerHTML =
-      aggregateAvailabilityCalendar();
-  }
-
-  const detail =
-    document.getElementById(
-      "aggregateAvailabilityDetail"
-    );
-
-  if(detail){
-    detail.innerHTML =
-      "날짜를 선택해주세요.";
-  }
-
-}
-  
 function selectAvailabilityMember(member){
 
   const area=
@@ -2563,9 +2054,9 @@ function saveAvailability(){
 
     if(existing){
 
-      existing.time=time;
+      existing.time=mergeAvailabilityText(`${existing.time||""} / ${time}`);
 
-      existing.memo=memo;
+      existing.memo=memo||existing.memo||"";
 
     }else{
 
@@ -2583,6 +2074,7 @@ function saveAvailability(){
 
   });
 
+  selectedAvailabilityDates.forEach(date=>syncConfirmedSchedulesForDate(date,member));
 
   save();
 
@@ -2655,6 +2147,8 @@ function deleteAvailability(date,member){
 
   }
 
+
+syncConfirmedSchedulesForDate(date,member);
 
 save();
 
@@ -2949,107 +2443,82 @@ function getCommonTimeSlots(timeLists){
    연습 확정
    ========================================================= */
 
-function confirmPractice(){
-
-  const selected=
-    [
-      ...document.querySelectorAll(
-        ".chip.on"
-      )
-    ].map(
-      x=>x.dataset.name
-    );
-
-
-  if(!selected.length){
-
-    alert(
-      "먼저 연습할 팀원을 선택해주세요."
-    );
-
-    return;
-
-  }
-
-
-  const common=
-    findCommonAvailability(
-      selected
-    );
-
-
-  const dates=
-    Object.keys(common);
-
-
-  if(!dates.length){
-
-    alert(
-      "선택한 팀원의 공통 가능시간이 없습니다."
-    );
-
-    return;
-
-  }
-
-
-  const date=
-    prompt(
-      "확정 날짜\n\n"+
-      dates.join("\n"),
-      dates[0]
-    );
-
-
-  if(!date)return;
-
-
-  if(!common[date]){
-
-    alert(
-      "공통 가능시간이 없는 날짜입니다."
-    );
-
-    return;
-
-  }
-
-
-  const time=
-    prompt(
-      "확정 시간\n\n"+
-      common[date].join(", "),
-      common[date][0]
-    );
-
-
-  if(!time)return;
-
-
-  state.schedules.push({
-
-    date:date,
-
-    time:time,
-
-    title:"확정 연습",
-
-    people:selected
-
-  });
-
-
-  save();
-
-
-  alert(
-    "연습일정에 추가되었습니다."
-  );
-
-
-  go("practice");
-
+function initConfirmState(){if(!Array.isArray(state.confirmDates))state.confirmDates=[];if(!Array.isArray(state.confirmPeople))state.confirmPeople=[];if(!Array.isArray(state.confirmExcludedPeople))state.confirmExcludedPeople=[];if(state.confirmMemo===undefined)state.confirmMemo='';if(!state.confirmTimesByDate)state.confirmTimesByDate={};if(typeof state.confirmSameTime!=='boolean')state.confirmSameTime=true;if(typeof state.confirmHalfHour!=='boolean')state.confirmHalfHour=false;}
+function confirmRangeForKey(key){const arr=state.confirmTimesByDate[key]||[];const r=getScheduleRange(compressTimes(arr).join(' / '));return r;}
+function availabilityOverlapsConfirm(name,date,key){
+  const cr=confirmRangeForKey(key); if(!cr)return false;
+  const entry=getMemberAvailability(name)[date]; if(!entry)return false;
+  return parseTimeIntervals(entry.time).some(r=>intervalsOverlap(r,cr));
 }
+function getConfirmPeopleForDate(date,key){
+  const names=[];
+  state.members.forEach(m=>{
+    if(availabilityOverlapsConfirm(m.name,date,key)) names.push(m.name);
+  });
+  return [...new Set(names)];
+}
+function syncConfirmPeople(){
+  initConfirmState();
+  const dates=selectedAggregateAvailabilityDates.slice();
+  const map={};
+  dates.forEach(date=>{
+    const key=state.confirmSameTime?'all':date;
+    map[date]=getConfirmPeopleForDate(date,key);
+  });
+  state.confirmPeopleByDate=map;
+  state.confirmPeople=[...new Set(Object.values(map).flat())];
+}
+function renderAdminPracticeConfirmPanel(){
+  initConfirmState();
+  if(!selectedAggregateAvailabilityDates.length)
+    return `<div class="card" style="margin-top:12px;background:#faf9ff"><b>관리자 연습 확정</b><div class="muted small" style="margin-top:6px">달력에서 날짜를 선택하면 이곳에서 바로 시간을 정할 수 있습니다.</div></div>`;
+  state.confirmDates=selectedAggregateAvailabilityDates.slice();
+  const dates=state.confirmDates;
+  syncConfirmPeople();
+  return `<div class="card" style="margin-top:12px;background:#faf9ff">
+    <div class="section-title"><h3>🧮 연습 확정</h3><span class="pill">관리자</span></div>
+    <label class="checkline"><input type="checkbox" ${state.confirmSameTime?'checked':''} onchange="toggleConfirmSameTime(this.checked)"> 선택한 날짜 모두 동일 한시간으로 적용</label>
+    ${state.confirmSameTime?renderConfirmTimeArea('all'):dates.map(d=>`<div class="card" style="margin:8px 0"><b>📅 ${d}</b>${renderConfirmTimeArea(d)}</div>`).join('')}
+    <div class="muted small" style="margin-top:10px">참여자는 각 날짜의 개인 가능시간을 기준으로 자동 계산됩니다.</div>
+    <div class="field"><label>연습내용 (선택)</label><textarea id="confirmMemo" style="width:100%;min-height:70px" placeholder="연습내용을 입력하세요" oninput="state.confirmMemo=this.value">${state.confirmMemo||''}</textarea></div>
+    <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveConfirmedPractice()">연습 확정</button>
+  </div>`;
+}
+function renderConfirmTimeArea(key){const half=state.confirmHalfHour;const times=state.confirmTimesByDate[key]||[];const step=half?30:60;let html='';for(let m=0;m<1440;m+=step){const t=formatMin(m);html+=`<button type="button" class="tc-time-btn ${times.includes(t)?'sel':''}" onclick="toggleConfirmTime('${key}','${t}')">${t}</button>`;}return `<div class="row" style="margin-top:10px"><b>연습시간</b><button class="btn" onclick="toggleConfirmHalfHour()">${half?'1시간 단위로 입력':'30분 단위로 입력'}</button></div><p class="muted small">시작 시간을 누른 뒤 끝 시간을 누르면 사이 시간이 자동 선택됩니다.</p><div class="tc-time-grid">${html}</div><button class="btn ghost" style="margin-top:8px" onclick="clearConfirmTimes('${key}')">시간 선택 초기화</button>`;}
+function toggleConfirmPerson(name){initConfirmState();const i=state.confirmPeople.indexOf(name);if(i>=0){state.confirmPeople.splice(i,1);if(!state.confirmExcludedPeople.includes(name))state.confirmExcludedPeople.push(name);if(Array.isArray(state.confirmManualPeople))state.confirmManualPeople=state.confirmManualPeople.filter(x=>x!==name);}else{state.confirmExcludedPeople=state.confirmExcludedPeople.filter(x=>x!==name);state.confirmPeople.push(name);}save();render();}
+function toggleConfirmSameTime(v){initConfirmState();state.confirmSameTime=v;state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
+function toggleConfirmHalfHour(){initConfirmState();state.confirmHalfHour=!state.confirmHalfHour;Object.keys(state.confirmTimesByDate).forEach(k=>state.confirmTimesByDate[k]=[]);state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
+function toggleConfirmTime(key,time){initConfirmState();const arr=state.confirmTimesByDate[key]||[];const step=state.confirmHalfHour?30:60;let set=new Set(arr);if(!state._confirmAnchor)state._confirmAnchor={};const anchor=state._confirmAnchor[key];if(anchor&&anchor!==time){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(time));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(time));m+=step)set.add(formatMin(m));delete state._confirmAnchor[key];}else if(set.has(time)){set.delete(time);state._confirmAnchor[key]=null;}else{set.add(time);state._confirmAnchor[key]=time;}state.confirmTimesByDate[key]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
+function clearConfirmTimes(key){state.confirmTimesByDate[key]=[];state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
+function saveConfirmedPractice(){
+  initConfirmState();
+  const dates=selectedAggregateAvailabilityDates.slice();
+  if(!dates.length)return alert('연습 날짜를 하나 이상 선택해주세요.');
+  const keys=state.confirmSameTime?['all']:dates;
+  for(const k of keys) if(!(state.confirmTimesByDate[k]||[]).length)
+    return alert(state.confirmSameTime?'연습 시간을 지정해주세요.':`${k}의 연습 시간을 지정해주세요.`);
+  dates.forEach(date=>{
+    const key=state.confirmSameTime?'all':date;
+    const times=(state.confirmTimesByDate[key]||[]).slice().sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));
+    const time=compressTimes(times).join(' / ');
+    const people=getConfirmPeopleForDate(date,key);
+    const existing=state.schedules.find(x=>x.date===date&&x.type==='연습');
+    const snapshot=Object.fromEntries(people.map(n=>[n,getAvailabilityEntry(n,date)?.time||null]));
+    if(existing){
+      existing.time=time; existing.title='연습'; existing.people=people.slice(); existing.memo=state.confirmMemo||'';
+      scheduleId(existing); existing._syncSnapshot=snapshot; existing._changes=Array.isArray(existing._changes)?existing._changes:[];
+    }else{
+      state.schedules.push({date,time,title:'연습',type:'연습',people:people.slice(),memo:state.confirmMemo||'',_syncSnapshot:snapshot,_changes:[]});
+    }
+  });
+  save();
+  selectedAggregateAvailabilityDates=[]; state.confirmDates=[]; state.confirmTimesByDate={};
+  state.confirmSameTime=true; state.confirmPeople=[]; state.confirmPeopleByDate={};
+  state.confirmManualPeople=[]; state.confirmExcludedPeople=[]; state.confirmMemo='';
+  alert('연습일정이 확정되었습니다.');
+  go('practice');
+}
+function confirmPractice(){if(!state.admin)return;render();}
 function calendar(){
   return `<div class="section-title"><h2>주요 일정</h2>${state.admin?'<button class="btn primary" onclick="addStage()">+ 일정 추가</button>':''}</div>
   <div class="seg"><button class="active">월간</button><button onclick="alert('주간 보기로 전환됩니다.')">주간</button><button onclick="alert('일간 보기로 전환됩니다.')">일간</button></div>
@@ -3061,11 +2530,11 @@ function calendar(){
   }).join("")}</div>
   <div class="card"><h3>📌 고정 주요 일정</h3>${state.stage.length?state.stage.map((x,i)=>`<div class="schedule-item"><span class="pill">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span><div class="time">${x.date} · ${x.time}</div><div class="people">${x.title}</div>${state.admin?`<div class="actions" style="margin-top:8px"><button class="btn" onclick="editStage(${i})">수정</button><button class="btn danger" onclick="deleteStage(${i})">삭제</button></div>`:""}</div>`).join(""):`<div class="empty">등록된 주요 일정이 없습니다.</div>`}</div>`;
 }
-function addStage(){
-  let date=prompt("날짜","2026-10-25");if(!date)return;
-  let time=prompt("시간","13:00–21:00");if(!time)return;
-  let title=prompt("일정명","극장 입성 · 셋업 · 리허설");if(!title)return;
-  state.stage.push({date,time,title});save();render();
+function addStage(){openScheduleModal(true);}
+function toggleFixedStage(date,title,time){
+  const i=state.stage.findIndex(x=>x.date===date&&x.time===time&&x.title===title);
+  if(i>=0){state.stage.splice(i,1);}else{state.stage.push({date,time,title});}
+  save();render();
 }
 function editStage(i){
   let x=state.stage[i];
@@ -3077,101 +2546,35 @@ function deleteStage(i){
   if(confirm("주요 일정을 삭제할까요?")){state.stage.splice(i,1);save();render();}
 }
 
-function notice(){
-  return `<div class="section-title"><h2>공지 & 자료</h2>${state.admin?'<button class="btn primary" onclick="addNotice()">+ 작성</button>':''}</div>
-  <div class="seg"><button class="active">전체</button><button>공연음악</button><button>연습영상</button><button>연습이미지</button></div>
-  <div class="notice-list">${state.notices.length?state.notices.map((n,i)=>`<div class="card">${n.type==="연습이미지"?'<div class="media">🖼️ 연습 이미지</div>':n.type==="연습영상"?'<div class="media">▶ 연습 영상</div>':n.type==="공연음악"?'<div class="media">♫ 공연 음악</div>':""}<div class="row"><span class="pill">${n.type}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':""}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted">${n.text}</div><div class="people">작성자 · ${n.author}</div>${state.admin?`<div class="actions" style="margin-top:9px"><button class="btn" onclick="toggleSpecial(${i})">${n.special?"특수공지 해제":"특수공지 지정"}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div>`:""}</div>`).join(""):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;
-}
-function addNotice(){
-  let type=prompt("항목: 일반공지 / 공연음악 / 연습영상 / 연습이미지","일반공지");if(!type)return;
-  let title=prompt("제목","새 공지");if(!title)return;
-  let text=prompt("내용","내용을 입력하세요")||"";
-  state.notices.unshift({type,title,text,author:"관리자",special:false});
-  save();render();
-}
-function toggleSpecial(i){
-  state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);
-  save();render();
-}
-function deleteNotice(i){
-  if(confirm("이 공지/자료를 삭제할까요?")){state.notices.splice(i,1);save();render();}
-}
-
+let noticeFilter='전체';
+function notice(){const types=['전체','일반','공연음악','연습영상','연습이미지'];const list=noticeFilter==='전체'?state.notices:state.notices.filter(n=>n.type===noticeFilter||(noticeFilter==='일반'&&n.type==='일반공지'));return `<div class="section-title"><h2>공지&자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div><div class="seg">${types.map(t=>`<button class="${noticeFilter===t?'active':''}" onclick="noticeFilter='${t}';render()">${t}</button>`).join('')}</div><div class="notice-list">${list.length?list.map(n=>{const i=state.notices.indexOf(n);const label=n.type==='일반공지'?'일반':n.type;return `<div class="card"><div class="row"><span class="pill" style="background:${n.type==='일반공지'?(state.theme?.noticeGeneral||'#6657e8'):n.type==='공연음악'?(state.theme?.noticeMusic||'#e84b5f'):n.type==='연습영상'?(state.theme?.noticeVideo||'#7a57d1'):(state.theme?.noticeImage||'#20a36a')};color:#fff">${label}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':''}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted content-scroll">${n.text}</div><div class="people">작성자 · ${n.author||'미입력'}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editNotice(${i})">수정</button><button class="btn" onclick="toggleSpecial(${i})">${n.special?'특수공지 해제':'특수공지 지정'}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div></div>`}).join(''):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;}
+function noticeModal(initial,onSave){const x=initial||{type:'일반공지',title:'',text:'',author:''};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'공지&자료 수정':'공지&자료 작성'}</h3><div class="field"><label>공지 종류</label><div class="tc-types" id="nmTypes">${['일반공지','공연음악','연습영상','연습이미지'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-type="${t}">${t==='일반공지'?'일반':t}</button>`).join('')}</div></div><div class="field"><label>작성자</label><input id="nmAuthor" value="${String(x.author||'').replace(/"/g,'&quot;')}" placeholder="작성자 이름"></div><div class="field"><label>제목</label><input id="nmTitle" value="${String(x.title||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>내용</label><textarea id="nmText" style="min-height:240px" placeholder="공지 내용을 입력하세요">${x.text||''}</textarea></div><div class="tc-actions"><button class="btn" id="nmCancel">취소</button><button class="btn primary" id="nmSave">저장</button></div></div>`;document.body.appendChild(bg);let type=x.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(b=>b.onclick=()=>{type=b.dataset.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(z=>z.classList.toggle('sel',z===b));});bg.querySelector('#nmCancel').onclick=()=>bg.remove();bg.querySelector('#nmSave').onclick=()=>{const title=bg.querySelector('#nmTitle').value.trim(),author=bg.querySelector('#nmAuthor').value.trim();if(!title)return alert('제목을 입력해주세요.');if(!author)return alert('작성자를 입력해주세요.');onSave({type,title,text:bg.querySelector('#nmText').value,author});save();bg.remove();render()};}
+function addNotice(){noticeModal(null,x=>state.notices.unshift({type:x.type,title:x.title,text:x.text,author:x.author,special:false}));}
+function editNotice(i){noticeModal(state.notices[i],x=>Object.assign(state.notices[i],x));}
+function toggleSpecial(i){state.notices.forEach((n,j)=>n.special=j===i?!n.special:false);save();render()}
+function deleteNotice(i){if(confirm('이 공지/자료를 삭제할까요?')){state.notices.splice(i,1);save();render()}}
 function admin(){
-  if(!state.admin)return `<div class="card"><div class="empty">관리자만 접근할 수 있습니다.</div></div>`;
-  return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div>
-  <div class="adminbar">현재 관리자 코드로 입장한 관리자만 이 화면을 사용할 수 있습니다.</div>
-
-  <div class="card">
-    <h3>🎭 공연 정보</h3>
-    <div class="field"><label>공연팀 이름</label><input id="showName" value="${state.showName}"></div>
-    <div class="field"><label>공연장</label><input id="venue" value="${state.venue}"></div>
-    <div class="field"><label>공연 날짜</label><input id="showDate" type="date" value="${state.showDate}"></div>
-    <div class="field"><label>공연 시간</label><input id="showTime" value="${state.showTime}"></div>
-    <button class="btn primary" onclick="saveShowInfo()">공연 정보 저장</button>
-  </div>
-
-  <div class="card">
-    <div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>
-    ${state.members.length?state.members.map((m,i)=>`<div class="schedule-item">
-      <div class="row"><div><b>${m.name}</b><div class="people">${m.pos}${m.phone?` · ${m.phone}`:""}</div></div><span class="pill">팀원</span></div>
-      <div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div>
-    </div>`).join(""):`<div class="empty">등록된 팀원이 없습니다.</div>`}
-  </div>
-
-  <div class="card">
-    <h3>🔑 입장 코드 관리</h3>
-    <p class="muted small">기본 코드는 일반 방문자용, 관리자 코드는 관리자용입니다. 두 코드는 다르게 설정하세요.</p>
-    <div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div>
-    <div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div>
-    <button class="btn primary" onclick="saveCodes()">입장 코드 저장</button>
-  </div>
-
-  <div class="card">
-    <h3>⚠️ 새 공연 시작 / 초기화</h3>
-    <p class="muted">연습일정, 스케줄 조율, 공지/자료, 공연/극장 일정을 초기화합니다. 팀원 정보와 입장 코드는 유지합니다.</p>
-    <button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button>
-  </div>
-
-  <div class="card">
-    <button class="btn danger" style="width:100%" onclick="logout()">관리자 나가기</button>
-  </div>`;
+  if(!state.admin)return `<div class="card"><div class="empty">관리자만 입장 가능합니다</div></div>`;
+  const t=state.theme||{};
+  const swatchesTop=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#fff1f2']; const swatchesBottom=['#111827','#ffd6e7','#cde9ff','#d9f7d6']; const sw=(id,val)=>`<div class="swatches" id="${id}" style="display:flex;flex-direction:column;gap:8px"><div class="swatches">${swatchesTop.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div><div class="swatches">${swatchesBottom.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div></div>`;
+  return `<div class="section-title"><h2>관리자 설정</h2><span class="pill">관리자 전용</span></div><div class="adminbar">상단 배너, 팀원, 입장코드, 사이트 디자인을 관리합니다.</div>
+  <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="venue" value="${state.venue||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
+  <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>기본 버튼 색</label>${sw('thPrimary',t.primary||'#6657e8')}</div><div class="field"><label>버튼 글씨색</label>${sw('thButtonText',t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${sw('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${sw('thDdayText',t.ddayText||'#ffffff')}</div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
+  <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?state.members.map((m,i)=>`<div class="schedule-item"><div class="row"><div><b>${m.name}</b><div class="people">${m.pos}</div></div><span class="pill">팀원</span></div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
+  <div class="card"><h3>🔑 입장 코드 관리</h3><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>
+  <div class="card"><h3>⚠️ 새 공연 시작 / 초기화</h3><p class="muted">연습일정,스케줄 조율, 공지/자료, 공연/극장 일정, 팀원 정보를 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div><div class="card"><button class="btn danger" style="width:100%" onclick="logout()">관리자 나가기</button></div>`;
 }
-
-function saveShowInfo(){
-  state.showName=document.getElementById("showName").value.trim()||state.showName;
-  state.venue=document.getElementById("venue").value.trim()||state.venue;
-  state.showDate=document.getElementById("showDate").value||state.showDate;
-  state.showTime=document.getElementById("showTime").value.trim()||state.showTime;
-  save();alert("공연 정보가 저장되었습니다.");app();
+function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c; t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.primary=pick('thPrimary')||t.primary||'#6657e8';t.buttonText=pick('thButtonText')||t.buttonText||'#ffffff';t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';state.theme=t;save();applyTheme();alert('색상 설정이 저장되었습니다.');render();}
+function setThemeMode(mode){state.theme=state.theme||{};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',ddayBg:'#111827',ddayText:'#ffffff'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',ddayBg:'#171b2d',ddayText:'#ffffff'});}save();applyTheme();render();}
+function openShowDatesModal(){
+  const existing=getShowDates();const map={};existing.forEach(x=>map[x.date]=x.time||'19:00');let dates=Object.keys(map);let view=new Date();view.setDate(1);const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>공연 날짜/시간 설정</h3><div id="sdCal"></div><div id="sdTimes" style="margin-top:12px"></div><div class="tc-actions"><button class="btn" id="sdCancel">취소</button><button class="btn primary" id="sdSave">저장</button></div></div>`;document.body.appendChild(bg);const pad=n=>String(n).padStart(2,'0');let times={...map};function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="sdPrev">◀</button><b>${y}년 ${m+1}월</b><button id="sdNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#sdCal').innerHTML=h+'</div>';bg.querySelectorAll('#sdCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v)){dates=dates.filter(x=>x!==v);delete times[v];}else{dates.push(v);times[v]='19:00';}renderCal();renderTimes();});bg.querySelector('#sdPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#sdNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
+  function renderTimes(){const list=dates.slice().sort();bg.querySelector('#sdTimes').innerHTML=list.length?`<div class="field"><label>선택한 날짜별 공연 시간</label>${list.map(v=>`<div class="field"><label>${v}</label><input class="sd-time" data-date="${v}" type="time" value="${times[v]||'19:00'}"></div>`).join('')}</div>`:`<div class="empty">날짜를 선택해주세요.</div>`;}
+  bg.querySelector('#sdCancel').onclick=()=>bg.remove();bg.querySelector('#sdSave').onclick=()=>{bg.querySelectorAll('.sd-time').forEach(i=>times[i.dataset.date]=i.value);const out=dates.slice().sort().map(date=>({date,time:times[date]||'19:00'}));state.showDates=out;state.showDate=out[0]?.date||state.showDate;state.showTime=out[0]?.time||state.showTime;save();bg.remove();render()};renderCal();renderTimes();
 }
-function addMember(){
-  const name=prompt("팀원 이름");
-  if(!name)return;
-
-  const pos=prompt("포지션","배우");
-  if(!pos)return;
-
-  state.members.push({
-    name:name.trim(),
-    pos:pos.trim(),
-    joined:true
-  });
-
-  save();
-  render();
-}
-function editMember(i){
-  const m=state.members[i];
-
-  m.name=prompt("이름",m.name)||m.name;
-  m.pos=prompt("포지션",m.pos)||m.pos;
-
-  delete m.phone;
-
-  save();
-  render();
-}
+function saveShowInfo(){state.showName=document.getElementById('showName').value.trim()||state.showName;state.venue=document.getElementById('venue').value.trim()||state.venue;state.loginTitle=document.getElementById('loginTitle').value.trim()||'THEATER CLOWN';state.loginSubtitle=document.getElementById('loginSubtitle').value.trim()||'공연팀 일정 · 공지 · 자료 관리';save();alert('정보가 저장되었습니다.');render()}
+function memberModal(initial,onSave){const x=initial||{name:'',pos:'배우'};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'팀원 수정':'팀원 추가'}</h3><div class="field"><label>이름</label><input id="mmName" value="${x.name||''}"></div><div class="field"><label>포지션</label><input id="mmPos" value="${x.pos||'배우'}"></div><div class="tc-actions"><button class="btn" id="mmCancel">취소</button><button class="btn primary" id="mmSave">저장</button></div></div>`;document.body.appendChild(bg);bg.querySelector('#mmCancel').onclick=()=>bg.remove();bg.querySelector('#mmSave').onclick=()=>{const name=bg.querySelector('#mmName').value.trim(),pos=bg.querySelector('#mmPos').value.trim();if(!name)return alert('이름을 입력해주세요.');onSave({name,pos:pos||'배우'});bg.remove();save();render()}}
+function addMember(){memberModal(null,x=>state.members.push({...x,joined:true}))}
+function editMember(i){memberModal(state.members[i],x=>Object.assign(state.members[i],x))}
 function deleteMember(i){
   if(confirm(`${state.members[i].name} 팀원을 삭제할까요?`)){
     state.members.splice(i,1);save();render();
@@ -3193,10 +2596,24 @@ function resetShow(){
     state.schedules=[];
     state.stage=[];
     state.notices=[];
+    state.showDates=[];
+    state.showDate="";
+    state.showTime="";
+    state.venue="";
+    state.members=[];
     state.availability={};
+    state.aggregateMembers=[];
+    state.confirmDates=[];
+    state.confirmTimesByDate={};
+    state.confirmPeople=[];
+    state.confirmManualPeople=[];
+    state.confirmExcludedPeople=[];
+    state.confirmMemo="";
+    state._ddayEdit=null;
     save();
+    applyTheme();
     render();
-    alert("공연 데이터가 초기화되었습니다.");
+    alert("공연 데이터가 초기화되었습니다. D-day는 END로 표시됩니다.");
   }
 }
 
