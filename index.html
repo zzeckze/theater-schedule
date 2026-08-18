@@ -24,7 +24,25 @@ main{padding:14px 16px 100px}.hero{background:linear-gradient(135deg,#171b2d,#66
 .field{margin:10px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;outline:none}.field textarea{min-height:90px;resize:vertical}
 .chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px}.chip.on{background:#eeecff;border-color:#c9c3ff;color:var(--primary);font-weight:700}
 .notice-list .card{margin-bottom:8px}.media{height:120px;border-radius:14px;background:#eef0f7;display:grid;place-items:center;color:#858b9b;margin-bottom:10px}
-.login{min-height:100vh;display:grid;place-items:center;padding:28px 22px;background:linear-gradient(160deg,#171b2d 0%,#6657e8 70%,#ff6b8a 140%);color:#fff}.loginbox{width:100%;max-width:390px}.logo{font-size:34px;font-weight:900;letter-spacing:1px}.loginbox p{opacity:.75}.loginbtn{width:100%;padding:14px;border-radius:14px;margin:7px 0;font-weight:800}.codebtn{background:#fff;color:#171b2d}.fine{font-size:11px;opacity:.65;line-height:1.5;margin-top:14px;text-align:center}
+.login{min-height:100vh;display:grid;place-items:center;padding:28px 22px;background:linear-gradient(160deg,#171b2d 0%,#6657e8 70%,#ff6b8a 140%);color:#fff}.loginbox{width:100%;max-width:390px}.logo{
+  font-size:46px;
+  font-weight:900;
+  letter-spacing:.5px;
+  line-height:1.02;
+  width:100%;
+  max-width:100%;
+}
+.logo-line{
+  display:block;
+  width:100%;
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+}
+.logo.login-font-bold{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.logo.login-font-script{font-family:"Nanum Pen Script","Segoe Print",cursive;font-weight:400;letter-spacing:.01em}
+.logo.login-font-serif{font-family:"Nanum Myeongjo","Noto Serif KR",Georgia,serif;font-weight:700}
+.logo.login-font-clean{font-family:"Noto Serif KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-weight:700;letter-spacing:.03em}.loginbox p{opacity:.75}.loginbtn{width:100%;padding:14px;border-radius:14px;margin:7px 0;font-weight:800}.codebtn{background:#fff;color:#171b2d}.fine{font-size:11px;opacity:.65;line-height:1.5;margin-top:14px;text-align:center}
 .adminbar{background:#fff4d8;border:1px solid #ffe2a1;border-radius:15px;padding:11px 12px;margin:10px 0;color:#725314;font-size:13px}
 .listline{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.listline:last-child{border-bottom:0}
 .empty{padding:24px 8px;text-align:center;color:var(--muted)}
@@ -397,7 +415,382 @@ button:not(.swatch):active{
   box-shadow:inset 0 0 0 2px rgba(255,255,255,.66),0 2px 8px rgba(23,27,45,.20)!important;
 }
 
+
+/* ===== v23: pinned notes / D-day poster calendar / monthly schedule types ===== */
+.fixed-notes{margin:0 0 6px;padding:0 2px 4px;border-bottom:1px solid var(--line)}
+.fixed-note-row{display:flex;align-items:flex-start;gap:6px;padding:2px 1px;font-size:12px;line-height:1.28;color:var(--muted)}
+.fixed-note-row .pin{flex:none;font-size:12px;line-height:1.25}.fixed-note-row b{color:var(--ink);font-weight:800}
+
+.hero.dday-poster{
+  position:relative;
+  overflow:hidden;
+  background:var(--dday-bg);
+  color:var(--dday-main);
+  border-radius:24px;
+  padding:20px 0 18px;
+  margin-bottom:7px
+}
+.dday-poster-head{padding:0 20px 14px;text-align:center}
+.dday-poster-title{
+  color:var(--dday-point);
+  font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;
+  font-size:clamp(34px,10.5vw,48px);
+  font-weight:700;
+  line-height:1.03;
+  letter-spacing:-.04em;
+  white-space:nowrap
+}
+.dday-poster-detail{
+  margin-top:12px;
+  color:var(--dday-main);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.12em
+}
+.dday-calendar{
+  width:100%;
+  border-top:1px solid var(--dday-muted);
+  border-bottom:1px solid var(--dday-muted);
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:2px
+}
+.dday-cal-cell{position:relative;min-width:0;text-align:center;display:grid;grid-template-rows:48px 1fr}
+.dday-cal-cell + .dday-cal-cell{border-left:1px solid var(--dday-muted)}
+.dday-cal-weekday{
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--dday-muted);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase
+}
+.dday-cal-body{
+  min-height:142px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;padding:10px 4px 12px
+}
+.dday-cal-month{
+  font-family:Georgia,"Times New Roman",serif;font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase
+}
+.dday-cal-day{
+  font-family:Georgia,"Times New Roman",serif;font-size:54px;line-height:.94;
+  font-weight:400;letter-spacing:-.045em
+}
+.dday-cal-cell.side{color:var(--dday-muted)}
+.dday-cal-cell.side.left .dday-cal-body{align-items:flex-start;padding-left:18px}
+.dday-cal-cell.side.right .dday-cal-body{align-items:flex-end;padding-right:18px}
+.dday-cal-cell.center{color:var(--dday-main)}
+.dday-cal-mark{
+  min-width:82px;min-height:82px;padding:0 9px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--dday-mark-text);background:var(--dday-point)
+}
+.dday-poster-venue{
+  text-align:center;padding:14px 64px 2px;
+  font-family:Georgia,"Times New Roman","Noto Serif KR",serif;
+  font-size:14px;font-weight:700;letter-spacing:.045em;color:var(--dday-main)
+}
+.dday-edit-mini{
+  position:absolute;right:12px;bottom:10px;z-index:2;
+  border:1px solid var(--dday-muted)!important;background:transparent!important;color:var(--dday-main)!important;
+  border-radius:999px!important;padding:5px 8px!important;font-size:10px!important;font-weight:700!important;box-shadow:none!important
+}
+.dday-edit-mini:active{transform:scale(.96);filter:brightness(.88)}
+@media(max-width:430px){
+  .hero.dday-poster{padding-top:17px}
+  .dday-poster-head{padding-left:12px;padding-right:12px}
+  .dday-poster-title{font-size:clamp(30px,10vw,44px);transform:scaleX(1.1)}
+  .dday-poster-detail{font-size:11px;letter-spacing:.075em}
+  .dday-cal-cell{grid-template-rows:42px 1fr}
+  .dday-cal-weekday,.dday-cal-month{font-size:10px}
+  .dday-cal-body{min-height:122px}
+  .dday-cal-day{font-size:46px}
+  .dday-cal-mark{min-width:70px;min-height:70px}
+  .dday-cal-cell.side .dday-cal-body{padding-left:4px;padding-right:4px}
+  .dday-poster-venue{padding:12px 58px 1px;font-size:18px}
+}
+.month-type-dot{display:block;margin-top:4px;font-size:9px;line-height:1.2;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.month-type-practice{color:var(--primary)}.month-type-show{color:#9c5a9f}.month-type-setup{color:#a16b27}.month-type-other{color:#62758c}
+
+
+/* v26: D-day title + venue share one selectable font */
+.dday-poster.dday-font-original .dday-poster-title,
+.dday-poster.dday-font-original .dday-poster-venue{
+  font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT","Nanum Pen Script","Hi Melody",cursive!important
+}
+.dday-poster.dday-font-hand .dday-poster-title,
+.dday-poster.dday-font-hand .dday-poster-venue{
+  font-family:"Nanum Pen Script","Hi Melody",cursive!important
+}
+.dday-poster.dday-font-neat .dday-poster-title,
+.dday-poster.dday-font-neat .dday-poster-venue{
+  font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif!important
+}
+.dday-poster.dday-font-base .dday-poster-title,
+.dday-poster.dday-font-base .dday-poster-venue{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif!important
+}
+.dday-poster.dday-font-elegant .dday-poster-title,
+.dday-poster.dday-font-elegant .dday-poster-venue{
+  font-family:"Nanum Myeongjo","Noto Serif KR",Georgia,serif!important
+}
+
+/* v26: D-day point shapes — explicit fixed box so every shape changes visibly */
+.dday-cal-mark{
+  width:84px!important;
+  height:84px!important;
+  min-width:84px!important;
+  min-height:84px!important;
+  padding:0!important;
+  background:var(--dday-point)!important;
+  color:var(--dday-mark-text)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden;
+  transition:clip-path .18s ease,border-radius .18s ease,transform .18s ease
+}
+.dday-cal-mark.circle{border-radius:50%!important;clip-path:none!important}
+.dday-cal-mark.rounded{border-radius:24px!important;clip-path:none!important}
+.dday-cal-mark.heart{
+  border-radius:0!important;
+  clip-path:polygon(50% 96%,7% 53%,3% 35%,7% 20%,18% 9%,32% 6%,43% 12%,50% 23%,57% 12%,68% 6%,82% 9%,93% 20%,97% 35%,93% 53%)!important
+}
+.dday-cal-mark.star{
+  border-radius:0!important;
+  clip-path:polygon(50% 1%,61% 35%,97% 35%,68% 56%,79% 92%,50% 71%,21% 92%,32% 56%,3% 35%,39% 35%)!important
+}
+.dday-cal-mark.heart .dday-cal-day{transform:translateY(-1px) scale(.78)}
+.dday-cal-mark.star .dday-cal-day{transform:scale(.72)}
+@media(max-width:430px){
+  .dday-cal-mark{
+    width:72px!important;height:72px!important;min-width:72px!important;min-height:72px!important
+  }
+}
+
+/* v26: site design settings layout */
+.design-settings-grid{display:block}
+.design-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  border-bottom:1px solid var(--line)
+}
+.design-row:last-of-type{border-bottom:0}
+.design-cell{
+  min-width:0;
+  padding:12px 12px 14px 0
+}
+.design-cell + .design-cell{
+  border-left:1px solid var(--line);
+  padding-left:12px;
+  padding-right:0
+}
+.design-row.divider-strong{border-bottom:1.5px solid var(--line)}
+.design-actions{
+  display:flex;
+  gap:6px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+.design-actions .btn{
+  width:auto!important;
+  min-width:0!important;
+  padding:6px 9px!important;
+  font-size:11px!important;
+  border-radius:9px!important;
+  flex:0 0 auto!important
+}
+@media(max-width:430px){
+  .design-cell{padding-right:8px}
+  .design-cell + .design-cell{padding-left:8px}
+}
+
+/* v29: D-day calendar layout matched to supplied reference image */
+/*
+   Date centers:
+   left ≈ 5.5% / center = 50% / right ≈ 94.5%
+   Divider positions follow the reference rather than equal thirds.
+*/
+.dday-calendar{
+  position:relative;
+  width:100%;
+  display:block!important;
+  overflow:hidden!important;
+  border-top:1px solid var(--dday-muted);
+  border-bottom:1px solid var(--dday-muted);
+  margin-top:2px;
+  min-height:196px;
+
+  /* full-width weekday separator + four vertical calendar dividers */
+  background-image:
+    linear-gradient(var(--dday-muted),var(--dday-muted)),
+    linear-gradient(var(--dday-muted),var(--dday-muted)),
+    linear-gradient(var(--dday-muted),var(--dday-muted)),
+    linear-gradient(var(--dday-muted),var(--dday-muted)),
+    linear-gradient(var(--dday-muted),var(--dday-muted));
+  background-size:
+    100% 1px,
+    1px 100%,
+    1px 100%,
+    1px 100%,
+    1px 100%;
+  background-position:
+    0 48px,
+    27.3% 0,
+    33.3% 0,
+    66.7% 0,
+    72.7% 0;
+  background-repeat:no-repeat;
+}
+.dday-cal-cell{
+  position:absolute!important;
+  top:0;
+  bottom:0;
+  display:block!important;
+  overflow:visible!important;
+  text-align:center;
+  min-width:0!important;
+  width:42%!important;
+  border:0!important;
+}
+.dday-cal-cell::before,
+.dday-cal-cell::after{
+  content:none!important;
+  display:none!important;
+}
+.dday-cal-cell.left{
+  left:-15.5%!important;
+  transform:none!important;
+}
+.dday-cal-cell.center{
+  left:33%!important;
+  width:34%!important;
+  transform:none!important;
+}
+.dday-cal-cell.right{
+  right:-15.5%!important;
+  transform:none!important;
+}
+.dday-cal-weekday{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:48px;
+  box-sizing:border-box;
+  border-bottom:0!important;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:visible!important;
+  text-align:center;
+  transform:none!important;
+}
+.dday-cal-body{
+  width:100%;
+  height:calc(100% - 48px);
+  min-height:148px;
+  display:flex;
+  flex-direction:column;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px;
+  padding:10px 0 12px!important;
+  box-sizing:border-box;
+  transform:none!important;
+}
+.dday-cal-month{
+  width:100%;
+  min-height:14px;
+  line-height:14px;
+  margin:0!important;
+  padding:0!important;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  text-align:center;
+  white-space:nowrap;
+  overflow:visible!important;
+  transform:none!important;
+}
+.dday-cal-day{
+  width:100%;
+  margin:0!important;
+  padding:0!important;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:54px;
+  line-height:.94;
+  font-weight:400;
+  letter-spacing:-.045em;
+  text-align:center;
+  white-space:nowrap;
+  overflow:visible!important;
+  transform:none;
+}
+.dday-cal-cell.side{color:var(--dday-muted)}
+.dday-cal-cell.center{color:var(--dday-main)}
+.dday-cal-cell.left .dday-cal-weekday,
+.dday-cal-cell.left .dday-cal-month,
+.dday-cal-cell.left .dday-cal-day,
+.dday-cal-cell.right .dday-cal-weekday,
+.dday-cal-cell.right .dday-cal-month,
+.dday-cal-cell.right .dday-cal-day,
+.dday-cal-cell.center .dday-cal-weekday,
+.dday-cal-cell.center .dday-cal-month,
+.dday-cal-cell.center .dday-cal-day{
+  transform:none!important;
+}
+/* Keep month baselines exactly aligned across all three dates */
+.dday-cal-cell .dday-cal-body > .dday-cal-month{
+  flex:0 0 14px;
+}
+.dday-cal-cell .dday-cal-body > .dday-cal-mark,
+.dday-cal-cell .dday-cal-body > .dday-cal-day{
+  flex:0 0 auto;
+}
+@media(max-width:430px){
+  .dday-calendar{
+    min-height:172px;
+    background-position:
+      0 42px,
+      27.3% 0,
+      33.3% 0,
+      66.7% 0,
+      72.7% 0;
+  }
+  .dday-cal-cell{
+    width:42%!important;
+  }
+  .dday-cal-cell.left{left:-15.5%!important}
+  .dday-cal-cell.center{left:33%!important;width:34%!important}
+  .dday-cal-cell.right{right:-15.5%!important}
+  .dday-cal-weekday{
+    height:42px;
+    font-size:10px;
+  }
+  .dday-cal-body{
+    height:calc(100% - 42px);
+    min-height:130px;
+    gap:5px;
+  }
+  .dday-cal-month{
+    font-size:10px;
+    min-height:12px;
+    line-height:12px;
+  }
+  .dday-cal-cell .dday-cal-body > .dday-cal-month{
+    flex-basis:12px;
+  }
+  .dday-cal-day{font-size:46px}
+}
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="app"></div>
@@ -530,7 +923,7 @@ const state={
   availability:{},
   aggregateMembers:[],
   accessLogs:{},
-  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",mode:"light"}
+  theme:{bg:"#f5f6fa",card:"#ffffff",ink:"#171b2d",primary:"#6657e8",buttonText:"#ffffff",badgeBg:"#6657e8",badgeText:"#ffffff",noticePractice:"#6657e8",noticeGeneral:"#6657e8",noticeMusic:"#e84b5f",noticeVideo:"#7a57d1",noticeImage:"#20a36a",ddayBg:"#171b2d",ddayText:"#ffffff",ddayFont:"original",ddayMarkShape:"circle",mode:"light"}
 };
 
 const TC_LOCAL_ONLY_KEYS=new Set([
@@ -578,6 +971,23 @@ window.__TC_applyCloudState=function(remote){
   if(state.bannerSmallName===undefined||state.bannerSmallName===null) state.bannerSmallName=state.venue||"";
   if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
   if(!state.theme) state.theme={};
+if(!state.theme.ddayFont) state.theme.ddayFont="original";
+if(state.theme.ddayFont==="script") state.theme.ddayFont="original";
+if(!state.theme.ddayMarkShape) state.theme.ddayMarkShape="circle";
+if(!state.loginTitleFont) state.loginTitleFont="bold";
+if(state.theme){
+  const oldWhite=new Set(["#ffffff","#fff","#FFFFFF"]);
+  const oldBlack=new Set(["#111827","#000000","#000","#171b2d"]);
+  if(oldWhite.has(state.theme.ddayBg)) state.theme.ddayBg="#fff0d8";
+  else if(oldBlack.has(state.theme.ddayBg)) state.theme.ddayBg="#273b57";
+  if(oldWhite.has(state.theme.ddayText)) state.theme.ddayText="#e0a36c";
+  else if(oldBlack.has(state.theme.ddayText)) state.theme.ddayText="#536d88";
+}
+
+if(!state.theme.ddayFont) state.theme.ddayFont="original";
+if(state.theme.ddayFont==="script") state.theme.ddayFont="original";
+if(!state.theme.ddayMarkShape) state.theme.ddayMarkShape="circle";
+migratePinnedSchedules();
   state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
   saveLocalOnly();
   applyTheme();
@@ -611,7 +1021,19 @@ if(!state.theme) state.theme={};
    Non-background palettes are more varied while keeping white/black and excluding red tones. */
 (()=>{const map={'#7f86cf':'#a99bf3','#9b86bd':'#8fc8f6','#c89a68':'#f3bd7f','#b6a162':'#f1d46f','#72a58a':'#8fd8c0','#739fac':'#7fd6dc','#9685bd':'#d5b7f5','#ad84a2':'#b8d98f'};const t=state.theme||{};['largeButtonBg','largeButtonText','smallButtonBg','smallButtonText','ddayBg','ddayText','badgeBg','badgeText','primary','buttonText'].forEach(k=>{if(map[t[k]])t[k]=map[t[k]];});})();
 function mixThemeHex(hex,target,ratio){const clean=String(hex||'').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(clean))return hex;const a=[0,2,4].map(i=>parseInt(clean.slice(i,i+2),16)),b=target==='black'?[0,0,0]:[255,255,255];return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*ratio).toString(16).padStart(2,'0')).join('');}
-function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--small-button-bg-light",mixThemeHex(smallBg,'white',.20));root.style.setProperty("--small-button-bg-soft",mixThemeHex(smallBg,'white',.10));root.style.setProperty("--small-button-bg-muted",mixThemeHex(smallBg,'white',.28));root.style.setProperty("--small-button-bg-deep",mixThemeHex(smallBg,'black',.10));root.style.setProperty("--dday-bg",t.ddayBg||"#171b2d");root.style.setProperty("--dday-text",t.ddayText||"#ffffff");root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
+function themeHexRgb(hex){const c=String(hex||'').replace('#','');if(!/^[0-9a-fA-F]{6}$/.test(c))return null;return [0,2,4].map(i=>parseInt(c.slice(i,i+2),16));}
+function themeLuma(hex){const rgb=themeHexRgb(hex);if(!rgb)return .5;const s=rgb.map(v=>v/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*s[0]+.7152*s[1]+.0722*s[2];}
+function contrastTextFor(hex){return themeLuma(hex)>.44?'#171b2d':'#ffffff';}
+function getDdayFontFamily(key){
+  if(key==="original") return '"Snell Roundhand", "Apple Chancery", "Segoe Script", "Brush Script MT", cursive';
+  if(key==="hand") return '"Nanum Pen Script", "Hi Melody", cursive';
+  if(key==="neat") return '"Noto Serif KR", "Nanum Myeongjo", Georgia, serif';
+  if(key==="base") return 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  if(key==="elegant") return '"Nanum Myeongjo", "Noto Serif KR", Georgia, serif';
+  return '"Snell Roundhand", "Apple Chancery", "Segoe Script", "Brush Script MT", cursive';
+}
+
+function applyTheme(){const t=state.theme||{};const root=document.documentElement;const largeBg=t.largeButtonBg||t.primary||"#6657e8",largeText=t.largeButtonText||t.buttonText||"#ffffff",smallBg=t.smallButtonBg||t.primary||"#6657e8",smallText=t.smallButtonText||t.buttonText||"#ffffff";const ddayBg=t.ddayBg||"#fffaf3",ddayPoint=t.ddayText||"#a63a42",ddayMain=contrastTextFor(ddayBg),ddayMuted=themeLuma(ddayBg)>.44?mixThemeHex(ddayBg,'black',.28):mixThemeHex(ddayBg,'white',.42),ddayFont=getDdayFontFamily(t.ddayFont||"script");root.style.setProperty("--bg",t.bg||"#f5f6fa");root.style.setProperty("--card",t.card||"#ffffff");root.style.setProperty("--ink",t.ink||"#171b2d");root.style.setProperty("--primary",smallBg);root.style.setProperty("--button-text",smallText);root.style.setProperty("--large-button-bg",largeBg);root.style.setProperty("--large-button-text",largeText);root.style.setProperty("--small-button-bg",smallBg);root.style.setProperty("--small-button-text",smallText);root.style.setProperty("--small-button-bg-light",mixThemeHex(smallBg,'white',.20));root.style.setProperty("--small-button-bg-soft",mixThemeHex(smallBg,'white',.10));root.style.setProperty("--small-button-bg-muted",mixThemeHex(smallBg,'white',.28));root.style.setProperty("--small-button-bg-deep",mixThemeHex(smallBg,'black',.10));root.style.setProperty("--dday-bg",ddayBg);root.style.setProperty("--dday-point",ddayPoint);root.style.setProperty("--dday-text",ddayPoint);root.style.setProperty("--dday-main",ddayMain);root.style.setProperty("--dday-muted",ddayMuted);root.style.setProperty("--dday-mark-text",contrastTextFor(ddayPoint));root.style.setProperty("--dday-display-font",ddayFont);root.style.setProperty("--badge-bg",t.badgeBg||t.primary||smallBg||"#6657e8");root.style.setProperty("--badge-text",t.badgeText||"#ffffff");document.body.dataset.mode=t.mode||"light";}
 applyTheme();
 state.notices=(state.notices||[]).map(n=>({...n,type:n.type==='일반'?'일반공지':n.type,author:n.author||'관리자'}));
 
@@ -636,11 +1058,39 @@ function app(){
   render();
 }
 
+
+function escapeLoginText(v){
+  return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function loginTitleHtml(){
+  const raw=String(state.loginTitle||"THEATER CLOWN");
+  return raw.split(/\r?\n/).map(line=>`<span class="logo-line">${escapeLoginText(line||" ")}</span>`).join("");
+}
+function fitLoginTitle(){
+  const logo=document.querySelector(".login .logo");
+  if(!logo)return;
+  const max=46,min=22;
+  let size=max;
+  logo.style.fontSize=size+"px";
+  const lines=[...logo.querySelectorAll(".logo-line")];
+  const available=logo.clientWidth;
+  if(!available)return;
+  const fits=()=>lines.every(line=>line.scrollWidth<=available+1);
+  while(size>min && !fits()){
+    size-=1;
+    logo.style.fontSize=size+"px";
+  }
+}
+function loginTitleFontClass(){
+  const key=state.loginTitleFont||"bold";
+  return ["bold","script","serif","clean"].includes(key)?`login-font-${key}`:"login-font-bold";
+}
+
 function login(){
   document.getElementById("app").innerHTML=`
     <section class="login">
       <div class="loginbox">
-        <div class="logo">${(state.loginTitle||"THEATER CLOWN").replace(/\n/g,"<br>")}</div>
+        <div class="logo ${loginTitleFontClass()}">${loginTitleHtml()}</div>
         <p>${state.loginSubtitle||"공연팀 일정 · 공지 · 자료 관리"}</p>
         <div class="card" style="margin-top:22px">
           <div class="field">
@@ -652,6 +1102,7 @@ function login(){
         <div class="fine">일반·관리자 코드는 등록된 팀원 이름 확인 후 입장하며, 보안자 코드는 이름 확인 없이 바로 입장합니다.</div>
       </div>
     </section>`;
+  requestAnimationFrame(fitLoginTitle);
 }
 
 function enterSite(){
@@ -679,7 +1130,7 @@ function showNameLogin(){
   document.getElementById("app").innerHTML=`
     <section class="login">
       <div class="loginbox">
-        <div class="logo">${(state.loginTitle||"THEATER CLOWN").replace(/\n/g,"<br>")}</div>
+        <div class="logo ${loginTitleFontClass()}">${loginTitleHtml()}</div>
         <p>${roleLabel} 2차 확인</p>
         <div class="card" style="margin-top:22px">
           <div class="field">
@@ -692,6 +1143,7 @@ function showNameLogin(){
         <div class="fine">팀원 관리에 등록된 이름과 정확히 일치해야 입장할 수 있습니다.</div>
       </div>
     </section>`;
+  requestAnimationFrame(fitLoginTitle);
 }
 
 function verifyMemberName(){
@@ -812,24 +1264,82 @@ function render(){
 
 }
 
+
+function normalizeTimeKey(v){return String(v||'').replace(/\s+/g,'').replace(/[–~]/g,'-');}
+function timeOptionLabel(v){return String(v)==='24:00'?'00:00':String(v);}
+function displayScheduleTime(value){
+  const raw=String(value||'').trim(); if(!raw)return '';
+  const chunks=raw.replace(/[–~]/g,'-').split('/').map(x=>x.trim()).filter(Boolean);
+  const hasRange=chunks.some(x=>/\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}/.test(x));
+  let out='';
+  if(!hasRange && chunks.length>=2 && chunks.every(x=>/^\d{1,2}:\d{2}$/.test(x))){
+    const mins=chunks.map(getTimeMinutes).filter(Number.isFinite).sort((a,b)=>a-b);
+    out=mins.length>=2?`${formatMin(mins[0])}-${formatMin(mins[mins.length-1])}`:chunks.join('/');
+  }else out=chunks.map(x=>x.replace(/\s*-\s*/g,'-')).join('/');
+  return out.replace(/24:00/g,'00:00');
+}
+function inferStageType(x){
+  const t=String(x?.type||x?.title||'');
+  if(t.includes('공연'))return '공연';
+  if(t.includes('셋업')||t.includes('극장')||t.includes('입성'))return '셋업';
+  if(t.includes('연습')||t.includes('리허설'))return '연습';
+  return '기타';
+}
+function migratePinnedSchedules(){
+  if(!Array.isArray(state.schedules))state.schedules=[];
+  if(!Array.isArray(state.stage))state.stage=[];
+  const remain=[];
+  state.stage.forEach(st=>{
+    const match=state.schedules.find(s=>s.date===st.date&&normalizeTimeKey(s.time)===normalizeTimeKey(st.time)&&(String(s.title||'')===String(st.title||'')||String(s.type||'')===String(st.title||'')));
+    if(match)match.fixed=true; else remain.push(st);
+  });
+  state.stage=remain;
+}
+function getPinnedSchedules(){
+  const a=(state.schedules||[]).filter(x=>x.fixed).map(x=>({date:x.date,time:x.time,type:x.type||x.title||'기타'}));
+  const b=(state.stage||[]).map(x=>({date:x.date,time:x.time,type:inferStageType(x)}));
+  return [...a,...b].sort((x,y)=>String(y.date||'').localeCompare(String(x.date||''))||String(y.time||'').localeCompare(String(x.time||'')));
+}
+function fixedScheduleNotes(){
+  const rows=getPinnedSchedules(); if(!rows.length)return '';
+  return `<div class="fixed-notes">${rows.map(x=>`<div class="fixed-note-row"><span class="pin">📌</span><span><b>${x.date}</b> · ${displayScheduleTime(x.time)} · ${x.type}</span></div>`).join('')}</div>`;
+}
+function monthTypeMeta(type){
+  if(type==='공연')return {icon:'🎭',cls:'month-type-show'};
+  if(type==='셋업')return {icon:'▣',cls:'month-type-setup'};
+  if(type==='연습')return {icon:'●',cls:'month-type-practice'};
+  return {icon:'◆',cls:'month-type-other'};
+}
+
 function getShowDates(){
   if(Array.isArray(state.showDates) && state.showDates.length) return state.showDates;
   return state.showDate ? [{date:state.showDate,time:state.showTime||""}] : [];
 }
+function localDateKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function addLocalDays(dateKey,amount){const [y,m,d]=String(dateKey).split('-').map(Number);const x=new Date(y,m-1,d);x.setDate(x.getDate()+amount);return localDateKey(x);}
+function ddayWeekdayLong(dateKey){const [y,m,d]=String(dateKey).split('-').map(Number);return ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][new Date(y,m-1,d).getDay()];}
+function ddayWeekdayShort(dateKey){const [y,m,d]=String(dateKey).split('-').map(Number);return ['sun','mon','tue','wed','thu','fri','sat'][new Date(y,m-1,d).getDay()];}
+function ddayMonthLong(dateKey){const [,m]=String(dateKey).split('-').map(Number);return ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'][m-1];}
+function ddayCalendarDate(dateKey){const [,m,d]=String(dateKey).split('-').map(Number);return {key:dateKey,weekday:ddayWeekdayLong(dateKey),month:ddayMonthLong(dateKey),day:String(d).padStart(2,'0')};}
 function ddayInfo(){
   const shows=getShowDates().slice().sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
-  if(!shows.length)return {status:'empty'};
-  const now=new Date(), today=new Date(); today.setHours(0,0,0,0), todayKey=today.toISOString().slice(0,10), nowMin=now.getHours()*60+now.getMinutes();
-  const last=shows[shows.length-1], lastTimes=String(last.time||'').match(/\d{1,2}:\d{2}/g)||[], lastEnd=lastTimes.length?Math.max(...lastTimes.map(getTimeMinutes)):null;
-  if(last.date===todayKey && lastEnd!==null && nowMin>=lastEnd)return {status:'end',show:last,shows};
+  if(!shows.length)return {status:'empty',calendarDate:localDateKey()};
+  const now=new Date(),todayKey=localDateKey(now),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),nowMin=now.getHours()*60+now.getMinutes();
+  const last=shows[shows.length-1],lastTimes=String(last.time||'').match(/\d{1,2}:\d{2}/g)||[],lastEnd=lastTimes.length?Math.max(...lastTimes.map(getTimeMinutes)):null;
+  if(last.date<todayKey || (last.date===todayKey && lastEnd!==null && nowMin>=lastEnd))return {status:'end',show:last,shows,calendarDate:todayKey};
   let next=null;
   for(const show of shows){
     if(show.date>todayKey){next=show;break;}
-    if(show.date===todayKey){const ts=String(show.time||'').match(/\d{1,2}:\d{2}/g)||[];const end=ts.length?Math.max(...ts.map(getTimeMinutes)):null;if(end===null||nowMin<end){next=show;break;}}
+    if(show.date===todayKey){
+      const ts=String(show.time||'').match(/\d{1,2}:\d{2}/g)||[];
+      const end=ts.length?Math.max(...ts.map(getTimeMinutes)):null;
+      if(end===null||nowMin<end){next=show;break;}
+    }
   }
-  if(!next)return {status:'end',show:last,shows};
-  const d=Math.round((new Date(next.date+'T00:00:00')-today)/86400000);
-  return {status:'dday',show:next,shows,d};
+  if(!next)return {status:'end',show:last,shows,calendarDate:todayKey};
+  const [ny,nm,nd]=next.date.split('-').map(Number);
+  const d=Math.round((new Date(ny,nm-1,nd)-today)/86400000);
+  return {status:'dday',show:next,shows,d,calendarDate:next.date};
 }
 function ddayEditor(){
   const shows=getShowDates();
@@ -841,7 +1351,7 @@ function ddayEditor(){
   for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;cal+=`<button type="button" class="tc-day ${ed.dates.includes(v)?'sel':''}" onclick="ddayToggleDate('${v}')">${d}</button>`;}
   cal+='</div>';
   const selected=ed.dates.slice().sort();
-  const timeButtons=(date)=>{const vals=ed.times[date]||[];let h='<div class="tc-time-grid">';for(let mm=0;mm<1440;mm+=30){const t=formatMin(mm);h+=`<button type="button" class="tc-time-btn ${vals.includes(t)?'sel':''}" onclick="ddayToggleTime('${date}','${t}')">${t}</button>`;}return h+'</div>';};
+  const timeButtons=(date)=>{const vals=ed.times[date]||[];let h='<div class="tc-time-grid">';for(let mm=0;mm<=1440;mm+=30){const t=formatMin(mm);h+=`<button type="button" class="tc-time-btn ${vals.includes(t)?'sel':''}" onclick="ddayToggleTime('${date}','${t}')">${timeOptionLabel(t)}</button>`;}return h+'</div>';};
   return `<div class="dday-editor"><div class="section-title"><b>D-day 수정</b><span class="pill">관리자</span></div><div class="field"><label>공연 날짜</label>${cal}</div><div class="field"><label>날짜별 공연 시간</label>${selected.length?selected.map(d=>`<div class="card" style="margin:8px 0"><b>${d}</b>${timeButtons(d)}</div>`).join(''):'<div class="empty">공연 날짜를 선택해주세요.</div>'}</div><div class="field"><label>공연장소</label><input id="ddayVenue" value="${String(ed.venue).replace(/"/g,'&quot;')}"></div><div class="tc-actions"><button type="button" class="btn danger" onclick="cancelDdayEdit()">취소</button><button type="button" class="btn primary" onclick="saveDdayEdit()">저장</button></div></div>`;
 }
 function toggleDdayEdit(){if(state._ddayEdit){delete state._ddayEdit;}else{const shows=getShowDates();const map={};shows.forEach(x=>map[x.date]=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]);state._ddayEdit={dates:shows.map(x=>x.date),times:map,month:shows[0]?.date||new Date().toISOString().slice(0,10),venue:state.venue||''};}render();}
@@ -853,9 +1363,15 @@ function saveDdayEdit(){const ed=state._ddayEdit;if(!ed||!ed.dates.length)return
 function home(){
   const info=ddayInfo();
   const special=state.notices.find(n=>n.special);
-  const upcoming=[...state.stage.map(x=>({...x,kind:'주요'})),...state.schedules.map(x=>({...x,kind:x.type||'연습'}))].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).slice(0,3);
-  const banner=state.admin&&state._ddayEdit?ddayEditor():`<section class="hero" style="background:var(--dday-bg);color:var(--dday-text)"><div class="dday">${info.status==='end'?'END':info.status==='empty'?'—':info.d===0?'D-DAY':`D-${info.d}`}</div><p>${info.show?`공연까지 · ${info.show.date.slice(5).replace('-','/')} ${info.show.time}`:'등록된 공연 일정이 없습니다.'}</p><p>${state.venue}</p>${state.admin?'<button class="btn" style="margin-top:10px" onclick="toggleDdayEdit()">D-day 수정</button>':''}</section>`;
-  return `${banner}${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3></div><div class="notice content-scroll"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:''}<div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('practice')">전체보기</button></div>${upcoming.length?upcoming.map(x=>`<div class="schedule-item"><span class="pill">${x.kind}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${x.time}</div><div class="people content-scroll">${x.title||''}</div></div>`).join(''):'<div class="empty">등록된 일정이 없습니다.</div>'}</div><div class="card"><h3>👥 팀원</h3>${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}</span></div></div>`).join(''):'<div class="empty">등록된 팀원이 없습니다.</div>'}</div>`;
+  const upcoming=[...state.stage.map(x=>({...x,kind:inferStageType(x)})),...state.schedules.map(x=>({...x,kind:x.type||'연습'}))].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).slice(0,3);
+  const bannerDate=info.calendarDate||localDateKey();
+  const prev=ddayCalendarDate(addLocalDays(bannerDate,-1)),center=ddayCalendarDate(bannerDate),next=ddayCalendarDate(addLocalDays(bannerDate,1));
+  const statusText=info.status==='end'?'D-END':info.status==='empty'?'D-DAY':info.d===0?'D-DAY':`D-${info.d}`;
+  const detailShow=info.show;
+  const detail=detailShow?`${detailShow.date.replace(/-/g,'.')} (${ddayWeekdayShort(detailShow.date)}) ${displayScheduleTime(detailShow.time)}`:'공연 날짜를 설정해주세요';
+  const markShape=['circle','heart','star','rounded'].includes(state.theme?.ddayMarkShape)?state.theme.ddayMarkShape:'circle'; const cell=(x,pos)=>`<div class="dday-cal-cell ${pos}"><div class="dday-cal-weekday">${x.weekday}</div><div class="dday-cal-body"><div class="dday-cal-month">${x.month}</div>${pos==='center'?`<div class="dday-cal-mark ${markShape}"><div class="dday-cal-day">${x.day}</div></div>`:`<div class="dday-cal-day">${x.day}</div>`}</div></div>`;
+  const ddayFontKey=((state.theme&&state.theme.ddayFont)==='script'?'original':((state.theme&&state.theme.ddayFont)||'original'));const banner=state.admin&&state._ddayEdit?ddayEditor():`<section class="hero dday-poster dday-font-${ddayFontKey}"><div class="dday-poster-head"><div class="dday-poster-title">Curtain Up ${statusText}</div><div class="dday-poster-detail">${detail}</div></div><div class="dday-calendar">${cell(prev,'left side')}${cell(center,'center')}${cell(next,'right side')}</div><div class="dday-poster-venue">${state.venue||''}</div>${state.admin?'<button class="btn dday-edit-mini" onclick="toggleDdayEdit()">D-day 수정</button>':''}</section>`;
+  return `${banner}${fixedScheduleNotes()}${special?`<div class="card"><div class="row"><h3>🚨 특수공지</h3></div><div class="notice content-scroll"><b>${special.title}</b><br><span class="muted">${special.text}</span></div></div>`:''}<div class="card"><div class="section-title"><h3>📌 다가오는 주요 일정</h3><button class="btn" onclick="go('practice')">전체보기</button></div>${upcoming.length?upcoming.map(x=>`<div class="schedule-item"><span class="pill">${x.kind}</span><div class="time">${x.date.slice(5).replace('-','/')} · ${displayScheduleTime(x.time)}</div><div class="people content-scroll">${x.title||''}</div></div>`).join(''):'<div class="empty">등록된 일정이 없습니다.</div>'}</div><div class="card"><h3>👥 팀원</h3>${state.members.length?state.members.map(x=>`<div class="listline"><div><b>${x.name}</b><br><span class="muted">${x.pos}</span></div></div>`).join(''):'<div class="empty">등록된 팀원이 없습니다.</div>'}</div>`;
 }
 function movePracticeDate(days){
   if(!state.practiceDate){
@@ -1071,7 +1587,7 @@ function practice(){
   list.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const dateLabel=`${selected.getFullYear()}년 ${selected.getMonth()+1}월 ${selected.getDate()}일`;
   let weekLabel="";if(state.view==='week'){const ws=new Date(selected);ws.setDate(selected.getDate()-selected.getDay());const we=new Date(ws);we.setDate(ws.getDate()+6);weekLabel=`${ws.getFullYear()}년 ${ws.getMonth()+1}월 ${ws.getDate()}일 ~ ${we.getFullYear()}년 ${we.getMonth()+1}월 ${we.getDate()}일`;}
-  return `<div class="section-title"><h2>일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
+  return `${fixedScheduleNotes()}<div class="section-title"><h2>일정</h2>${state.admin?'<button class="btn primary" onclick="addPractice()">+ 일정 추가</button>':''}</div>
   <div class="seg"><button class="${state.view==='month'?'active':''}" onclick="setView('month')">월간</button><button class="${state.view==='week'?'active':''}" onclick="setView('week')">주간</button><button class="${state.view==='day'?'active':''}" onclick="setView('day')">일간</button></div>
   ${state.view!=='month'?`<div class="card"><div class="row"><button class="btn" onclick="movePracticeDate(-1)">◀</button><b>${state.view==='day'?dateLabel:weekLabel}</b><button class="btn" onclick="movePracticeDate(1)">▶</button></div></div>`:''}
   ${state.view==='month'?miniMonth():list.length?list.map(x=>{
@@ -1082,9 +1598,9 @@ function practice(){
     const pendingChanges=isSchedule?(x._changes||[]).filter(c=>!c.done):[];
     const changes=isSchedule&&pendingChanges.length?`<div class="notice schedule-special-note"><b>안내사항</b>${pendingChanges.map(c=>`<label class="checkline" style="display:flex;margin-top:7px"><input type="checkbox" ${state.admin?'':'disabled'} ${state.admin?'':'title="관리자만 확인할 수 있습니다"'} onchange="markScheduleChangeDone(${idx},'${c.id}')"> ${String(c.text).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</label>`).join('')}</div>`:'';
     const memo=x.memo?`<div class="schedule-memo"><b>${x._kind==='연습'?'메모 / 연습내용':'메모'}</b><div>${String(x.memo).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`:'';
-    return `<div class="card schedule-card" data-schedule-index="${isSchedule?idx:""}"><div class="schedule-head"><div class="schedule-main"><div class="date-line schedule-date">${x.date}</div><div class="time schedule-time">${x.time}</div><div class="kind-line schedule-kind">${x._kind}</div>${people.length?`<div class="schedule-people"><b>참여자</b><div>${people.join(' · ')}</div></div>`:''}${personalMemos.length?`<div class="schedule-memo"><b>개인 메모</b><div>${personalMemos.map(v=>String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' / ')}</div></div>`:''}${special}${changes}${memo}</div><span class="pill">👥 ${people.length}명</span></div>${state.admin?`<div class="actions" style="margin-top:10px">${isSchedule?`<button class="btn" onclick="editPractice(${idx})">수정</button><button class="btn danger" onclick="cancelPractice(${idx})">취소</button>`:`<button class="btn" onclick="editStage(${idx})">수정</button><button class="btn danger" onclick="deleteStage(${idx})">취소</button>`}<button class="btn" onclick="toggleFixedStage('${x.date}','${String(x.title||x._kind).replace(/'/g,"\\'")}','${x.time}')">${state.stage.some(s=>s.date===x.date&&s.time===x.time&&s.title===x.title)?'⭐ 주요 일정 고정됨':'⭐ 주요 일정 고정'}</button></div>`:''}</div>`;
+    return `<div class="card schedule-card" data-schedule-index="${isSchedule?idx:""}"><div class="schedule-head"><div class="schedule-main"><div class="date-line schedule-date">${x.date}</div><div class="time schedule-time">${displayScheduleTime(x.time)}</div><div class="kind-line schedule-kind">${x._kind}</div>${people.length?`<div class="schedule-people"><b>참여자</b><div>${people.join(' · ')}</div></div>`:''}${personalMemos.length?`<div class="schedule-memo"><b>개인 메모</b><div>${personalMemos.map(v=>String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' / ')}</div></div>`:''}${special}${changes}${memo}</div><span class="pill">👥 ${people.length}명</span></div>${state.admin?`<div class="actions" style="margin-top:10px">${isSchedule?`<button class="btn" onclick="editPractice(${idx})">수정</button><button class="btn danger" onclick="cancelPractice(${idx})">취소</button>`:`<button class="btn" onclick="editStage(${idx})">수정</button><button class="btn danger" onclick="deleteStage(${idx})">취소</button>`}${isSchedule?`<button class="btn" onclick="toggleFixedSchedule(${idx})">${state.schedules[idx]?.fixed?'📌 주요일정 고정됨':'📌 주요일정 고정'}</button>`:''}</div>`:''}</div>`;
   }).join(''):`<div class="card empty">해당 기간에 등록된 일정이 없습니다.</div>`}
-  <div class="card"><h3>📌 고정 주요 일정</h3>${stages.length?stages.map((x,i)=>`<div class="schedule-item"><span class="pill">${x.title.includes('공연')?'🎭 공연':'🏗️ 일정'}</span><div class="time">${x.date} · ${x.time}</div><div class="people content-scroll">${x.title}</div>${state.admin?`<div class="actions" style="margin-top:8px"><button class="btn" onclick="editStage(${i})">수정</button><button class="btn danger" onclick="deleteStage(${i})">삭제</button></div>`:''}</div>`).join(''):`<div class="empty">등록된 주요 일정이 없습니다.</div>`}</div>`;
+  `;
 }
 
 function setView(v){state.view=v;save();render()}
@@ -1097,7 +1613,9 @@ function miniMonth(){
   for(let day=1;day<=last.getDate();day++){
     const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const sh=state.schedules.filter(x=>x.date===date),stg=state.stage.filter(x=>x.date===date);
-    s+=`<button class="day" style="text-align:left" onclick="selectPracticeMonthDate('${date}')"><b>${day}</b>${stg.map(x=>`<span class="dot stage">${x.title.includes('공연')?'🎭 공연':'🏗️ 극장'}</span>`).join('')}${sh.length?`<span class="dot">● 연습</span>`:''}${pendingScheduleChanges(date)?`<span class="dot" style="background:#ff6b8a;color:#fff">🔔 변경</span>`:''}</button>`;
+    const typeCounts={}; sh.forEach(x=>{const t=x.type||'연습';typeCounts[t]=(typeCounts[t]||0)+1;}); stg.forEach(x=>{const t=inferStageType(x);typeCounts[t]=(typeCounts[t]||0)+1;});
+    const typeHtml=Object.entries(typeCounts).map(([type,count])=>{const meta=monthTypeMeta(type);return `<span class="month-type-dot ${meta.cls}">${meta.icon} ${type}${count>1?` ${count}`:''}</span>`;}).join('');
+    s+=`<button class="day" style="text-align:left" onclick="selectPracticeMonthDate('${date}')"><b>${day}</b>${typeHtml}${pendingScheduleChanges(date)?`<span class="dot" style="background:#ff6b8a;color:#fff">🔔 변경</span>`:''}</button>`;
   }
   return s+'</div>';
 }
@@ -1127,10 +1645,10 @@ function openScheduleModal(){
   document.body.appendChild(bg);
   const pad=n=>String(n).padStart(2,'0');
   function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="smPrev">◀</button><b>${y}년 ${m+1}월</b><button id="smNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#smCal').innerHTML=h+'</div>';bg.querySelectorAll('#smCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v))dates.splice(dates.indexOf(v),1);else{dates.push(v);timesByDate[v]=[];}renderCal();renderTimes();});bg.querySelector('#smPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#smNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
-  function renderTimes(){const selected=dates.slice().sort();if(!selected.length){bg.querySelector('#smTimes').innerHTML='<div class="empty">날짜를 먼저 선택해주세요.</div>';return;}bg.querySelector('#smTimes').innerHTML=selected.map(date=>{const arr=timesByDate[date]||[];const step=half?30:60;let h=`<div class="sm-time-date-block"><b class="sm-time-date-title">${date}</b><div class="tc-time-grid sm-time-grid">`;for(let m=0;m<1440;m+=step){const t=formatMin(m);h+=`<button type="button" class="tc-time-btn ${arr.includes(t)?'sel':''}" data-date="${date}" data-time="${t}">${t}</button>`;}return h+'</div></div>';}).join('');bg.querySelectorAll('#smTimes [data-time]').forEach(b=>b.onclick=()=>{const date=b.dataset.date,v=b.dataset.time,arr=timesByDate[date]||[],anchor=arr._anchor;if(anchor&&anchor!==v){const set=new Set(arr);for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=(half?30:60))set.add(formatMin(m));timesByDate[date]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));timesByDate[date]._anchor=null;}else if(arr.includes(v)){timesByDate[date]=arr.filter(x=>x!==v);timesByDate[date]._anchor=null;}else{arr.push(v);arr._anchor=v;timesByDate[date]=arr;}renderTimes();});}
+  function renderTimes(){const selected=dates.slice().sort();if(!selected.length){bg.querySelector('#smTimes').innerHTML='<div class="empty">날짜를 먼저 선택해주세요.</div>';return;}bg.querySelector('#smTimes').innerHTML=selected.map(date=>{const arr=timesByDate[date]||[];const step=half?30:60;let h=`<div class="sm-time-date-block"><b class="sm-time-date-title">${date}</b><div class="tc-time-grid sm-time-grid">`;for(let m=0;m<=1440;m+=step){const t=formatMin(m);h+=`<button type="button" class="tc-time-btn ${arr.includes(t)?'sel':''}" data-date="${date}" data-time="${t}">${timeOptionLabel(t)}</button>`;}return h+'</div></div>';}).join('');bg.querySelectorAll('#smTimes [data-time]').forEach(b=>b.onclick=()=>{const date=b.dataset.date,v=b.dataset.time,arr=timesByDate[date]||[],anchor=arr._anchor;if(anchor&&anchor!==v){const set=new Set(arr);for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=(half?30:60))set.add(formatMin(m));timesByDate[date]=[...set].sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));timesByDate[date]._anchor=null;}else if(arr.includes(v)){timesByDate[date]=arr.filter(x=>x!==v);timesByDate[date]._anchor=null;}else{arr.push(v);arr._anchor=v;timesByDate[date]=arr;}renderTimes();});}
   function renderTypes(){bg.querySelector('#smTypes').innerHTML=['연습','공연','셋업','기타'].map(x=>`<button type="button" class="tc-type ${x===typeState.value?'sel':''}" data-type="${x}">${x}</button>`).join('');bg.querySelectorAll('#smTypes [data-type]').forEach(b=>b.onclick=()=>{typeState.value=b.dataset.type;renderTypes()});}
   bg.querySelector('#smPeople').innerHTML=state.members.map(m=>`<button type="button" class="chip" data-name="${m.name}">${m.name}</button>`).join('');bg.querySelectorAll('#smPeople .chip').forEach(b=>b.onclick=()=>{b.classList.toggle('on');});
-  bg.querySelector('#smHalf').onclick=()=>{half=!half;Object.keys(timesByDate).forEach(k=>timesByDate[k]=[]);bg.querySelector('#smHalf').textContent=half?'1시간 단위로 입력':'30분 단위로 입력';renderTimes()};bg.querySelector('#smCancel').onclick=()=>bg.remove();bg.querySelector('#smSave').onclick=()=>{if(!dates.length)return alert('날짜를 하나 이상 선택해주세요.');if(dates.some(d=>!(timesByDate[d]||[]).length))return alert('모든 날짜의 시간을 선택해주세요.');const selectedPeople=[...bg.querySelectorAll('#smPeople .chip.on')].map(b=>b.dataset.name);const memo=bg.querySelector('#smMemo').value.trim();dates.sort().forEach(date=>{const arr=(timesByDate[date]||[]).filter(x=>/^\d/.test(x));const time=compressTimes(arr).join(' / ');const item={date,time,title:typeState.value,type:typeState.value,people:selectedPeople.slice(),memo};state.schedules.push(item);if(bg.querySelector('#smFixed').checked)state.stage.push({date,time,title:typeState.value});});save();bg.remove();render()};renderCal();renderTimes();renderTypes();
+  bg.querySelector('#smHalf').onclick=()=>{half=!half;Object.keys(timesByDate).forEach(k=>timesByDate[k]=[]);bg.querySelector('#smHalf').textContent=half?'1시간 단위로 입력':'30분 단위로 입력';renderTimes()};bg.querySelector('#smCancel').onclick=()=>bg.remove();bg.querySelector('#smSave').onclick=()=>{if(!dates.length)return alert('날짜를 하나 이상 선택해주세요.');if(dates.some(d=>!(timesByDate[d]||[]).length))return alert('모든 날짜의 시간을 선택해주세요.');const selectedPeople=[...bg.querySelectorAll('#smPeople .chip.on')].map(b=>b.dataset.name);const memo=bg.querySelector('#smMemo').value.trim();dates.sort().forEach(date=>{const arr=(timesByDate[date]||[]).filter(x=>/^\d/.test(x));const time=compressTimes(arr).join(' / ');const item={date,time,title:typeState.value,type:typeState.value,people:selectedPeople.slice(),memo,fixed:bg.querySelector('#smFixed').checked};state.schedules.push(item);});save();bg.remove();render()};renderCal();renderTimes();renderTypes();
 }
 function editPractice(i){
   const x=state.schedules[i]; if(!x)return; const host=document.querySelector(`[data-schedule-index="${i}"]`); if(!host)return; host.querySelector('.tc-inline-edit')?.remove();
@@ -1138,7 +1656,7 @@ function editPractice(i){
   const existingTimes=String(x.time||'').match(/\d{1,2}:\d{2}/g)||[]; let selected=existingTimes.slice(); let anchor=null; const step=30;
   ed.innerHTML=`<div class="field"><label>날짜</label><input type="date" id="ieDate" value="${x.date}"></div><div class="field"><label>시간</label><div class="tc-time-grid" id="ieTimes"></div></div><div class="field"><label>일정 종류</label><div class="tc-types" id="ieTypes">${['연습','공연','셋업','기타'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-t="${t}">${t}</button>`).join('')}</div></div><div class="field"><label>참여팀원</label><div class="chips" id="iePeople">${state.members.map(m=>`<button type="button" class="chip ${Array.isArray(x.people)&&x.people.includes(m.name)?'on':''}" data-name="${m.name}">${m.name}</button>`).join('')}</div></div><div class="field"><label>메모 / 연습내용</label><textarea id="ieMemo" placeholder="내용을 입력하세요">${x.memo||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="ieCancel">취소</button><button class="btn primary" id="ieSave">저장</button></div>`;
   host.appendChild(ed);
-  function draw(){ed.querySelector('#ieTimes').innerHTML=Array.from({length:48},(_,j)=>{const t=formatMin(j*step);return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${t}</button>`}).join('');ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(anchor){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=step)if(!selected.includes(formatMin(m)))selected.push(formatMin(m));selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));anchor=null;}else{anchor=v;if(!selected.includes(v))selected.push(v);}draw();});}
+  function draw(){ed.querySelector('#ieTimes').innerHTML=Array.from({length:Math.floor(1440/step)+1},(_,j)=>{const t=formatMin(j*step);return `<button type="button" class="tc-time-btn ${selected.includes(t)?'sel':''}" data-v="${t}">${timeOptionLabel(t)}</button>`}).join('');ed.querySelectorAll('#ieTimes [data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(anchor){for(let m=Math.min(getTimeMinutes(anchor),getTimeMinutes(v));m<=Math.max(getTimeMinutes(anchor),getTimeMinutes(v));m+=step)if(!selected.includes(formatMin(m)))selected.push(formatMin(m));selected.sort((a,b)=>getTimeMinutes(a)-getTimeMinutes(b));anchor=null;}else{anchor=v;if(!selected.includes(v))selected.push(v);}draw();});}
   ed.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{ed.querySelectorAll('[data-t]').forEach(z=>z.classList.remove('sel'));b.classList.add('sel')});ed.querySelectorAll('#iePeople .chip').forEach(b=>b.onclick=()=>b.classList.toggle('on'));ed.querySelector('#ieCancel').onclick=()=>ed.remove();ed.querySelector('#ieSave').onclick=()=>{const date=ed.querySelector('#ieDate').value;if(!date||!selected.length)return alert('날짜와 시간을 선택해주세요.');x.date=date;x.time=compressTimes(selected).join(' / ');x.type=ed.querySelector('#ieTypes .sel')?.dataset.t||x.type;x.title=x.type;x.people=[...ed.querySelectorAll('#iePeople .chip.on')].map(b=>b.dataset.name);x.memo=ed.querySelector('#ieMemo').value.trim();scheduleId(x);x._syncSnapshot={};x.people.forEach(n=>{const e=getAvailabilityEntry(n,x.date);x._syncSnapshot[n]=e?.time||null;});save();render()};draw();
 }
 function cancelPractice(i){
@@ -1148,7 +1666,7 @@ function cancelPractice(i){
 function schedule(){
   const names=state.members.map(x=>x.name);
   if(!Array.isArray(state.aggregateMembers)) state.aggregateMembers=[];
-  return `<div class="section-title"><h2>스케줄 조율</h2><span class="pill">모두 조회 가능</span></div>
+  return `${fixedScheduleNotes()}<div class="section-title"><h2>스케줄 조율</h2><span class="pill">모두 조회 가능</span></div>
   <div class="card"><div class="section-title"><h3>👥 팀원별 가능시간</h3><span class="pill">이름을 선택하세요</span></div><div style="display:flex;flex-direction:column;gap:8px">${names.length?names.map(name=>`<div><button type="button" class="btn" style="width:100%;text-align:left;padding:13px 15px;display:flex;justify-content:space-between" data-member="${name}"><span>👤 ${name}</span><span>›</span></button><div id="memberSchedule-${name}" style="display:none;margin-top:8px"></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div><select id="availabilityMember" style="display:none"><option value="">내 이름</option>${names.map(n=>`<option>${n}</option>`).join('')}</select></div>
   <div class="card"><div class="section-title"><h3>📅 전체 가능시간</h3><span class="pill">공통 가능시간 자동 표시</span></div><p class="muted small" style="margin-bottom:10px">아래에서 원하는 팀원을 선택하면 공통 가능한 날짜와 시간이 자동으로 다른 색으로 표시됩니다.</p>
   <div class="chips" style="margin-bottom:8px">${names.map(n=>`<button type="button" class="chip ${state.aggregateMembers.includes(n)?'on':''}" onclick="toggleAggregateMember('${n}')">${n}</button>`).join('')}</div>
@@ -1204,7 +1722,7 @@ function updateAggregateAvailabilityDetail(){
   host.innerHTML=dates.map(date=>{
     const list=state.availability?.[date]; const rows=Array.isArray(list)?list:(list?[list]:[]);
     const filtered=people.length?rows.filter(x=>people.includes(x.member)):rows;
-    return `<div class="card"><h3>📅 ${date} 상세 가능시간</h3>${filtered.length?filtered.map(x=>`<div class="schedule-item"><b>👤 ${x.member||''}</b><div class="time">가능시간: ${mergeAvailabilityText(x.time)||'등록 없음'}</div><div class="people">특이사항/메모: ${x.memo||'없음'}</div></div>`).join(''):'<div class="empty">해당 날짜에 등록된 팀원이 없습니다.</div>'}</div>`;
+    return `<div class="card"><h3>📅 ${date} 상세 가능시간</h3>${filtered.length?filtered.map(x=>`<div class="schedule-item"><b>👤 ${x.member||''}</b><div class="time">가능시간: ${displayScheduleTime(mergeAvailabilityText(x.time))||'등록 없음'}</div><div class="people">특이사항/메모: ${x.memo||'없음'}</div></div>`).join(''):'<div class="empty">해당 날짜에 등록된 팀원이 없습니다.</div>'}</div>`;
   }).join('');
 }
 
@@ -1833,6 +2351,9 @@ function renderAvailabilityTimes(){
   }
 
 
+  const endTime="24:00";
+  html+=`<button type="button" class="time-slot ${selectedAvailabilityTimes.includes(endTime)?"on":""} ${availabilityRangeStart===endTime?"range-start":""}" onclick="toggleAvailabilityTime('${endTime}')">00:00</button>`;
+
   area.innerHTML=`
 
     <div style="margin-top:18px">
@@ -2135,7 +2656,7 @@ function renderExistingAvailability(){
               <b>${date}</b>
 
               <div class="people">
-                ${entries[date].time}
+                ${displayScheduleTime(entries[date].time)}
               </div>
 
             </div>
@@ -2871,7 +3392,7 @@ function renderAdminPracticeConfirmPanel(){
     <button class="btn primary" style="width:100%;margin-top:10px" onclick="saveConfirmedPractice()">연습 확정</button>
   </div>`;
 }
-function renderConfirmTimeArea(key){const half=state.confirmHalfHour;const times=state.confirmTimesByDate[key]||[];const step=half?30:60;let html='';for(let m=0;m<1440;m+=step){const t=formatMin(m);html+=`<button type="button" class="tc-time-btn ${times.includes(t)?'sel':''}" onclick="toggleConfirmTime('${key}','${t}')">${t}</button>`;}return `<div class="row" style="margin-top:10px"><b>연습시간</b><button class="btn" onclick="toggleConfirmHalfHour()">${half?'1시간 단위로 입력':'30분 단위로 입력'}</button></div><p class="muted small">시작 시간을 누른 뒤 끝 시간을 누르면 사이 시간이 자동 선택됩니다.</p><div class="tc-time-grid">${html}</div><button class="btn ghost" style="margin-top:8px" onclick="clearConfirmTimes('${key}')">시간 선택 초기화</button>`;}
+function renderConfirmTimeArea(key){const half=state.confirmHalfHour;const times=state.confirmTimesByDate[key]||[];const step=half?30:60;let html='';for(let m=0;m<=1440;m+=step){const t=formatMin(m);html+=`<button type="button" class="tc-time-btn ${times.includes(t)?'sel':''}" onclick="toggleConfirmTime('${key}','${t}')">${timeOptionLabel(t)}</button>`;}return `<div class="row" style="margin-top:10px"><b>연습시간</b><button class="btn" onclick="toggleConfirmHalfHour()">${half?'1시간 단위로 입력':'30분 단위로 입력'}</button></div><p class="muted small">시작 시간을 누른 뒤 끝 시간을 누르면 사이 시간이 자동 선택됩니다.</p><div class="tc-time-grid">${html}</div><button class="btn ghost" style="margin-top:8px" onclick="clearConfirmTimes('${key}')">시간 선택 초기화</button>`;}
 function toggleConfirmPerson(name){initConfirmState();const i=state.confirmPeople.indexOf(name);if(i>=0){state.confirmPeople.splice(i,1);if(!state.confirmExcludedPeople.includes(name))state.confirmExcludedPeople.push(name);if(Array.isArray(state.confirmManualPeople))state.confirmManualPeople=state.confirmManualPeople.filter(x=>x!==name);}else{state.confirmExcludedPeople=state.confirmExcludedPeople.filter(x=>x!==name);state.confirmPeople.push(name);}save();render();}
 function toggleConfirmSameTime(v){initConfirmState();state.confirmSameTime=v;state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
 function toggleConfirmHalfHour(){initConfirmState();state.confirmHalfHour=!state.confirmHalfHour;Object.keys(state.confirmTimesByDate).forEach(k=>state.confirmTimesByDate[k]=[]);state.confirmManualPeople=[];state.confirmExcludedPeople=[];save();render();}
@@ -2907,22 +3428,17 @@ function saveConfirmedPractice(){
 }
 function confirmPractice(){if(!state.admin)return;render();}
 function calendar(){
-  return `<div class="section-title"><h2>주요 일정</h2>${state.admin?'<button class="btn primary" onclick="addStage()">+ 일정 추가</button>':''}</div>
+  return `${fixedScheduleNotes()}<div class="section-title"><h2>주요 일정</h2>${state.admin?'<button class="btn primary" onclick="addStage()">+ 일정 추가</button>':''}</div>
   <div class="seg"><button class="active">월간</button><button onclick="alert('주간 보기로 전환됩니다.')">주간</button><button onclick="alert('일간 보기로 전환됩니다.')">일간</button></div>
   <div class="calendar">${["일","월","화","수","목","금","토"].map(d=>`<div class="calhead">${d}</div>`).join("")}${[...Array(31)].map((_,i)=>{
     let n=i+1;
-    let ss=state.stage.filter(x=>Number(x.date.slice(-2))===n);
-    let pr=state.schedules.filter(x=>Number(x.date.slice(-2))===n);
-    return `<div class="day"><b>${n}</b>${ss.map(x=>`<span class="dot ${x.title.includes("공연")?"show":"stage"}">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span>`).join("")}${pr.length?`<span class="dot">● 연습 ${pr.length}</span>`:""}</div>`;
-  }).join("")}</div>
-  <div class="card"><h3>📌 고정 주요 일정</h3>${state.stage.length?state.stage.map((x,i)=>`<div class="schedule-item"><span class="pill">${x.title.includes("공연")?"🎭 공연":"🏗️ 극장"}</span><div class="time">${x.date} · ${x.time}</div><div class="people">${x.title}</div>${state.admin?`<div class="actions" style="margin-top:8px"><button class="btn" onclick="editStage(${i})">수정</button><button class="btn danger" onclick="deleteStage(${i})">삭제</button></div>`:""}</div>`).join(""):`<div class="empty">등록된 주요 일정이 없습니다.</div>`}</div>`;
+    let items=[...state.schedules.filter(x=>Number(x.date.slice(-2))===n).map(x=>({type:x.type||'연습'})),...state.stage.filter(x=>Number(x.date.slice(-2))===n).map(x=>({type:inferStageType(x)}))];
+    const counts={};items.forEach(x=>counts[x.type]=(counts[x.type]||0)+1);
+    return `<div class="day"><b>${n}</b>${Object.entries(counts).map(([type,count])=>{const meta=monthTypeMeta(type);return `<span class="month-type-dot ${meta.cls}">${meta.icon} ${type}${count>1?` ${count}`:''}</span>`;}).join("")}</div>`;
+  }).join("")}</div>`;
 }
 function addStage(){openScheduleModal(true);}
-function toggleFixedStage(date,title,time){
-  const i=state.stage.findIndex(x=>x.date===date&&x.time===time&&x.title===title);
-  if(i>=0){state.stage.splice(i,1);}else{state.stage.push({date,time,title});}
-  save();render();
-}
+function toggleFixedSchedule(i){const x=state.schedules[i];if(!x)return;x.fixed=!x.fixed;save();render();}
 function editStage(i){
   let x=state.stage[i];
   x.time=prompt("시간",x.time)||x.time;
@@ -2934,7 +3450,7 @@ function deleteStage(i){
 }
 
 let noticeFilter='전체';
-function notice(){const types=['전체','일반','공연음악','연습영상','연습이미지'];const list=noticeFilter==='전체'?state.notices:state.notices.filter(n=>n.type===noticeFilter||(noticeFilter==='일반'&&n.type==='일반공지'));return `<div class="section-title"><h2>공지&자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div><div class="seg">${types.map(t=>`<button class="${noticeFilter===t?'active':''}" onclick="noticeFilter='${t}';render()">${t}</button>`).join('')}</div><div class="notice-list">${list.length?list.map(n=>{const i=state.notices.indexOf(n);const label=n.type==='일반공지'?'일반':n.type;return `<div class="card"><div class="row"><span class="pill">${label}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':''}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted content-scroll">${n.text}</div><div class="people">작성자 · ${n.author||'미입력'}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editNotice(${i})">수정</button><button class="btn" onclick="toggleSpecial(${i})">${n.special?'특수공지 해제':'특수공지 지정'}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div></div>`}).join(''):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;}
+function notice(){const types=['전체','일반','공연음악','연습영상','연습이미지'];const list=noticeFilter==='전체'?state.notices:state.notices.filter(n=>n.type===noticeFilter||(noticeFilter==='일반'&&n.type==='일반공지'));return `${fixedScheduleNotes()}<div class="section-title"><h2>공지&자료</h2><button class="btn primary" onclick="addNotice()">+ 작성</button></div><div class="seg">${types.map(t=>`<button class="${noticeFilter===t?'active':''}" onclick="noticeFilter='${t}';render()">${t}</button>`).join('')}</div><div class="notice-list">${list.length?list.map(n=>{const i=state.notices.indexOf(n);const label=n.type==='일반공지'?'일반':n.type;return `<div class="card"><div class="row"><span class="pill">${label}</span>${n.special?'<span class="pill">⭐ 특수공지</span>':''}</div><h3 style="margin-top:9px">${n.title}</h3><div class="muted content-scroll">${n.text}</div><div class="people">작성자 · ${n.author||'미입력'}</div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editNotice(${i})">수정</button><button class="btn" onclick="toggleSpecial(${i})">${n.special?'특수공지 해제':'특수공지 지정'}</button><button class="btn danger" onclick="deleteNotice(${i})">삭제</button></div></div>`}).join(''):`<div class="card empty">등록된 공지와 자료가 없습니다.</div>`}</div>`;}
 function noticeModal(initial,onSave){const x=initial||{type:'일반공지',title:'',text:'',author:''};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'공지&자료 수정':'공지&자료 작성'}</h3><div class="field"><label>공지 종류</label><div class="tc-types" id="nmTypes">${['일반공지','공연음악','연습영상','연습이미지'].map(t=>`<button type="button" class="tc-type ${x.type===t?'sel':''}" data-type="${t}">${t==='일반공지'?'일반':t}</button>`).join('')}</div></div><div class="field"><label>작성자</label><input id="nmAuthor" value="${String(x.author||'').replace(/"/g,'&quot;')}" placeholder="작성자 이름"></div><div class="field"><label>제목</label><input id="nmTitle" value="${String(x.title||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>내용</label><textarea id="nmText" style="min-height:240px" placeholder="공지 내용을 입력하세요">${x.text||''}</textarea></div><div class="tc-actions"><button class="btn danger" id="nmCancel">취소</button><button class="btn primary" id="nmSave">저장</button></div></div>`;document.body.appendChild(bg);let type=x.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(b=>b.onclick=()=>{type=b.dataset.type;bg.querySelectorAll('#nmTypes [data-type]').forEach(z=>z.classList.toggle('sel',z===b));});bg.querySelector('#nmCancel').onclick=()=>bg.remove();bg.querySelector('#nmSave').onclick=()=>{const title=bg.querySelector('#nmTitle').value.trim(),author=bg.querySelector('#nmAuthor').value.trim();if(!title)return alert('제목을 입력해주세요.');if(!author)return alert('작성자를 입력해주세요.');onSave({type,title,text:bg.querySelector('#nmText').value,author});save();bg.remove();render()};}
 function addNotice(){noticeModal(null,x=>state.notices.unshift({type:x.type,title:x.title,text:x.text,author:x.author,special:false}));}
 function editNotice(i){noticeModal(state.notices[i],x=>Object.assign(state.notices[i],x));}
@@ -2943,10 +3459,57 @@ function deleteNotice(i){if(confirm('이 공지/자료를 삭제할까요?')){st
 function admin(){
   if(!state.admin)return `<div class="card"><div class="empty">관리 권한이 있는 사용자만 입장 가능합니다</div></div>`;
   const t=state.theme||{};
-  const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividBasePalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const vividAddedPalette=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7','#ffc8d8','#ffb9b9']; const vividPalette=[...vividBasePalette,...vividAddedPalette]; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette);
+  const softPalette=['#ffffff','#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#111827','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7']; const vividBasePalette=['#ffffff','#111827','#b9a7f5','#9cccf5','#8fd8d1','#9fdcc7','#c8de9a','#f3de86','#f4c28b','#a9bff5','#d3b1f0','#8fb7df']; const vividAddedPalette=['#f5f6fa','#fff7ed','#eef6ff','#eefbf3','#f6f0ff','#f0fbff','#f7f3e8','#edf7f4','#f2f1fb','#eef2f7','#ffc8d8','#ffb9b9']; const vividPalette=[...vividBasePalette,...vividAddedPalette]; const swWith=(id,val,palette)=>`<div class="palette-grid" id="${id}">${palette.map(c=>`<button type="button" class="swatch ${val===c?'sel':''}" style="background:${c}" data-c="${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.swatch').forEach(b=>b.classList.remove('sel'));this.classList.add('sel')"></button>`).join('')}</div>`; const ddayPalette=vividPalette.map(c=>c==="#ffffff"?"#fff0d8":c==="#111827"?"#273b57":c); const sw=(id,val)=>swWith(id,val,softPalette); const swVivid=(id,val)=>swWith(id,val,vividPalette); const swDday=(id,val)=>swWith(id,val,ddayPalette);
   return `<div class="section-title"><h2>관리</h2><span class="pill">${state.role==="security"?"보안자":"관리자"}</span></div><div class="adminbar">상단 배너, 팀원, 사이트 디자인과 운영 기능을 관리합니다.</div>
-  <div class="card"><h3>🪧 상단 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><input id="loginTitle" value="${state.loginTitle||'THEATER CLOWN'}"></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
-  <div class="card"><h3>🎨 사이트 색상 설정</h3><div class="theme-grid"><div class="field"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div><div class="field"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div><div class="field"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>큰 버튼 글씨색</label>${swVivid('thLargeButtonText',t.largeButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>작은 버튼 색</label>${swVivid('thSmallButtonBg',t.smallButtonBg||t.primary||'#6657e8')}</div><div class="field"><label>작은 버튼 글씨색</label>${swVivid('thSmallButtonText',t.smallButtonText||t.buttonText||'#ffffff')}</div><div class="field"><label>D-day 배너 배경색</label>${swVivid('thDdayBg',t.ddayBg||'#171b2d')}</div><div class="field"><label>D-day 배너 글씨색</label>${swVivid('thDdayText',t.ddayText||'#ffffff')}</div></div><div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><h3 style="margin-bottom:8px">🏷️ 안내 아이콘 색상 설정</h3><p class="muted small" style="margin-top:0">상단 관리자/방문자, 일정 인원수, 조율 안내, 공지 종류 등 작은 안내 아이콘에 일괄 적용됩니다.</p><div class="theme-grid"><div class="field"><label>안내 아이콘 배경색</label>${swVivid('thBadgeBg',t.badgeBg||t.primary||'#6657e8')}</div><div class="field"><label>안내 아이콘 글씨색</label>${swVivid('thBadgeText',t.badgeText||'#ffffff')}</div></div></div><div class="actions"><button class="btn" onclick="setThemeMode('light')">화이트모드</button><button class="btn" onclick="setThemeMode('dark')">다크모드</button><button class="btn primary" onclick="saveTheme()">색상 설정 저장</button></div></div>
+  <div class="card"><h3>🪧 사이트 배너 설정</h3><div class="field"><label>상단 큰배너 이름</label><input id="showName" value="${state.showName||''}"></div><div class="field"><label>상단 작은배너 이름</label><input id="bannerSmallName" value="${state.bannerSmallName||''}"></div><div class="field"><label>첫 입장 화면 제목</label><textarea id="loginTitle" rows="3" style="min-height:86px;resize:vertical" placeholder="줄바꿈은 Enter로 직접 지정할 수 있습니다.">${String(state.loginTitle||'THEATER CLOWN').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea><div class="muted small" style="margin-top:5px">직접 줄바꿈하지 않은 한 줄은 화면 폭을 넘기기 전에 글씨 크기가 자동으로 줄어듭니다.</div></div><div class="field"><label>첫 입장 화면 제목 글씨체</label><select id="loginTitleFont"><option value="bold" ${(state.loginTitleFont||'bold')==='bold'?'selected':''}>1. 기존 굵은 글씨체</option><option value="script" ${(state.loginTitleFont||'bold')==='script'?'selected':''}>2. 손글씨체</option><option value="serif" ${(state.loginTitleFont||'bold')==='serif'?'selected':''}>3. 우아한 명조체</option><option value="clean" ${(state.loginTitleFont||'bold')==='clean'?'selected':''}>4. 단정한 글씨체</option></select></div><div class="field"><label>첫 입장 화면 설명</label><input id="loginSubtitle" value="${state.loginSubtitle||'공연팀 일정 · 공지 · 자료 관리'}"></div><button class="btn primary" onclick="saveShowInfo()">정보 저장</button></div>
+  <div class="card"><h3>🎨 사이트 디자인 설정</h3>
+  <div class="design-settings-grid">
+    <div class="design-row divider-strong">
+      <div class="field design-cell"><label>전체 페이지 배경색</label>${sw('thBg',t.bg||'#f5f6fa')}</div>
+      <div class="field design-cell"><label>내부 페이지 배경색</label>${sw('thCard',t.card||'#ffffff')}</div>
+    </div>
+    <div class="design-row divider-strong">
+      <div class="field design-cell"><label>큰 버튼 색</label>${swVivid('thLargeButtonBg',t.largeButtonBg||t.primary||'#6657e8')}</div>
+      <div class="field design-cell"><label>큰 버튼 글씨색</label>${swVivid('thLargeButtonText',t.largeButtonText||t.buttonText||'#ffffff')}</div>
+    </div>
+    <div class="design-row divider-strong">
+      <div class="field design-cell"><label>작은 버튼 색</label>${swVivid('thSmallButtonBg',t.smallButtonBg||t.primary||'#6657e8')}</div>
+      <div class="field design-cell"><label>작은 버튼 글씨색</label>${swVivid('thSmallButtonText',t.smallButtonText||t.buttonText||'#ffffff')}</div>
+    </div>
+    <div class="design-row">
+      <div class="field design-cell"><label>안내 아이콘 배경색</label>${swVivid('thBadgeBg',t.badgeBg||t.primary||'#6657e8')}</div>
+      <div class="field design-cell"><label>안내 아이콘 글씨색</label>${swVivid('thBadgeText',t.badgeText||'#ffffff')}</div>
+    </div>
+    <div class="design-row">
+      <div class="field design-cell"><label>D-day 배너 배경색</label>${swDday('thDdayBg',t.ddayBg||'#273b57')}</div>
+      <div class="field design-cell"><label>D-day 배너 포인트색</label>${swDday('thDdayText',t.ddayText||'#e0a36c')}</div>
+    </div>
+    <div class="design-row">
+      <div class="field design-cell"><label>D-day 글씨체</label>
+        <select id="thDdayFont">
+          <option value="original" ${(t.ddayFont||'original')==='original'?'selected':''}>1. 기존 필기체</option>
+          <option value="hand" ${(t.ddayFont||'original')==='hand'?'selected':''}>2. 한글 손글씨체</option>
+          <option value="neat" ${(t.ddayFont||'original')==='neat'?'selected':''}>3. 단정한 글씨체</option>
+          <option value="base" ${(t.ddayFont||'original')==='base'?'selected':''}>4. 기본 페이지 글씨체</option>
+          <option value="elegant" ${(t.ddayFont||'original')==='elegant'?'selected':''}>5. 우아한 세리프체</option>
+        </select>
+      </div>
+      <div class="field design-cell"><label>D-day 포인트 모양</label>
+        <select id="thDdayMarkShape">
+          <option value="circle" ${(t.ddayMarkShape||'circle')==='circle'?'selected':''}>동그라미</option>
+          <option value="heart" ${(t.ddayMarkShape||'circle')==='heart'?'selected':''}>하트</option>
+          <option value="star" ${(t.ddayMarkShape||'circle')==='star'?'selected':''}>별무늬</option>
+          <option value="rounded" ${(t.ddayMarkShape||'circle')==='rounded'?'selected':''}>둥근 사각형</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="design-actions">
+    <button class="btn" onclick="setThemeMode('light')">화이트모드</button>
+    <button class="btn" onclick="setThemeMode('dark')">다크모드</button>
+    <button class="btn primary" onclick="saveTheme()">디자인 저장</button>
+  </div>
+</div>
   <div class="card"><div class="section-title"><h3>👥 팀원 관리</h3><button class="btn primary" onclick="addMember()">+ 팀원 추가</button></div>${state.members.length?state.members.map((m,i)=>`<div class="schedule-item"><div class="row"><div><b>${m.name}</b><div class="people">${m.pos}</div></div><span class="pill">팀원</span></div><div class="actions" style="margin-top:9px"><button class="btn" onclick="editMember(${i})">수정</button><button class="btn danger" onclick="deleteMember(${i})">삭제</button></div></div>`).join(''):`<div class="empty">등록된 팀원이 없습니다.</div>`}</div>
   ${state.role==="security"?securityOnlyAdminCards():""}`;
 }
@@ -2964,14 +3527,14 @@ function accessLogPanel(){
 function securityOnlyAdminCards(){
   return `<div class="card"><div class="section-title"><h3>🔑 입장 코드 관리</h3><span class="pill">보안자 전용</span></div><div class="field"><label>기본 입장 코드</label><input id="newEntryCode" type="password" value="${state.entryCode}"></div><div class="field"><label>관리자 입장 코드</label><input id="newAdminCode" type="password" value="${state.adminCode}"></div><div class="field"><label>보안자 입장 코드</label><input id="newSecurityCode" type="password" value="${state.securityCode}"></div><button class="btn primary" onclick="saveCodes()">입장 코드 저장</button></div>${accessLogPanel()}<div class="card"><div class="section-title"><h3>⚠️ 새 공연 시작 / 초기화</h3><span class="pill">보안자 전용</span></div><p class="muted">연습일정, 스케줄 조율, 공지/자료, 공연/극장일정, 팀원 정보, 접속기록을 초기화합니다. 입장코드는 유지합니다.</p><button class="btn danger" onclick="resetShow()">공연 데이터 초기화</button></div>`;
 }
-function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';/* keep legacy keys synchronized for older saved data / non-button accents */t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('색상 설정이 저장되었습니다.');render();}
-function setThemeMode(mode){state.theme=state.theme||{};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#111827',ddayText:'#ffffff'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#ffffff'});}save();applyTheme();render();}
+function saveTheme(){const t=state.theme||{};const pick=id=>document.querySelector(`#${id} .swatch.sel`)?.dataset.c;t.bg=pick('thBg')||t.bg||'#f5f6fa';t.card=pick('thCard')||t.card||'#ffffff';t.largeButtonBg=pick('thLargeButtonBg')||t.largeButtonBg||t.primary||'#6657e8';t.largeButtonText=pick('thLargeButtonText')||t.largeButtonText||t.buttonText||'#ffffff';t.smallButtonBg=pick('thSmallButtonBg')||t.smallButtonBg||t.primary||'#6657e8';t.smallButtonText=pick('thSmallButtonText')||t.smallButtonText||t.buttonText||'#ffffff';t.primary=t.smallButtonBg;t.buttonText=t.smallButtonText;t.ddayBg=pick('thDdayBg')||t.ddayBg||'#171b2d';t.ddayText=pick('thDdayText')||t.ddayText||'#ffffff';t.ddayFont=document.getElementById('thDdayFont')?.value||t.ddayFont||'original';t.ddayMarkShape=document.getElementById('thDdayMarkShape')?.value||t.ddayMarkShape||'circle';t.badgeBg=pick('thBadgeBg')||t.badgeBg||t.smallButtonBg||'#6657e8';t.badgeText=pick('thBadgeText')||t.badgeText||'#ffffff';state.theme=t;save();applyTheme();alert('디자인 설정이 저장되었습니다.');render();}
+function setThemeMode(mode){state.theme=state.theme||{};const keep={ddayFont:state.theme.ddayFont||'original',ddayMarkShape:state.theme.ddayMarkShape||'circle'};state.theme.mode=mode;if(mode==='dark'){Object.assign(state.theme,{bg:'#171b2d',card:'#252a40',ink:'#ffffff',primary:'#7c70ff',buttonText:'#ffffff',largeButtonBg:'#7c70ff',largeButtonText:'#ffffff',smallButtonBg:'#7c70ff',smallButtonText:'#ffffff',badgeBg:'#7c70ff',badgeText:'#ffffff',ddayBg:'#171b2d',ddayText:'#d77b8c'});}else{Object.assign(state.theme,{bg:'#f5f6fa',card:'#ffffff',ink:'#171b2d',primary:'#6657e8',buttonText:'#ffffff',largeButtonBg:'#6657e8',largeButtonText:'#ffffff',smallButtonBg:'#6657e8',smallButtonText:'#ffffff',badgeBg:'#6657e8',badgeText:'#ffffff',ddayBg:'#fffaf3',ddayText:'#a63a42'});}Object.assign(state.theme,keep);save();applyTheme();render();}
 function openShowDatesModal(){
   const existing=getShowDates();const map={};existing.forEach(x=>map[x.date]=x.time||'19:00');let dates=Object.keys(map);let view=new Date();view.setDate(1);const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>공연 날짜/시간 설정</h3><div id="sdCal"></div><div id="sdTimes" style="margin-top:12px"></div><div class="tc-actions"><button class="btn danger" id="sdCancel">취소</button><button class="btn primary" id="sdSave">저장</button></div></div>`;document.body.appendChild(bg);const pad=n=>String(n).padStart(2,'0');let times={...map};function renderCal(){const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);let h=`<div class="tc-month-head"><button id="sdPrev">◀</button><b>${y}년 ${m+1}월</b><button id="sdNext">▶</button></div><div class="tc-week">${['일','월','화','수','목','금','토'].map(x=>`<span>${x}</span>`).join('')}</div><div class="tc-days">`;for(let i=0;i<first.getDay();i++)h+='<button class="tc-day empty"></button>';for(let d=1;d<=last.getDate();d++){const v=`${y}-${pad(m+1)}-${pad(d)}`;h+=`<button type="button" class="tc-day ${dates.includes(v)?'sel':''}" data-date="${v}">${d}</button>`;}bg.querySelector('#sdCal').innerHTML=h+'</div>';bg.querySelectorAll('#sdCal [data-date]').forEach(b=>b.onclick=()=>{const v=b.dataset.date;if(dates.includes(v)){dates=dates.filter(x=>x!==v);delete times[v];}else{dates.push(v);times[v]='19:00';}renderCal();renderTimes();});bg.querySelector('#sdPrev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};bg.querySelector('#sdNext').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};}
   function renderTimes(){const list=dates.slice().sort();bg.querySelector('#sdTimes').innerHTML=list.length?`<div class="field"><label>선택한 날짜별 공연 시간</label>${list.map(v=>`<div class="field"><label>${v}</label><input class="sd-time" data-date="${v}" type="time" value="${times[v]||'19:00'}"></div>`).join('')}</div>`:`<div class="empty">날짜를 선택해주세요.</div>`;}
   bg.querySelector('#sdCancel').onclick=()=>bg.remove();bg.querySelector('#sdSave').onclick=()=>{bg.querySelectorAll('.sd-time').forEach(i=>times[i.dataset.date]=i.value);const out=dates.slice().sort().map(date=>({date,time:times[date]||'19:00'}));state.showDates=out;state.showDate=out[0]?.date||state.showDate;state.showTime=out[0]?.time||state.showTime;save();bg.remove();render()};renderCal();renderTimes();
 }
-function saveShowInfo(){state.showName=document.getElementById('showName').value.trim()||state.showName;state.bannerSmallName=document.getElementById('bannerSmallName').value.trim();state.loginTitle=document.getElementById('loginTitle').value.trim()||'THEATER CLOWN';state.loginSubtitle=document.getElementById('loginSubtitle').value.trim()||'공연팀 일정 · 공지 · 자료 관리';save();alert('정보가 저장되었습니다.');render()}
+function saveShowInfo(){state.showName=document.getElementById('showName').value.trim()||state.showName;state.bannerSmallName=document.getElementById('bannerSmallName').value.trim();state.loginTitle=document.getElementById('loginTitle').value.replace(/\r\n/g,'\n').trim()||'THEATER CLOWN';state.loginTitleFont=document.getElementById('loginTitleFont')?.value||state.loginTitleFont||'bold';state.loginSubtitle=document.getElementById('loginSubtitle').value.trim()||'공연팀 일정 · 공지 · 자료 관리';save();alert('정보가 저장되었습니다.');render()}
 function memberModal(initial,onSave){const x=initial||{name:'',pos:'배우'};const bg=document.createElement('div');bg.className='tc-modal-bg';bg.innerHTML=`<div class="tc-modal"><h3>${initial?'팀원 수정':'팀원 추가'}</h3><div class="field"><label>이름</label><input id="mmName" value="${x.name||''}"></div><div class="field"><label>포지션</label><input id="mmPos" value="${x.pos||'배우'}"></div><div class="tc-actions"><button class="btn danger" id="mmCancel">취소</button><button class="btn primary" id="mmSave">저장</button></div></div>`;document.body.appendChild(bg);bg.querySelector('#mmCancel').onclick=()=>bg.remove();bg.querySelector('#mmSave').onclick=()=>{const name=bg.querySelector('#mmName').value.trim(),pos=bg.querySelector('#mmPos').value.trim();if(!name)return alert('이름을 입력해주세요.');onSave({name,pos:pos||'배우'});bg.remove();save();render()}}
 function addMember(){memberModal(null,x=>state.members.push({...x,joined:true}))}
 function editMember(i){memberModal(state.members[i],x=>Object.assign(state.members[i],x))}
